@@ -4,6 +4,9 @@ public class Vector extends Point{
 
     public Vector(double x, double y, double z) {
         super(x, y, z);
+        if(x == 0 &&  y == 0 &&  z == 0){
+            throw new IllegalArgumentException();
+        }
     }
 
     public Vector add(Vector v){
@@ -27,6 +30,9 @@ public class Vector extends Point{
     }
 
     public Vector crossProduct(Vector v){
+        if(v.normalize().equals(this.normalize())){
+            throw new IllegalArgumentException();
+        }
         return new Vector(
                 this.xyz.d2 * v.xyz.d3 - this.xyz.d3 * v.xyz.d2,
                 this.xyz.d3 * v.xyz.d1 - this.xyz.d1 * v.xyz.d3,
