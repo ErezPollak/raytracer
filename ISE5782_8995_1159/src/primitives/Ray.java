@@ -3,11 +3,12 @@ package primitives;
 import java.util.Objects;
 
 public class Ray {
-    Point point;
-    Vector vector;
-    Ray(Vector v, Point p){
+    private Point point;
+    private Vector vector;
+
+    public Ray(Vector v, Point p){
         point = p;
-        vector = v;
+        vector = v.normalize();
     }
 
     public Point getPoint() {
