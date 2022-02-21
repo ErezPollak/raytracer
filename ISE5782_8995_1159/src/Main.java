@@ -2,6 +2,7 @@ import primitives.*;
 import static java.lang.System.out;
 import static primitives.Util.*;
 
+
 /**
  * Test program for the 1st stage
  *
