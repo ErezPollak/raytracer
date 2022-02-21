@@ -6,15 +6,28 @@ public class Ray {
     private Point point;
     private Vector vector;
 
+    /**
+     * Ray Constructor
+     * @param v
+     * @param p
+     */
     public Ray(Vector v, Point p){
         point = p;
         vector = v.normalize();
     }
 
+    /**
+     * Get ray's point
+     * @return
+     */
     public Point getPoint() {
         return point;
     }
 
+    /**
+     * Get ray's vector
+     * @return
+     */
     public Vector getVector() {
         return vector;
     }

@@ -13,10 +13,18 @@ public class Tube implements Geometry {
         return null;
     }
 
+    /**
+     * Tube Constructor
+     * @param raduis
+     */
     public Tube(double raduis) {
         this.raduis = raduis;
     }
 
+    /**
+     * Get raduis of tube.
+     * @return
+     */
     public double getRaduis() {
         return raduis;
     }

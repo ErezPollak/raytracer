@@ -11,10 +11,18 @@ public class Cylinder implements Geometry {
         return null;
     }
 
+    /**
+     * Cylinder Constructor
+     * @param high
+     */
     public Cylinder(double high) {
         this.high = high;
     }
 
+    /**
+     * Get high of cylinder
+     * @return
+     */
     public double getHigh() {
         return high;
     }

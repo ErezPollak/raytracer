@@ -12,10 +12,18 @@ public class Sphere implements Geometry {
         return null;
     }
 
+    /**
+     * Sphere Constructor
+     * @param raduis
+     */
     public Sphere(double raduis) {
         this.raduis = raduis;
     }
 
+    /**
+     * Get raduis of sphere
+     * @return
+     */
     public double getRaduis() {
         return raduis;
     }
