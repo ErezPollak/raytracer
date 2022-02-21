@@ -2,7 +2,7 @@ package primitives;
 
 public class Vector extends Point{
 
-    Vector(double x, double y, double z) {
+    public Vector(double x, double y, double z) {
         super(x, y, z);
     }
 
@@ -26,7 +26,7 @@ public class Vector extends Point{
         return temp.d1 + temp.d2 + temp.d3;
     }
 
-    public Vector crossProdact(Vector v){
+    public Vector crossProduct(Vector v){
         return new Vector(
                 this.xyz.d2 * v.xyz.d3 - this.xyz.d3 * v.xyz.d2,
                 this.xyz.d3 * v.xyz.d1 - this.xyz.d1 * v.xyz.d3,
@@ -34,8 +34,13 @@ public class Vector extends Point{
         );
     }
 
+    @Override
+    public Double3 getXyz() {
+        return super.getXyz();
+    }
+
     public double lengthSquared(){
-        return this.xyz.d1 * this.xyz.d1 + this.xyz.d2 *this.xyz.d2 + this.xyz.d3 * this.xyz.d3;
+        return super.distanceSquared(new Point(0,0,0));
     }
 
     public double length(){
@@ -46,6 +51,19 @@ public class Vector extends Point{
         Double3 temp = this.xyz.reduce(length());
         return new Vector(temp.d1 , temp.d2 , temp.d3);
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+
 
 }
 

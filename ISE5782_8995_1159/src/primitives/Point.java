@@ -1,6 +1,8 @@
 
 package primitives;
 
+import java.util.Objects;
+
 public class Point {
 
    protected Double3 xyz;
@@ -26,4 +28,28 @@ public class Point {
     public double distance(Point p){
        return Math.sqrt(this.distanceSquared(p));
    }
+
+    public Double3 getXyz() {
+        return xyz;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point point = (Point) o;
+        return Objects.equals(xyz, point.xyz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(xyz);
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "xyz=" + xyz +
+                '}';
+    }
 }
