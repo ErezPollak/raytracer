@@ -1,6 +1,15 @@
+/**
+ * the Point class
+ *
+ * written by Erez Polak
+ * and Eliran Salama
+ */
+
+
 package primitives;
 
 public class Vector extends Point{
+
     /**
      * Vector Constructor
      * @param x
@@ -10,6 +19,17 @@ public class Vector extends Point{
     public Vector(double x, double y, double z) {
         super(x, y, z);
         if(x == 0 &&  y == 0 &&  z == 0){
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * initialize the vector according to a Double3 object.
+     * @param d
+     */
+    public Vector(Double3 d){
+        super(d);
+        if(d.d1 == 0 &&  d.d2 == 0 &&  d.d3 == 0){
             throw new IllegalArgumentException();
         }
     }

@@ -1,3 +1,10 @@
+/**
+ * the Point class
+ *
+ * written by Erez Polak
+ * and Eliran Salama
+ */
+
 
 package primitives;
 
@@ -18,13 +25,21 @@ public class Point {
    }
 
     /**
+     * ctor that initialise the Point with the Double3 object.
+     * @param d
+     */
+   public Point(Double3 d){
+       this.xyz = d;
+   }
+
+    /**
      * Get point and  make vector subtraction
      * @param p
      * @return
      */
     public Vector subtract(Point p){
-     Double3 D3 = this.xyz.subtract(p.xyz);
-      return new Vector(D3.d1,D3.d2,D3.d3);
+        Double3 D3 = this.xyz.subtract(p.xyz);
+        return new Vector(D3.d1,D3.d2,D3.d3);
    }
 
     /**
@@ -33,8 +48,8 @@ public class Point {
      * @return
      */
     public Point add(Vector v){
-       Double3 D3 = this.xyz.add(v.xyz);
-       return new Point(D3.d1,D3.d2,D3.d3);
+         Double3 D3 = this.xyz.add(v.xyz);
+         return new Point(D3.d1,D3.d2,D3.d3);
    }
 
     /**
@@ -43,7 +58,9 @@ public class Point {
      * @return
      */
     public double distanceSquared(Point p){
-       return ((this.xyz.d1 - p.xyz.d1)*(this.xyz.d1 - p.xyz.d1) + (this.xyz.d2 - p.xyz.d2)*(this.xyz.d2 - p.xyz.d2) + (this.xyz.d3 - p.xyz.d3)*(this.xyz.d3 - p.xyz.d3));
+       return ((this.xyz.d1 - p.xyz.d1)*(this.xyz.d1 - p.xyz.d1) +
+               (this.xyz.d2 - p.xyz.d2)*(this.xyz.d2 - p.xyz.d2) +
+               (this.xyz.d3 - p.xyz.d3)*(this.xyz.d3 - p.xyz.d3));
    }
 
     /**
@@ -63,6 +80,11 @@ public class Point {
         return xyz;
     }
 
+    /**
+     * equals function based on the equals function of Double3 object.
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,11 +93,10 @@ public class Point {
         return Objects.equals(xyz, point.xyz);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(xyz);
-    }
-
+    /**
+     * tostring function returns the status of the object.
+     * @return
+     */
     @Override
     public String toString() {
         return "Point{" +

@@ -1,10 +1,19 @@
+/**
+ * the Point class
+ *
+ * written by Erez Polak
+ * and Eliran Salama
+ */
+
+
 package primitives;
 
 import java.util.Objects;
 
 public class Ray {
-    private Point point;
-    private Vector vector;
+
+    private final Point point;
+    private final Vector vector;
 
     /**
      * Ray Constructor
@@ -32,6 +41,10 @@ public class Ray {
         return vector;
     }
 
+    /**
+     * return a string with the status of the object.
+     * @return
+     */
     @Override
     public String toString() {
         return "Ray{" +
@@ -40,6 +53,11 @@ public class Ray {
                 '}';
     }
 
+    /**
+     * returns the equal of the point and the vector.
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,8 +66,4 @@ public class Ray {
         return Objects.equals(point, ray.point) && Objects.equals(vector, ray.vector);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(point, vector);
-    }
 }

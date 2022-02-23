@@ -1,3 +1,11 @@
+/**
+ * the Point class
+ *
+ * written by Erez Polak
+ * and Eliran Salama
+ */
+
+
 package geometries;
 
 import primitives.Point;
@@ -9,17 +17,17 @@ public class Plane implements Geometry{
     private Vector normal;
 
     /**
-     * Plane Constructor
+     * sets the plane according to the Point and normal vector.
      * @param q0
-     * @param v
+     * @param normal
      */
-    public Plane(Point q0 , Vector v) {
+    public Plane(Point q0 , Vector normal) {
         this.q0 = q0;
-        this.normal = v.normalize();
+        this.normal = normal.normalize();
     }
 
     /**
-     * Plane Constructor
+     * sets the plane according to three points.
      * @param p1
      * @param p2
      * @param p3
@@ -30,22 +38,27 @@ public class Plane implements Geometry{
     }
 
     /**
-     * Get point of plane
+     * returns the point.
      * @return
      */
     public Point getQ0() {
         return q0;
     }
 
-    public Vector getNormalVector() {
-        return normal;
-    }
-
+    /**
+     * returns the normal vector.
+      * @param p
+     * @return
+     */
     @Override
     public Vector getNormal(Point p) {
         return this.normal;
     }
 
+    /**
+     * returns a string contains the status of the plane.
+     * @return
+     */
     @Override
     public String toString() {
         return "Plane{" +
@@ -54,6 +67,10 @@ public class Plane implements Geometry{
                 '}';
     }
 
+    /**
+     * not required of the project only because of the implementation in the Main function.
+     * @return
+     */
     public Vector getNormal() {
         return this.normal;
     }
