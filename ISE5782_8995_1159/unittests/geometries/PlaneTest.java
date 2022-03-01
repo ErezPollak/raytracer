@@ -11,14 +11,6 @@ class PlaneTest {
     }
 
     @Test
-    void getNormal() {
-    }
-
-    @Test
-    void testToString() {
-    }
-
-    @Test
     void testGetNormal() {
     }
 }

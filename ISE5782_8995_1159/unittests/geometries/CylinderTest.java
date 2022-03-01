@@ -14,7 +14,4 @@ class CylinderTest {
     void getHigh() {
     }
 
-    @Test
-    void testToString() {
-    }
 }

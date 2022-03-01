@@ -13,8 +13,4 @@ class TubeTest {
     @Test
     void getRaduis() {
     }
-
-    @Test
-    void testToString() {
-    }
 }

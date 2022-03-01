@@ -36,11 +36,4 @@ class PointTest {
     void getXyz() {
     }
 
-    @Test
-    void testEquals() {
-    }
-
-    @Test
-    void testToString() {
-    }
 }

@@ -14,7 +14,4 @@ class SphereTest {
     void getRaduis() {
     }
 
-    @Test
-    void testToString() {
-    }
 }
