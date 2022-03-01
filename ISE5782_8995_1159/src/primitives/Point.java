@@ -38,8 +38,7 @@ public class Point {
      * @return
      */
     public Vector subtract(Point p){
-        Double3 D3 = this.xyz.subtract(p.xyz);
-        return new Vector(D3.d1,D3.d2,D3.d3);
+        return new Vector(this.xyz.subtract(p.xyz));
    }
 
     /**
@@ -48,8 +47,7 @@ public class Point {
      * @return
      */
     public Point add(Vector v){
-         Double3 D3 = this.xyz.add(v.xyz);
-         return new Point(D3.d1,D3.d2,D3.d3);
+         return new Point(this.xyz.add(v.xyz));
    }
 
     /**

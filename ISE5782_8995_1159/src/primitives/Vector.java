@@ -116,8 +116,7 @@ public class Vector extends Point{
      * @return
      */
     public Vector normalize(){
-        Double3 temp = this.xyz.reduce(length());
-        return new Vector(temp.d1 , temp.d2 , temp.d3);
+        return new Vector(this.xyz.reduce(length()));
     }
 
 
