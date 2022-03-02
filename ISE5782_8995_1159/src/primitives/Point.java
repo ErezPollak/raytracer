@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Point {
 
-   protected Double3 xyz;
+   protected final Double3 xyz;
 
     /**
      *  Point Constructor

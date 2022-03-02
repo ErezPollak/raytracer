@@ -13,6 +13,9 @@ import static primitives.Util.*;
  */
 class VectorTest {
 
+    /**
+     * Test method for {@link primitives.Vector#add(Vector)}.
+     */
     @Test
     void add() {
         Vector someVector = new Vector(1, 2, 3);
@@ -30,6 +33,9 @@ class VectorTest {
                 "crossProduct() for vector and its minus vector vectors does not throw an exception");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#subtract(Point)}.
+     */
     @Test
     void subtruct() {
 
@@ -48,6 +54,9 @@ class VectorTest {
                 "crossProduct() for identical vectors does not throw an exception");
     }
 
+    /**
+     * Test method for {@link primitives.Vector#scale(double)}.
+     */
     @Test
     void scale() {
 
@@ -65,6 +74,9 @@ class VectorTest {
 
     }
 
+    /**
+     * Test method for {@link primitives.Vector#dotProduct(Vector)}.
+     */
     @Test
     void dotProduct() {
 
@@ -116,7 +128,9 @@ class VectorTest {
         assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3) , "crossProduct() for parallel vectors does not throw an exception");
     }
 
-
+    /**
+     * Test method for {@link Vector#getXyz()}.
+     */
     @Test
     void getXyz() {
 
@@ -131,7 +145,7 @@ class VectorTest {
     }
 
     /**
-     * Test method for {@link Vector#lengthSquared()(primitives.Vector)}.
+     * Test method for {@link Vector#lengthSquared()}.
      */
     @Test
     void lengthSquared() {
@@ -147,7 +161,7 @@ class VectorTest {
     }
 
     /**
-     * Test method for {@link Vector#length()(primitives.Vector)}.
+     * Test method for {@link Vector#length()}.
      */
     @Test
     void length() {
@@ -161,6 +175,9 @@ class VectorTest {
         //no boundary tests because the length cannot be zero.
     }
 
+    /**
+     * Test method for {@link Vector#normalize()}.
+     */
     @Test
     void normalize() {
         // ============ Equivalence Partitions Tests ==============
