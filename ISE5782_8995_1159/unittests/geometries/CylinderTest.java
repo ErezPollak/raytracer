@@ -14,8 +14,13 @@ class CylinderTest {
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual normal of the cylinder.
-        Cylinder c = new Cylinder(5);
-        assertEquals(c.getNormal(),?,"ERROR: getNormal() wrong value");
+        Point p = new Point(1,0,0);
+        Vector v = new Vector(0,0,1);
+        Ray r = new Ray(v,p);
+        Cylinder c = new Cylinder(5,r,5);
+        Point testPiont = new Point(-4,0,0);
+        Vector expectedNormal = new Vector(-1,0,0);
+        assertEquals(c.getNormal(testPiont).normalize(), expectedNormal ,"ERROR: getNormal() wrong value");
     }
 
     /**

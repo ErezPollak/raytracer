@@ -5,8 +5,8 @@ import primitives.Ray;
 import primitives.Vector;
 
 public class Tube implements Geometry {
-    double raduis;
-    Ray ray;
+    protected  double raduis;
+    protected Ray ray;
 
     public Vector getNormal() {
         return null;
@@ -44,5 +44,10 @@ public class Tube implements Geometry {
                 "raduis=" + raduis +
                 ", ray=" + ray +
                 '}';
+    }
+
+    @Override
+    public Vector getNormal(Point p) {
+        return null;
     }
 }
