@@ -13,10 +13,11 @@ class PlaneTest {
     void getQ0() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual point of the plane.
-        Point point = new Point(1,2,3);
-        Vector vector = new Vector(3,4,5);
-        Plane p = new Plane(point,vector);
-        assertEquals(p.getQ0,point,"ERROR: getQ0() wrong value")
+        Point point1 = new Point(1,2,3);
+        Point point2 = new Point(4,5,6);
+        Point point3 = new Point(7,8,9);
+        Plane p = new Plane(point1,point2,point3);
+        assertEquals(p.getQ0,point1,"ERROR: getQ0() wrong value")
 
     }
 
@@ -27,9 +28,10 @@ class PlaneTest {
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual normal of the plane.
-        Point point = new Point(1,2,3);
-        Vector vector = new Vector(3,4,5)
-        Plane p = new Plane(point,vector);
-        assertEquals(p.getNormal(),vector.normalize,"ERROR: getNormal()() wrong value")
+        Point point1 = new Point(1,2,3);
+        Point point2 = new Point(4,5,6);
+        Point point3 = new Point(7,8,9);
+        Plane p = new Plane(point1,point2,point3);
+        assertEquals(p.getNormal(),?,"ERROR: getNormal()() wrong value")
     }
 }
