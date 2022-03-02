@@ -2,6 +2,7 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,9 +17,9 @@ class SphereTest {
         // TC01: Test that the function returns the actual normal of the sphere.
         Point p = new Point(0,0,0);
         Sphere s = new Sphere(1,p);
-        Point testPoint = new testPoint(1,1,1);
+        Point testPoint = new Point(1,1,1);
         Vector expectedVector = new Vector(1,1,1);
-        assertEquals(s.getNormal(testPiont).normalize(),expectedVector.normalize(),"ERROR: getNormal() wrong value");
+        assertEquals(s.getNormal(testPoint).normalize(),expectedVector.normalize(),"ERROR: getNormal() wrong value");
     }
 
     /**
@@ -42,7 +43,7 @@ class SphereTest {
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
         Sphere s = new Sphere(5,p);
-        assertEquals(s.getPoint(),p,"ERROR: getPoint() wrong value")
+        assertEquals(s.getPoint(),p,"ERROR: getPoint() wrong value");
     }
 
 }
