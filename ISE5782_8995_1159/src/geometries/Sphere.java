@@ -15,9 +15,11 @@ public class Sphere implements Geometry {
     /**
      * Sphere Constructor
      * @param raduis
+     * @param point
      */
-    public Sphere(double raduis) {
+    public Sphere(double raduis ,Point point) {
         this.raduis = raduis;
+        this.point = point;
     }
 
     /**
@@ -26,6 +28,14 @@ public class Sphere implements Geometry {
      */
     public double getRaduis() {
         return raduis;
+    }
+
+    /**
+     * Get point of sphere
+     * @return
+     */
+    public Point getPoint() {
+        return point;
     }
 
     @Override

@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CylinderTest {
 
+    /**
+     * Test method for {@link geometries.Cylinder#getNormal()}.
+     */
     @Test
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
@@ -14,6 +17,9 @@ class CylinderTest {
         assertEquals(c.getNormal,?,"ERROR: getNormal() wrong value")
     }
 
+    /**
+     * Test method for {@link geometries.Cylinder#getHigh()}.
+     */
     @Test
     void getHigh() {
         // ============ Equivalence Partitions Tests ==============

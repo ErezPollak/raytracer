@@ -16,9 +16,11 @@ public class Tube implements Geometry {
     /**
      * Tube Constructor
      * @param raduis
+     * @param ray
      */
-    public Tube(double raduis) {
+    public Tube(double raduis, Ray ray) {
         this.raduis = raduis;
+        this.ray = ray;
     }
 
     /**
@@ -27,6 +29,14 @@ public class Tube implements Geometry {
      */
     public double getRaduis() {
         return raduis;
+    }
+
+    /**
+     * Get ray of tube.
+     * @return
+     */
+    public Ray getRay() {
+        return ray;
     }
 
     @Override
