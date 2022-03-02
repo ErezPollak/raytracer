@@ -1,21 +1,18 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
-public class Cylinder implements Geometry {
+public class Cylinder extends Tube implements Geometry {
     double high;
-
-    @Override
-    public Vector getNormal(Point p) {
-        return null;
-    }
 
     /**
      * Cylinder Constructor
      * @param high
      */
-    public Cylinder(double high) {
+    public Cylinder(double raduis, Ray ray, double high) {
+        super(raduis, ray);
         this.high = high;
     }
 
@@ -25,6 +22,11 @@ public class Cylinder implements Geometry {
      */
     public double getHigh() {
         return high;
+    }
+
+    @Override
+    public Vector getNormal(Point p) {
+        return null;
     }
 
     @Override

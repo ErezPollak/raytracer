@@ -1,20 +1,21 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
+import primitives.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CylinderTest {
 
     /**
-     * Test method for {@link geometries.Cylinder#getNormal()}.
+     * Test method for {@link geometries.Cylinder#getNormal(Point)}.
      */
     @Test
     void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual normal of the cylinder.
         Cylinder c = new Cylinder(5);
-        assertEquals(c.getNormal,?,"ERROR: getNormal() wrong value")
+        assertEquals(c.getNormal(),?,"ERROR: getNormal() wrong value");
     }
 
     /**
@@ -25,7 +26,7 @@ class CylinderTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual high of the cylinder for the high value 5.
         Cylinder c = new Cylinder(5);
-        assertEquals(c.getHigh(),5,"ERROR: getHigh() wrong value")
+        assertEquals(c.getHigh(),5,"ERROR: getHigh() wrong value");
     }
 
 }

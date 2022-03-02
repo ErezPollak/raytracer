@@ -8,8 +8,7 @@ public class Tube implements Geometry {
     double raduis;
     Ray ray;
 
-    @Override
-    public Vector getNormal(Point p) {
+    public Vector getNormal() {
         return null;
     }
 

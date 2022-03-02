@@ -27,7 +27,8 @@ class PointTest {
         // =============== Boundary Values Tests ==================
 
         // TC11: Test that the program throws an exception for subtraction zero.
-        assertThrows(IllegalArgumentException.class,() -> p1.subtract(p1) , "do not throw error when subtracts the same point");
+        assertThrows(IllegalArgumentException.class,() -> p1.subtract(p1) ,
+                "do not throw error when subtracts the same point");
     }
 
     /**
@@ -46,7 +47,8 @@ class PointTest {
         // =============== Boundary Values Tests ==================
 
         // TC11: Test that the program throws an exception for subtraction zero.
-        assertThrows(IllegalArgumentException.class,() -> p1.subtract(p1) , "do not throw error when subtracts the same point");
+        assertThrows(IllegalArgumentException.class,() -> p1.subtract(p1) ,
+                "do not throw error when subtracts the same point");
     }
 
     /**

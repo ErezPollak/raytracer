@@ -1,13 +1,14 @@
 package geometries;
 
 import org.junit.jupiter.api.Test;
+import primitives.Point;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SphereTest {
 
     /**
-     * Test method for {@link geometries.Sphere#getNormal()}.
+     * Test method for {@link geometries.Sphere#getNormal(Point)}.
      */
     @Test
     void getNormal() {
@@ -15,7 +16,7 @@ class SphereTest {
         // TC01: Test that the function returns the actual normal of the sphere.
         Point p = new Point(1,2,3);
         Sphere s = new Sphere(5,p);
-        assertEquals(s.getNormal,?,"ERROR: getNormal() wrong value")
+        assertEquals(s.getNormal(),?,"ERROR: getNormal() wrong value");
     }
 
     /**
@@ -27,7 +28,7 @@ class SphereTest {
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
         Sphere s = new Sphere(5,p);
-        assertEquals(s.getRaduis(),5,"ERROR: getRaduis() wrong value")
+        assertEquals(s.getRaduis(),5,"ERROR: getRaduis() wrong value");
     }
 
     /**
