@@ -1,4 +1,4 @@
-/**
+ /**
  * the Point class
  *
  * written by Erez Polak
