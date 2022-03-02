@@ -30,7 +30,10 @@ class CylinderTest {
     void getHigh() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual high of the cylinder for the high value 5.
-        Cylinder c = new Cylinder(5);
+        Point p = new Point(1,0,0);
+        Vector v = new Vector(0,0,1);
+        Ray r = new Ray(v,p);
+        Cylinder c = new Cylinder(5,r,5);
         assertEquals(c.getHigh(),5,"ERROR: getHigh() wrong value");
     }
 
