@@ -21,8 +21,8 @@ class PlaneTest {
         assertThrows(IllegalArgumentException.class, ()-> new Plane(point01,point02,point03), // check if throw exception
                 "Constructor for the plane does not throw an exception");
 
-
-        // TC01: Test that the result is zero when the vectors are orthogonal.
+        // =============== Boundary Values Tests ==================
+        // TC02: Test that the result is zero when the vectors are orthogonal.
         Point point11 = new Point(1,2,3); // create 3 points for the plane
         Point point12 = new Point(2,4,6);
         Point point13 = new Point(4,8,12);
