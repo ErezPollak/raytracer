@@ -49,7 +49,7 @@ class CylinderTest {
 
 
         // TC11: Test when head of ray and point are the same ( the center of the second base)
-        Point testPoint11 = new Point(0,5,0);
+        Point testPoint11 = new Point(0,0,5);
         assertThrows(IllegalArgumentException.class, ()-> c.getNormal(testPoint11) , // check if throw exception
         "getNormal for the plane does not throw an exception");
 
