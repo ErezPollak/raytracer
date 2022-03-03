@@ -80,9 +80,6 @@ public class Vector extends Point{
      * @return
      */
     public Vector crossProduct(Vector v){
-        if(v.normalize().equals(this.normalize())){
-            throw new IllegalArgumentException();
-        }
         return new Vector(
                 this.xyz.d2 * v.xyz.d3 - this.xyz.d3 * v.xyz.d2,
                 this.xyz.d3 * v.xyz.d1 - this.xyz.d1 * v.xyz.d3,

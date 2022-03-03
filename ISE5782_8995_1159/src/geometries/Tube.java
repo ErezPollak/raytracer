@@ -48,6 +48,14 @@ public class Tube implements Geometry {
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        //calculate the scale in witch the ray suppose to be multiplied in order to get the
+        // length to the ray point that is on the same line with the normal.
+        double scale = ray.getVector().dotProduct(p.subtract(ray.getPoint()));
+
+        //calculate the scaled point on the ray by adding the scaled ray to the starting point of the ray.
+        Point rayPoint = ray.getPoint().add(ray.getVector().scale(scale));
+
+        //returns the subtraction as the normal vector.
+        return p.subtract(rayPoint);
     }
 }

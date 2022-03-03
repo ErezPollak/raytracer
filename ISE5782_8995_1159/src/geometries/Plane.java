@@ -33,8 +33,19 @@ public class Plane implements Geometry{
      * @param p3
      */
     public Plane(Point p1 , Point p2 , Point p3) {
+        //if two points are the same
+        if(p1.equals(p2) || p1.equals(p3) || p2.equals(p3)){
+            throw new IllegalArgumentException();
+        }
+
+        //if the three points on the same line.
+        if(p1.subtract(p2).normalize().equals(p1.subtract(p3)) || p1.subtract(p2).normalize().equals(p1.subtract(p3).scale(-1))){
+            throw new IllegalArgumentException();
+        }
+        
         this.q0 = p1;
-        this.normal = null;
+        //normal calculation cross product between two vectors created by the three given point.
+        this.normal = (p1.subtract(p2)).crossProduct(p1.subtract(p3));
     }
 
     /**
@@ -52,7 +63,7 @@ public class Plane implements Geometry{
      */
     @Override
     public Vector getNormal(Point p) {
-        return this.getNormal();
+        return this.getNormal().normalize();
     }
 
     /**

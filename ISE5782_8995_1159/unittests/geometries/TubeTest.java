@@ -13,21 +13,24 @@ class TubeTest {
      */
     @Test
     void getNormal() {
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Test that the function returns the actual normal of the tube.
+
         Point p = new Point(0,0,0);
         Vector v = new Vector(0,0,1);
         Ray r = new Ray(v,p);
-        Tube t = new Tube(5,r,5);
-        Point testPoint = new Point(5,0,3);
-        Vector expectedNormal1 = new Vector(); // להשלים
-        assertEquals(c.getNormal(testPiont).normalize(), expectedNormal ,"ERROR: getNormal() wrong value");
+        Tube t = new Tube(5,r);
+
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: Test that the function returns the actual normal of the tube.
+
+        Point testPoint01 = new Point(5,0,3);
+        Vector expectedNormal = new Vector(1,0,0);
+        assertEquals(t.getNormal(testPoint01).normalize(), expectedNormal ,"ERROR: getNormal() wrong value");
 
         // =============== Boundary Values Tests ==================
         // TC02: Test when head of ray and point crear 90 degrees with the hinge
-        Tube t = new Tube(5,new Ray(new Vector(0,0,5),new Point(0,0,0)));
-        Point testPoint = new Point(5,0,0);
-        assertThrows(IllegalArgumentException.class, ()-> t.getNormal(testPoint); , // check if throw exception
+
+        Point testPoint11 = new Point(5,0,0);
+        assertThrows(IllegalArgumentException.class, ()-> t.getNormal(testPoint11) , // check if throw exception
         "getNormal for the plane does not throw an exception");
     }
 
@@ -43,9 +46,6 @@ class TubeTest {
         Ray r = new Ray(v,p);
         Tube t = new Tube(5,r);
         assertEquals(t.getRaduis(),5,"ERROR: getRaduis() wrong value");
-
-
-
     }
 
     /**

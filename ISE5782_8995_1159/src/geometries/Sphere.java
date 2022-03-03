@@ -5,11 +5,12 @@ import primitives.Vector;
 
 public class Sphere implements Geometry {
     double raduis;
-    Point point;
+    Point center;
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        // the subtraction of the point from the center, returns the normal to the point.
+        return p.subtract(center);
     }
 
     /**
@@ -19,7 +20,7 @@ public class Sphere implements Geometry {
      */
     public Sphere(double raduis ,Point point) {
         this.raduis = raduis;
-        this.point = point;
+        this.center = point;
     }
 
     /**
@@ -35,14 +36,14 @@ public class Sphere implements Geometry {
      * @return
      */
     public Point getPoint() {
-        return point;
+        return center;
     }
 
     @Override
     public String toString() {
         return "Sphere{" +
                 "raduis=" + raduis +
-                ", point=" + point +
+                ", point=" + center +
                 '}';
     }
 }
