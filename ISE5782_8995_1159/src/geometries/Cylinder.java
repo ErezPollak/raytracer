@@ -44,7 +44,7 @@ public class Cylinder extends Tube implements Geometry {
             if (!isZero(toTop.length() - this.raduis) && !isZero(toBottrm.length() - this.raduis)) {
 
                 //then this is the normal of the cylinder in that point.
-                return ray.getVector();
+                return ray.getVector().normalize();
 
             }else{
                 //the point is on the edge  of the cylinder.

@@ -56,6 +56,6 @@ public class Tube implements Geometry {
         Point rayPoint = ray.getPoint().add(ray.getVector().scale(scale));
 
         //returns the subtraction as the normal vector.
-        return p.subtract(rayPoint);
+        return p.subtract(rayPoint).normalize();
     }
 }
