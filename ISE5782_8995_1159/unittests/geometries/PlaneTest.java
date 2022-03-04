@@ -5,7 +5,10 @@ import primitives.Point;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Unit tests for geometries.Plane class
+ * @author Erez Polak and Eliran Salama.
+ */
 class PlaneTest {
     /**
      * Test method for {@link geometries.Plane#Plane(Point, Point, Point)}.
