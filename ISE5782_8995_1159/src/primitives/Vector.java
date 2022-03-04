@@ -18,8 +18,8 @@ public class Vector extends Point{
      */
     public Vector(double x, double y, double z) {
         super(x, y, z);
-        if(x == 0 &&  y == 0 &&  z == 0){
-            throw new IllegalArgumentException();
+        if(xyz.equals(Double3.ZERO)){
+            throw new IllegalArgumentException("Vector(0,0,0) is not allowed");
         }
     }
 
@@ -29,8 +29,8 @@ public class Vector extends Point{
      */
     public Vector(Double3 d){
         super(d);
-        if(d.d1 == 0 &&  d.d2 == 0 &&  d.d3 == 0){
-            throw new IllegalArgumentException();
+        if(xyz.equals(Double3.ZERO)){
+            throw new IllegalArgumentException("Vector(0,0,0) is not allowed");
         }
     }
 
