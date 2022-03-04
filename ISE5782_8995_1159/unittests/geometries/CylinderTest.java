@@ -14,13 +14,16 @@ class CylinderTest {
      */
     @Test
     void getNormal() {
-        // ============ Equivalence Partitions Tests ==============
+
         Point p = new Point(0,0,0);
         Vector v = new Vector(0,0,1);
         Ray r = new Ray(v,p);
         Cylinder c = new Cylinder(5,r,5);
         Vector expectedNormal1 = new Vector(0,0,1);
         Vector expectedNormal2 = new Vector(0,0,-1);
+
+
+        // ============ Equivalence Partitions Tests ==============
 
         // TC01: Test that the function returns the actual normal of the cylinder when point on base.
         Point testPoint01 = new Point(-4,0,0);
@@ -41,6 +44,7 @@ class CylinderTest {
         assertEquals(c.getNormal(testPoint3).normalize(), expectedNormal3 ,"ERROR: getNormal() wrong value");
 
         // =============== Boundary Values Tests ==================
+
         // TC10: Test when head of ray and point are the same ( the center of the first base)
         Point testPoint10 = new Point(0,0,0);
         assertThrows(IllegalArgumentException.class, ()-> c.getNormal(testPoint10) , // check if throw exception
@@ -60,17 +64,17 @@ class CylinderTest {
     }
 
     /**
-     * Test method for {@link geometries.Cylinder#getHigh()}.
+     * Test method for {@link geometries.Cylinder#getHeight()}.
      */
     @Test
-    void getHigh() {
+    void getHeight() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual high of the cylinder for the high value 5.
         Point p = new Point(1,0,0);
         Vector v = new Vector(0,0,1);
         Ray r = new Ray(v,p);
         Cylinder c = new Cylinder(5,r,5);
-        assertEquals(c.getHigh(),5,"ERROR: getHigh() wrong value");
+        assertEquals(c.getHeight(),5,"ERROR: getHigh() wrong value");
     }
 
 }

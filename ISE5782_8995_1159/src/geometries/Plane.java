@@ -63,7 +63,7 @@ public class Plane implements Geometry{
      */
     @Override
     public Vector getNormal(Point p) {
-        return this.getNormal().normalize();
+        return this.normal.normalize();
     }
 
     /**
@@ -79,7 +79,8 @@ public class Plane implements Geometry{
     }
 
     /**
-     * not required of the project only because of the implementation in the Main function.
+     * not required as a part of the requirements
+     * it is written only because of the implementation in the Polygon class.
      * @return
      */
     public Vector getNormal() {

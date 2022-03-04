@@ -19,7 +19,7 @@ class SphereTest {
         Sphere s = new Sphere(1,p);
         Point testPoint = new Point(1,1,1);
         Vector expectedVector = new Vector(1,1,1);
-        assertEquals(s.getNormal(testPoint).normalize(),expectedVector.normalize(),"ERROR: getNormal() wrong value");
+        assertEquals(s.getNormal(testPoint), expectedVector.normalize(),"ERROR: getNormal() wrong value");
     }
 
     /**

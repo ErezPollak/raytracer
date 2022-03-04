@@ -34,27 +34,6 @@ class VectorTest {
     }
 
     /**
-     * Test method for {@link primitives.Vector#subtract(Point)}.
-     */
-    @Test
-    void subtruct() {
-
-        Vector someVector = new Vector(1, 2, 3);
-
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Test that the function returns the actual subtraction of the vectors.
-        Vector anotherVector = new Vector(2, 3, 5);
-        Vector vectorsSubtraction = new Vector(-1 , -1 , -2);
-        assertEquals(someVector.subtruct(anotherVector) , vectorsSubtraction , "ERROR: add() wrong value");
-
-        // =============== Boundary Values Tests ==================
-        // TC11: Test that the program throws an exception for sum zero.
-        Vector sameVector = new Vector(1, 2, 3);
-        assertThrows(IllegalArgumentException.class, () -> someVector.subtruct(sameVector),
-                "crossProduct() for identical vectors does not throw an exception");
-    }
-
-    /**
      * Test method for {@link primitives.Vector#scale(double)}.
      */
     @Test

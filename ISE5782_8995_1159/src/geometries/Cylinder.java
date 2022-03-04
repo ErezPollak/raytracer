@@ -7,7 +7,7 @@ import primitives.Vector;
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube implements Geometry {
-    double high;
+    double height;
 
     /**
      * Cylinder Constructor
@@ -15,15 +15,15 @@ public class Cylinder extends Tube implements Geometry {
      */
     public Cylinder(double raduis, Ray ray, double high) {
         super(raduis, ray);
-        this.high = high;
+        this.height = high;
     }
 
     /**
      * Get high of cylinder
      * @return
      */
-    public double getHigh() {
-        return high;
+    public double getHeight() {
+        return height;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Cylinder extends Tube implements Geometry {
 
         //the points that define the bottom and top of the cylinder.
         Point bottom = ray.getPoint();
-        Point top = ray.getPoint().add(this.ray.getVector().normalize().scale(this.getHigh()));
+        Point top = ray.getPoint().add(this.ray.getVector().normalize().scale(this.getHeight()));
 
         //the vectors from them to the given point.
         Vector toBottrm = p.subtract(bottom);
@@ -47,7 +47,7 @@ public class Cylinder extends Tube implements Geometry {
                 return ray.getVector().normalize();
 
             }else{
-                //the point is on the edge  of the cylinder.
+                //the point is on the edge of the cylinder.
                 throw new IllegalArgumentException();
             }
         }else{
@@ -59,7 +59,7 @@ public class Cylinder extends Tube implements Geometry {
     @Override
     public String toString() {
         return "Cylinder{" +
-                "high=" + high +
+                "high=" + height +
                 '}';
     }
 }

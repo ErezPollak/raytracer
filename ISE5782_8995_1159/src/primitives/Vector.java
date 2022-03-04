@@ -29,7 +29,7 @@ public class Vector extends Point{
      */
     public Vector(Double3 d){
         super(d);
-        if(xyz.equals(Double3.ZERO)){
+        if(d.equals(Double3.ZERO)){
             throw new IllegalArgumentException("Vector(0,0,0) is not allowed");
         }
     }
