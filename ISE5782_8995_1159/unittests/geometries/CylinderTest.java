@@ -6,7 +6,10 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Unit tests for geometries.Cylinder class
+ * @author Erez Polak and Eliran Salama.
+ */
 class CylinderTest {
 
     /**

@@ -6,7 +6,10 @@ import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Unit tests for geometries.Tube class
+ * @author Erez Polak and Eliran Salama.
+ */
 class TubeTest {
     /**
      * Test method for {@link geometries.Tube#getNormal()}.
@@ -27,7 +30,7 @@ class TubeTest {
         assertEquals(t.getNormal(testPoint01).normalize(), expectedNormal ,"ERROR: getNormal() wrong value");
 
         // =============== Boundary Values Tests ==================
-        // TC02: Test when head of ray and point crear 90 degrees with the hinge
+        // TC02: Test when head of ray and point creat 90 degrees with the hinge
 
         Point testPoint11 = new Point(5,0,0);
         assertThrows(IllegalArgumentException.class, ()-> t.getNormal(testPoint11) , // check if throw exception
