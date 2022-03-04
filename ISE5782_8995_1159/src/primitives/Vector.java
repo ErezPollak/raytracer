@@ -40,18 +40,7 @@ public class Vector extends Point{
      * @return
      */
     public Vector add(Vector v){
-        Double3 temp = this.xyz.add(v.xyz);
-        return new Vector(temp.d1 , temp.d2 , temp.d3);
-    }
-
-    /**
-     * Calculates Substruct between two vectors
-     * @param v
-     * @return
-     */
-    public Vector subtruct(Vector v){
-        Double3 temp = this.xyz.subtract(v.xyz);
-        return new Vector(temp.d1 , temp.d2 , temp.d3);
+        return new Vector(this.xyz.add(v.xyz));
     }
 
     /**
@@ -60,8 +49,7 @@ public class Vector extends Point{
      * @return
      */
     public Vector scale(double scale){
-        Double3 temp = this.xyz.scale(scale);
-        return new Vector(temp.d1 , temp.d2 , temp.d3);
+        return new Vector(this.xyz.scale(scale));
     }
 
     /**
@@ -116,12 +104,20 @@ public class Vector extends Point{
         return new Vector(this.xyz.reduce(length()));
     }
 
-
+    /**
+     * returns the equals function of the father
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         return super.equals(o);
     }
 
+    /**
+     * returns the function implemented the father.
+     * @return
+     */
     @Override
     public String toString() {
         return super.toString();
