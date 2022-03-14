@@ -30,13 +30,13 @@ class CylinderTest {
 
         // TC01: Test that the function returns the actual normal of the cylinder when point on base.
         Point testPoint01 = new Point(-4,0,0);
-        assertTrue(c.getNormal(testPoint01).normalize().equals(expectedNormal1) ||
-                c.getNormal(testPoint01).normalize().equals(expectedNormal2) ,"ERROR: getNormal() wrong value"); // check if we get the currect vector
+        assertTrue(c.getNormal(testPoint01).equals(expectedNormal1) ||
+                c.getNormal(testPoint01).equals(expectedNormal2) ,"ERROR: getNormal() wrong value"); // check if we get the currect vector
 
 
         // TC02: Test that the function returns the actual normal of the cylinder when point on the other base.
         Point testPoint02 = new Point(-4,0,5);
-        Vector actualNormal = c.getNormal(testPoint02).normalize();
+        Vector actualNormal = c.getNormal(testPoint02);
         assertTrue(actualNormal.equals(expectedNormal1) ||
                 actualNormal.equals(expectedNormal2) ,"ERROR: getNormal() wrong value"); // check if we get the currect vector
 
@@ -44,7 +44,7 @@ class CylinderTest {
         // TC03: Test that the function returns the actual normal of the cylinder when point on the side.
         Point testPoint3 = new Point(5,0,3);
         Vector expectedNormal3 = new Vector(1,0,0);
-        assertEquals(c.getNormal(testPoint3).normalize(), expectedNormal3 ,"ERROR: getNormal() wrong value");
+        assertEquals(c.getNormal(testPoint3), expectedNormal3 ,"ERROR: getNormal() wrong value");
 
         // =============== Boundary Values Tests ==================
 

@@ -65,7 +65,7 @@ class PlaneTest {
         Vector expectedNormal1 = new Vector(0,0,1);
         Vector expectedNormal2 = new Vector(0,0,-1);
 
-        Vector actualNormal = p.getNormal(point1).normalize();
+        Vector actualNormal = p.getNormal(point1);
 
         assertTrue(((actualNormal.equals(expectedNormal1) ||
                 actualNormal.equals(expectedNormal2)) &&

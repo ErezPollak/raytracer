@@ -27,7 +27,7 @@ class TubeTest {
 
         Point testPoint01 = new Point(5,0,3);
         Vector expectedNormal = new Vector(1,0,0);
-        assertEquals(t.getNormal(testPoint01).normalize(), expectedNormal ,"ERROR: getNormal() wrong value");
+        assertEquals(t.getNormal(testPoint01), expectedNormal ,"ERROR: getNormal() wrong value");
 
         // =============== Boundary Values Tests ==================
         // TC02: Test when head of ray and point creat 90 degrees with the hinge
