@@ -63,7 +63,7 @@ public class Ray {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ray ray = (Ray) o;
-        return Objects.equals(point, ray.point) && Objects.equals(vector, ray.vector);
+        return point.equals(ray.point) && vector.equals(ray.vector);
     }
 
 }

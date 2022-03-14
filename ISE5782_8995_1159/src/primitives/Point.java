@@ -8,7 +8,6 @@
 
 package primitives;
 
-import java.util.Objects;
 
 public class Point {
 
@@ -88,7 +87,7 @@ public class Point {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Point point = (Point) o;
-        return Objects.equals(xyz, point.xyz);
+        return xyz.equals(point.xyz);
     }
 
     /**

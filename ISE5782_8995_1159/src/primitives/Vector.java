@@ -104,15 +104,15 @@ public class Vector extends Point{
         return new Vector(this.xyz.reduce(length()));
     }
 
-    /**
-     * returns the equals function of the father
-     * @param o
-     * @return
-     */
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
+//    /**
+//     * returns the equals function of the father
+//     * @param o
+//     * @return
+//     */
+//    @Override
+//    public boolean equals(Object o) {
+//        return super.equals(o);
+//    }
 
     /**
      * returns the function implemented the father.
