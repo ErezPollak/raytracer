@@ -49,4 +49,12 @@ class SphereTest {
         assertEquals(s.getPoint(),p,"ERROR: getPoint() wrong value");
     }
 
+    /**
+     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     */
+    @Test
+    void testFindIntersections() {
+
+    }
+
 }

@@ -3,6 +3,7 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
+import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -78,6 +79,14 @@ class CylinderTest {
         Ray r = new Ray(v,p);
         Cylinder c = new Cylinder(5,r,5);
         assertEquals(c.getHeight(),5,"ERROR: getHigh() wrong value");
+    }
+
+    /**
+     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     */
+    @Test
+    void testFindIntersections() {
+
     }
 
 }

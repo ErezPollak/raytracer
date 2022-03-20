@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube implements Geometry {
@@ -61,5 +63,15 @@ public class Cylinder extends Tube implements Geometry {
         return "Cylinder{" +
                 "high=" + height +
                 '}';
+    }
+
+    /**
+     * Finds the intersections of the ray with the cylinder
+     * @param ray
+     * @return
+     */
+    public List<Point> findIntersections(Ray ray)
+    {
+        return null;
     }
 }

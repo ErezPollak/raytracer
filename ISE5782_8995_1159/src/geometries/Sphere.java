@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 public class Sphere implements Geometry {
     double raduis;
@@ -45,5 +48,15 @@ public class Sphere implements Geometry {
                 "raduis=" + raduis +
                 ", point=" + center +
                 '}';
+    }
+
+    /**
+     * Finds the intersections of the ray with the sphere
+     * @param ray
+     * @return
+     */
+    public List<Point> findIntersections(Ray ray)
+    {
+        return null;
     }
 }

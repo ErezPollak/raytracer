@@ -72,4 +72,12 @@ class PlaneTest {
                 actualNormal.length() == 1 ) ,"ERROR: getNormal() wrong value"); // check if we get the currect vector
 
     }
+
+    /**
+     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     */
+    @Test
+    void testFindIntersections() {
+
+    }
 }

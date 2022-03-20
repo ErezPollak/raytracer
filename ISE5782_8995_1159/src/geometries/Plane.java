@@ -9,7 +9,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 public class Plane implements Geometry{
 
@@ -85,6 +88,16 @@ public class Plane implements Geometry{
      */
     public Vector getNormal() {
         return this.normal;
+    }
+
+    /**
+     * Finds the intersections of the ray with the plane
+     * @param ray
+     * @return
+     */
+    public List<Point> findIntersections(Ray ray)
+    {
+        return null;
     }
 
 

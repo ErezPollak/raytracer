@@ -18,4 +18,12 @@ class TriangleTest {
 
     }
 
+    /**
+     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     */
+    @Test
+    void testFindIntersections() {
+
+    }
+
 }

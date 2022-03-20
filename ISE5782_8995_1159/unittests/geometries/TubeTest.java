@@ -64,4 +64,12 @@ class TubeTest {
         Tube t = new Tube(5,r);
         assertEquals(t.getRay(),r,"ERROR: getRaduis() wrong value");
     }
+
+    /**
+     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     */
+    @Test
+    void testFindIntersections() {
+
+    }
 }

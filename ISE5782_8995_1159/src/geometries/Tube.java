@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 public class Tube implements Geometry {
     protected  double raduis;
     protected Ray ray;
@@ -57,5 +59,15 @@ public class Tube implements Geometry {
 
         //returns the subtraction as the normal vector.
         return p.subtract(rayPoint).normalize();
+    }
+
+    /**
+     * Finds the intersections of the ray with the tube
+     * @param ray
+     * @return
+     */
+    public List<Point> findIntersections(Ray ray)
+    {
+        return null;
     }
 }
