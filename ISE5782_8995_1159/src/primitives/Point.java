@@ -1,6 +1,6 @@
 /**
  * the Point class
- *
+ * <p>
  * written by Erez Polak
  * and Eliran Salama
  */
@@ -11,7 +11,7 @@ package primitives;
 
 public class Point {
 
-   protected final Double3 xyz;
+    protected final Double3 xyz;
 
     /**
      *  Point Constructor
@@ -19,55 +19,55 @@ public class Point {
      * @param y
      * @param z
      */
-   public Point(double x,double y,double z){
-      xyz = new Double3(x,y,z);
-   }
+    public Point(double x, double y, double z) {
+        xyz = new Double3(x, y, z);
+    }
 
     /**
      * ctor that initialise the Point with the Double3 object.
      * @param d
      */
-   public Point(Double3 d){
-       this.xyz = d;
-   }
+    public Point(Double3 d) {
+        this.xyz = d;
+    }
 
     /**
      * Get point and  make vector subtraction
      * @param p
      * @return
      */
-    public Vector subtract(Point p){
+    public Vector subtract(Point p) {
         return new Vector(this.xyz.subtract(p.xyz));
-   }
+    }
 
     /**
      * Add vector to point
      * @param v
      * @return
      */
-    public Point add(Vector v){
-         return new Point(this.xyz.add(v.xyz));
-   }
+    public Point add(Vector v) {
+        return new Point(this.xyz.add(v.xyz));
+    }
 
     /**
      * Calculates the distance between two points squared
      * @param p
      * @return
      */
-    public double distanceSquared(Point p){
-       return ((this.xyz.d1 - p.xyz.d1)*(this.xyz.d1 - p.xyz.d1) +
-               (this.xyz.d2 - p.xyz.d2)*(this.xyz.d2 - p.xyz.d2) +
-               (this.xyz.d3 - p.xyz.d3)*(this.xyz.d3 - p.xyz.d3));
-   }
+    public double distanceSquared(Point p) {
+        return ((this.xyz.d1 - p.xyz.d1) * (this.xyz.d1 - p.xyz.d1) +
+                (this.xyz.d2 - p.xyz.d2) * (this.xyz.d2 - p.xyz.d2) +
+                (this.xyz.d3 - p.xyz.d3) * (this.xyz.d3 - p.xyz.d3));
+    }
 
     /**
      * Calculates the distance between two points
      * @param p
      * @return
      */
-    public double distance(Point p){
-       return Math.sqrt(this.distanceSquared(p));
-   }
+    public double distance(Point p) {
+        return Math.sqrt(this.distanceSquared(p));
+    }
 
     /**
      * Get point coordinates
@@ -91,7 +91,7 @@ public class Point {
     }
 
     /**
-     * tostring function returns the status of the object.
+     * toString function returns the status of the object.
      * @return
      */
     @Override
@@ -99,5 +99,29 @@ public class Point {
         return "Point{" +
                 "xyz=" + xyz +
                 '}';
+    }
+
+    /**
+     * returns the x value of the point.
+     * @return
+     */
+    public double getX() {
+        return this.xyz.d1;
+    }
+
+    /**
+     * returns the Y value of the point.
+     * @return
+     */
+    public double getY() {
+        return this.xyz.d1;
+    }
+
+    /**
+     * returns the Z value of the point.
+     * @return
+     */
+    public double getZ() {
+        return this.xyz.d1;
     }
 }

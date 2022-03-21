@@ -21,7 +21,7 @@ class CylinderTest {
 
         Point p = new Point(0,0,0);
         Vector v = new Vector(0,0,1);
-        Ray r = new Ray(v,p);
+        Ray r = new Ray(p,v);
         Cylinder c = new Cylinder(5,r,5);
         Vector expectedNormal1 = new Vector(0,0,1);
         Vector expectedNormal2 = new Vector(0,0,-1);
@@ -76,7 +76,7 @@ class CylinderTest {
         // TC01: Test that the function returns the actual high of the cylinder for the high value 5.
         Point p = new Point(1,0,0);
         Vector v = new Vector(0,0,1);
-        Ray r = new Ray(v,p);
+        Ray r = new Ray(p,v);
         Cylinder c = new Cylinder(5,r,5);
         assertEquals(c.getHeight(),5,"ERROR: getHigh() wrong value");
     }

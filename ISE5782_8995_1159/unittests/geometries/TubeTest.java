@@ -19,7 +19,7 @@ class TubeTest {
 
         Point p = new Point(0,0,0);
         Vector v = new Vector(0,0,1);
-        Ray r = new Ray(v,p);
+        Ray r = new Ray(p,v);
         Tube t = new Tube(5,r);
 
         // ============ Equivalence Partitions Tests ==============
@@ -46,7 +46,7 @@ class TubeTest {
         // TC01: Test that the function returns the actual radius of the tube for the raduis value 5.
         Point p = new Point(1,2,3);
         Vector v = new Vector(2,3,4);
-        Ray r = new Ray(v,p);
+        Ray r = new Ray(p,v);
         Tube t = new Tube(5,r);
         assertEquals(t.getRaduis(),5,"ERROR: getRaduis() wrong value");
     }
@@ -60,7 +60,7 @@ class TubeTest {
         // TC01: Test that the function returns the actual radius of the tube for the raduis value 5.
         Point p = new Point(1,2,3);
         Vector v = new Vector(2,3,4);
-        Ray r = new Ray(v,p);
+        Ray r = new Ray(p,v);
         Tube t = new Tube(5,r);
         assertEquals(t.getRay(),r,"ERROR: getRaduis() wrong value");
     }

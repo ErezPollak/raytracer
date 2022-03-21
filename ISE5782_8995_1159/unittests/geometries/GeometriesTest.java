@@ -7,7 +7,6 @@ import primitives.Vector;
  * Unit tests for geometries.Geometries class
  * @author Erez Polak and Eliran Salama.
  */
-class GeometriesTest()
-{
+class GeometriesTest {
 
 }

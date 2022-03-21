@@ -20,7 +20,7 @@ public class Ray {
      * @param v
      * @param p
      */
-    public Ray(Vector v, Point p){
+    public Ray(Point p , Vector v){
         point = p;
         vector = v.normalize();
     }
