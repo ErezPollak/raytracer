@@ -15,7 +15,7 @@ class PointTest {
      * Test method for {@link primitives.Point#subtract(Point)}.
      */
     @Test
-    void subtract() {
+    void testSubtract() {
         Point p1 = new Point(1,2,3);
         // ============ Equivalence Partitions Tests ==============
 
@@ -35,7 +35,7 @@ class PointTest {
      * Test method for {@link primitives.Point#add(primitives.Vector)}.
      */
     @Test
-    void add() {
+    void testAdd() {
         Point p1 = new Point(1,2,3);
         // ============ Equivalence Partitions Tests ==============
 
@@ -55,7 +55,7 @@ class PointTest {
      * Test method for {@link primitives.Point#distanceSquared(Point)} .
      */
     @Test
-    void distanceSquared() {
+    void testDistanceSquared() {
 
         // ============ Equivalence Partitions Tests ==============
 
@@ -70,7 +70,7 @@ class PointTest {
      * Test method for {@link primitives.Point#distance(Point)}.
      */
     @Test
-    void distance() {
+    void testDistance() {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Test that the function returns the actual squared distance between the points.
@@ -80,18 +80,18 @@ class PointTest {
         assertEquals(p1.distance(p2) , distance , "the distanceSquared() function returns wrong value.");
     }
 
-    /**
-     * Test method for {@link Point#getXyz()}.
-     */
-    @Test
-    void getXyz() {
-        // ============ Equivalence Partitions Tests ==============
-
-        // TC01: Test that the function returns the xyz value of the point.
-        Point p1 = new Point(1,2,3);
-        Double3 d = new Double3(1,2,3);
-        assertEquals(p1.getXyz() , d , "the getXYZ() function returns wrong value.");
-
-    }
+//    /**
+//     * Test method for {@link Point#getXyz()}.
+//     */
+//    @Test
+//    void getXyz() {
+//        // ============ Equivalence Partitions Tests ==============
+//
+//        // TC01: Test that the function returns the xyz value of the point.
+//        Point p1 = new Point(1,2,3);
+//        Double3 d = new Double3(1,2,3);
+//        assertEquals(p1.getXyz() , d , "the getXYZ() function returns wrong value.");
+//
+//    }
 
 }

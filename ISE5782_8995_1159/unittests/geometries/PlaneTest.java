@@ -2,6 +2,7 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ class PlaneTest {
      * Test method for {@link geometries.Plane#getQ0()}.
      */
     @Test
-    void getQ0() {
+    void testGetQ0() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual point of the plane.
         Point point1 = new Point(1,2,3); // Create 3 points for the plane not on the same line
@@ -78,6 +79,62 @@ class PlaneTest {
      */
     @Test
     void testFindIntersections() {
+
+        Plane plane = new Plane(new Point(1,0,0) , new Point(1,1,0) , new Point(0,1,0));
+        Vector vector;
+        Point point;
+
+        // ============ Equivalence Partitions Tests ==============
+
+        vector = new Vector(1,2,3);
+
+        // TC01: The ray is neither orthogonal nor parallel to the plane, and it intersects with it.
+        point = new Point(1,2,-1);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "Suppose to be only one intersection point, no more no less.");
+
+        // TC02: The ray is neither orthogonal nor parallel to the plane, and it doesn't intersect with it.
+        point = new Point(1,2,1);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+
+        // =============== Boundary Values Tests ==================
+
+        // =============== parallel ==================
+        vector = new Vector(1,2, 0);
+
+        // TC03: The Ray is parallel to the plane, and it is included in it.
+        point = new Point(2,2,0);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "Suppose to be only one intersection point, no more no less.");
+
+        // TC04: The Ray is parallel to the plane, and it is not included in it.
+        point = new Point(2,2,1);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+
+        // =============== orthogonal ==================
+        vector = new Vector(0,0, 2);
+
+        // TC05: The ray is orthogonal to the plane, and it starts before.
+        point = new Point(2,2,-1);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "One intersection point expected expected.");
+
+        // TC06: The ray doesn't intersect with the plane.
+        point = new Point(2,2,0);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
+
+        // TC07: The ray doesn't intersect with the plane.
+        point = new Point(2,2,1);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+
+        // =============== general ==================
+
+        vector = new Vector(1,2,3);
+
+        // TC08: Ray is neither orthogonal nor parallel to and begins at the plane.
+        point = new Point(2,2,0);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
+
+        // TC09: Ray is neither orthogonal nor parallel to and begins at the same point as the plane.
+        point = new Point(1,0,0);
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
 
     }
 }

@@ -17,7 +17,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#add(Vector)}.
      */
     @Test
-    void add() {
+    void testAdd() {
         Vector someVector = new Vector(1, 2, 3);
 
         // ============ Equivalence Partitions Tests ==============
@@ -37,7 +37,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#scale(double)}.
      */
     @Test
-    void scale() {
+    void testTestScale() {
 
         Vector someVector = new Vector(1, 2, 3);
 
@@ -57,7 +57,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#dotProduct(Vector)}.
      */
     @Test
-    void dotProduct() {
+    void testDotProduct() {
 
         Vector v1 = new Vector(1, 2, 3);
 
@@ -86,7 +86,7 @@ class VectorTest {
      * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
      */
     @Test
-    void crossProduct() {
+    void testCrossProduct() {
         Vector v1 = new Vector(1, 2, 3);
 
         // ============ Equivalence Partitions Tests ==============
@@ -110,26 +110,10 @@ class VectorTest {
     }
 
     /**
-     * Test method for {@link Vector#getXyz()}.
-     */
-    @Test
-    void getXyz() {
-
-        // ============ Equivalence Partitions Tests ==============
-        // TC01: Test that the function returns the actual Double3 object that defines the vector.
-        Vector someVector = new Vector(1, 2, 3);
-        Double3 d3 = new Double3(1,2,3);
-        assertEquals(someVector.getXyz() , d3 , "ERROR: getXYZ() wrong value");
-
-        // =============== Boundary Values Tests ==================
-        //no boundary tests because the length cannot be zero.
-    }
-
-    /**
      * Test method for {@link Vector#lengthSquared()}.
      */
     @Test
-    void lengthSquared() {
+    void testLengthSquared() {
 
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the squared length of the vector equals to the actual squared length of the vector.
@@ -145,7 +129,7 @@ class VectorTest {
      * Test method for {@link Vector#length()}.
      */
     @Test
-    void length() {
+    void testLength() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the length of the vector equals to the actual length of the vector.
         Vector someVector = new Vector(0, 3, 4);
@@ -160,7 +144,7 @@ class VectorTest {
      * Test method for {@link Vector#normalize()}.
      */
     @Test
-    void normalize() {
+    void testNormalize() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the normal vector equals to the actual normal vector.
         Vector someVector = new Vector(1, 1, 1);

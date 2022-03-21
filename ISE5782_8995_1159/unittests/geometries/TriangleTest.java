@@ -14,7 +14,7 @@ class TriangleTest {
      * Test method for {@link geometries.Triangle#Triangle(Point, Point, Point)}
      */
     @Test
-    void Constractor(){
+    void Constructor(){
 
     }
 

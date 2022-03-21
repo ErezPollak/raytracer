@@ -18,7 +18,7 @@ class SphereTest {
      * Test method for {@link geometries.Sphere#getNormal(Point)}.
      */
     @Test
-    void getNormal() {
+    void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual normal of the sphere.
         Point p = new Point(0,0,0);
@@ -32,7 +32,7 @@ class SphereTest {
      * Test method for {@link geometries.Sphere#getRaduis()}.
      */
     @Test
-    void getRaduis() {
+    void testGetRaduis() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
@@ -44,7 +44,7 @@ class SphereTest {
      * Test method for {@link geometries.Sphere#getPoint()}.
      */
     @Test
-    void getPoint() {
+    void testGetPoint() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
@@ -57,6 +57,7 @@ class SphereTest {
      */
     @Test
     public void testFindIntersections() {
+
         Sphere sphere = new Sphere(1d, new Point (1, 0, 0));
 
         // ============ Equivalence Partitions Tests ==============

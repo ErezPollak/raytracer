@@ -36,14 +36,14 @@ public class Cylinder extends Tube implements Geometry {
         Point top = ray.getPoint().add(this.ray.getVector().normalize().scale(this.getHeight()));
 
         //the vectors from them to the given point.
-        Vector toBottrm = p.subtract(bottom);
+        Vector toBottom = p.subtract(bottom);
         Vector toTop = p.subtract(top);
 
         //checks if one of the vectors is in 90 degrees with the ray vector.
-        if (toBottrm.dotProduct(ray.getVector()) == 0 || toTop.dotProduct(ray.getVector()) == 0) {
+        if (toBottom.dotProduct(ray.getVector()) == 0 || toTop.dotProduct(ray.getVector()) == 0) {
 
             //check that the distance is not the radius
-            if (!isZero(toTop.length() - this.raduis) && !isZero(toBottrm.length() - this.raduis)) {
+            if (!isZero(toTop.length() - this.raduis) && !isZero(toBottom.length() - this.raduis)) {
 
                 //then this is the normal of the cylinder in that point.
                 return ray.getVector().normalize();
