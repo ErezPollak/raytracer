@@ -58,6 +58,11 @@ public class Sphere implements Geometry {
      */
     public List<Point> findIntersections(Ray ray)
     {
+
+        if(ray.getPoint().equals(this.center)){
+            return List.of(ray.getPoint(this.raduis));
+        }
+
         Point p0 = ray.getPoint();
         Vector v = ray.getVector();
         Vector u = center.subtract(p0);

@@ -25,6 +25,9 @@ public class Triangle extends Polygon{
      */
     public List<Point> findIntersections(Ray ray)
     {
+
+        //implementation in the algebraic way.
+
         List<Point> planeIntersection = this.plane.findIntersections(ray);
 
         //if there is no crossing with the plane of course there is no crossing of the triangle.
