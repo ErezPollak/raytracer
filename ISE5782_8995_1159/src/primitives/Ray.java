@@ -42,6 +42,15 @@ public class Ray {
     }
 
     /**
+     * returns the Point on the ray that is given by the scaling of the vector by the parameter t.
+     * @param t the parameter that needed for scaling the vector.
+     * @return the result point.
+     */
+    public Point getPoint(double t){
+        return this.point.add(this.vector.normalize().scale(t));
+    }
+
+    /**
      * return a string with the status of the object.
      * @return
      */

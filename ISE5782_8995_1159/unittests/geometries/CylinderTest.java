@@ -3,7 +3,6 @@ package geometries;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
-import primitives.Ray;
 import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,19 +66,6 @@ class CylinderTest {
 
     }
 
-//    /**
-//     * Test method for {@link geometries.Cylinder#getHeight()}.
-//     */
-//    @Test
-//    void getHeight() {
-//        // ============ Equivalence Partitions Tests ==============
-//        // TC01: Test that the function returns the actual high of the cylinder for the high value 5.
-//        Point p = new Point(1,0,0);
-//        Vector v = new Vector(0,0,1);
-//        Ray r = new Ray(p,v);
-//        Cylinder c = new Cylinder(5,r,5);
-//        assertEquals(c.getHeight(),5,"ERROR: getHigh() wrong value");
-//    }
 
     /**
      * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.

@@ -5,6 +5,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for geometries.Plane class
@@ -90,11 +92,11 @@ class PlaneTest {
 
         // TC01: The ray is neither orthogonal nor parallel to the plane, and it intersects with it.
         point = new Point(1,2,-1);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "Suppose to be only one intersection point, no more no less.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "TC01 failed: Suppose to be only one intersection point, no more no less.");
 
         // TC02: The ray is neither orthogonal nor parallel to the plane, and it doesn't intersect with it.
         point = new Point(1,2,1);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC02 failed:No intersection point are expected.");
 
         // =============== Boundary Values Tests ==================
 
@@ -103,26 +105,26 @@ class PlaneTest {
 
         // TC03: The Ray is parallel to the plane, and it is included in it.
         point = new Point(2,2,0);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "Suppose to be only one intersection point, no more no less.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC03 failed: Suppose to be only one intersection point, no more no less.");
 
         // TC04: The Ray is parallel to the plane, and it is not included in it.
         point = new Point(2,2,1);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC04 failed: No intersection point are expected.");
 
         // =============== orthogonal ==================
         vector = new Vector(0,0, 2);
 
         // TC05: The ray is orthogonal to the plane, and it starts before.
         point = new Point(2,2,-1);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "One intersection point expected expected.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 1 , "TC05 failed: One intersection point expected expected.");
 
         // TC06: The ray doesn't intersect with the plane.
         point = new Point(2,2,0);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC06 failed: No intersection point are expected, the initial point doesn't count.");
 
         // TC07: The ray doesn't intersect with the plane.
         point = new Point(2,2,1);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC07 failed: No intersection point are expected.");
 
         // =============== general ==================
 
@@ -130,11 +132,11 @@ class PlaneTest {
 
         // TC08: Ray is neither orthogonal nor parallel to and begins at the plane.
         point = new Point(2,2,0);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC08 failed: No intersection point are expected, the initial point doesn't count.");
 
         // TC09: Ray is neither orthogonal nor parallel to and begins at the same point as the plane.
         point = new Point(1,0,0);
-        assertEquals(plane.findIntersections(new Ray(point,vector)).size() , 0 , "No intersection point are expected, the initial point doesn't count.");
+        assertEquals(plane.findIntersections(new Ray(point,vector)) , null , "TC09 failed: No intersection point are expected, the initial point doesn't count.");
 
     }
 }
