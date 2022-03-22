@@ -34,6 +34,13 @@ public class Ray {
     }
 
     /**
+     * Get new points after add the vector direction*scalar to the ray point.
+     * @param t
+     * @return
+     */
+    public Point getPoint(double t){return point.add(vector.scale(t));}
+
+    /**
      * Get ray's vector
      * @return
      */
