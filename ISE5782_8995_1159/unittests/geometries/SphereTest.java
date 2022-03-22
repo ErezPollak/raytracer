@@ -109,6 +109,8 @@ class SphereTest {
          p2 = new Point(1,1,0);
         result = sphere.findIntersections(new(Ray(new Point(1,-2,0),
                 new Vector (0,6,0))));
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
         assertEquals(2,result.size(),"TC13 failed: Wrong number of points");
         assertEquals(List.of(p1,p2),result,"TC13 failed: Ray crosses sphere");
 
