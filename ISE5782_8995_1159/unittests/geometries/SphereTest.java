@@ -153,7 +153,7 @@ class SphereTest {
         // **** Group: Special cases
         // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
         assertNull(sphere.findIntersections(new Ray(new Point(3, 0, 0), new Vector(0, 0, 1))),
-                "Ray's line tangent to sphere");
+                "Ray's line ortognal to ray start to sphere's center line");
 
 
     }
