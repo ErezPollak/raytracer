@@ -60,7 +60,7 @@ class GeometriesTest {
         // TC11:Ray intersect with some geometries.
         ray = new Ray(new Point(0,-10,5), new Vector(1,10.5,-4));
         assertEquals(3,geo.findIntersections(ray).size(),
-                "TC04 failed: expected 3 intersection points.");
+                "TC11 failed: expected 3 intersection points.");
 
     }
 
