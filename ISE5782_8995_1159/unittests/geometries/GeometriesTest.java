@@ -2,7 +2,11 @@ package geometries;
 
 import org.junit.jupiter.api.Test;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * Unit tests for geometries.Geometries class
  * @author Erez Polak and Eliran Salama.
@@ -21,9 +25,6 @@ class GeometriesTest {
                     new Point(0.1,0.5,2.5),
                     new Point(-2,0,0)));
 
-    // empty collection for empty test.
-    Geometries emptyGeo = null;
-
     // ray for calculations.
     Ray ray;
 
@@ -35,17 +36,19 @@ class GeometriesTest {
     {
         // =============== Boundary Values Tests ==================
 
-        // TC01: Empty collection - should return null (0 points)
+        //TC01: Empty collection - should return null (0 points)
+        //empty collection for empty test.
+        Geometries emptyGeo = new Geometries();
         ray = new Ray(new Point(6,2,2), new Vector(0,3,1));
         assertNull(emptyGeo.findIntersections(ray),
-                "TC01 failed: expected no intersection points.");
+               "TC01 failed: expected no intersection points.");
 
         // TC02: There are no intersections with the ray (0 points)
         ray = new Ray(new Point(6,2,2), new Vector(0,3,1));
         assertNull(geo.findIntersections(ray),
                 "TC02 failed: expected no intersection points.");
 
-        // TC03: Only one geometrie has intersection with the ray.
+        // TC03: Only one geometry has intersection with the ray.
         ray = new Ray(new Point(0,-10,5), new Vector(0,10,-1));
         assertEquals(1,geo.findIntersections(ray).size(),
                 "TC03 failed: expected 1 intersection points.");
@@ -57,7 +60,7 @@ class GeometriesTest {
 
         // ============ Equivalence Partitions Tests ==============
 
-        // TC11:Ray intersect with some geometries.
+        // TC11:Ray intersects with some geometries.
         ray = new Ray(new Point(0,-10,5), new Vector(1,10.5,-4));
         assertEquals(3,geo.findIntersections(ray).size(),
                 "TC04 failed: expected 3 intersection points.");

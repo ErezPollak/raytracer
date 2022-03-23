@@ -51,7 +51,7 @@ public class Geometries implements Intersectable {
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = null; // Create empty list of the points
-        for(var item:listOfGeometries){
+        for(var item : listOfGeometries){
             List<Point> itemPoints = item.findIntersections(ray); // For each geometry, find it intersection with the given ray,
             if(itemPoints != null){                               // and create a list of them.
                 if(result==null){
