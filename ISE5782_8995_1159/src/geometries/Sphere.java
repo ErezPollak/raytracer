@@ -73,17 +73,17 @@ public class Sphere implements Geometry {
         double tm = u.dotProduct(v);
         double d = alignZero(Math.sqrt(u.lengthSquared()-(tm*tm)));
 
-        // if d > radious so the ray is outside from the sphere and there are no intersections
-        if(d>raduis)
+        // if d >= radius so the ray is outside from the sphere and there are no intersections
+        if(alignZero(raduis - d) <= 0.0)
             return null; //there are no intersection points
 
         //calculates the distance between p0 and the 2 potentials points
-        double th = alignZero(Math.sqrt((raduis*raduis)-(d*d)));
-        double t1 = alignZero(tm-th);
+        double th = alignZero(Math.sqrt((raduis * raduis) - (d * d)));
+        double t1 = alignZero(tm - th);
         double t2 = alignZero(tm + th);
 
-        // if both distances are positive, it mean we have 2 intersections
-        if(t1 >0 && t2 >0){
+        // if both distances are positive, it means we have 2 intersections
+        if(t1 > 0 && t2 > 0){
             Point p1 = ray.getPoint(t1);
             Point p2 = ray.getPoint(t2);
             return List.of(p1,p2);

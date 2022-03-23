@@ -139,6 +139,11 @@ class SphereTest {
         assertNull(sphere.findIntersections(new Ray(new Point(2, 1, 1), new Vector(-1, -1, 0))),
                 "TC19 failed: Ray's line tangent to sphere");
 
+        // TC19.1: Ray starts before the tangent point
+        Sphere sphere1 = new Sphere(1,new Point(3,0,0));
+        assertNull(sphere1.findIntersections(new Ray(new Point(0,1,0), new Vector(1, 0, 0))),
+                "BVA10: Ray starts before the tangent point");
+
         // TC20: Ray starts at the tangent point
         assertNull(sphere.findIntersections(new Ray(new Point(1, 0, 1), new Vector(1, 1, 0))),
                 "TC20 failed: Ray's line tangent to sphere");
