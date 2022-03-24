@@ -29,7 +29,7 @@ class SphereTest {
     }
 
     /**
-     * Test method for {@link geometries.Sphere#getRaduis()}.
+     * Test method for {@link geometries.Sphere#getRadius()}.
      */
     @Test
     void testGetRaduis() {
@@ -37,7 +37,7 @@ class SphereTest {
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
         Sphere s = new Sphere(5,p);
-        assertEquals(s.getRaduis(),5,"ERROR: getRaduis() wrong value");
+        assertEquals(s.getRadius(),5,"ERROR: getRaduis() wrong value");
     }
 
     /**
