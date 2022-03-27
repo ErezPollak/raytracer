@@ -3,6 +3,7 @@ package renderer;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import static primitives.Util.*;
 
 public class Camera {
 
@@ -62,7 +63,7 @@ public class Camera {
     }
 
     /**
-     * creates the rey from the camera to the pixel that os given by the i,j indexes.
+     * creates the ray from the camera to the pixel that is given by the i,j indexes.
      * the resolution of the view plane.
      * @param nX  represents the amount of columns, the  width of a row.
      * @param nY represents the amount for rows, the height of a column.
@@ -72,7 +73,46 @@ public class Camera {
      * @return the ray from the camera to the center of that pixel.
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        return null;
+
+        // Center point of the pixel.
+        Point pIJ = getCenterOfPixel(nX,nY,j,i);
+
+        // The direction of the ray through the pixel.
+        Vector vIJ = pIJ.subtract(location);
+        Ray ray = new Ray(location,vIJ);
+
+        return ray;
+    }
+
+    /**
+     * Get the center point of the pixel in the view plane.
+     * @param nX  represents the amount of columns, the  width of a row.
+     * @param nY represents the amount for rows, the height of a column.
+     * the index of the pixel on the view plane.
+     * @param j represents the column.
+     * @param i represents the row.
+     * @return
+     */
+    private Point getCenterOfPixel(int nX,int nY, int j, int i){
+        // Calculate the ratio of the pixel by the height and by the width of the view plane
+        // The ratio Ry = h/Ny, the height of the pixel.
+        Point pC = location.add(to.scale(distance));
+        double rY = alignZero(height/nY);
+
+        // The ratio Rx = w/Nx, the width of the pixel
+        double rX = alignZero(width/nX);
+        double xJ = alignZero((j-((nX-1)/2))*rX);
+        double yI = alignZero(-(i-((nY-1)/2))*rY);
+        Point pIJ = pC;
+
+        // if xJ and yI are not zero then add them to the calculation of pIJ
+        if(xJ!=0){
+            pIJ = pIJ.add(right.scale(xJ));
+        }
+        if(yI!=0){
+            pIJ = pIJ.add(up.scale(yI));
+        }
+        return pIJ;
     }
 
 
