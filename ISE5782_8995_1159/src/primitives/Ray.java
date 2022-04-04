@@ -8,6 +8,7 @@
 
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Ray {
@@ -50,6 +51,33 @@ public class Ray {
     public Point getPoint(double t){
         return this.point.add(this.vector.normalize().scale(t));
     }
+
+    /**
+     * return the closest point from the given list the point that starts the ray.
+     * @param pointList the given list
+     * @return the point
+     */
+    public Point findClosestPoint(List<Point> pointList){
+
+        if(pointList == null || pointList.size() == 0){
+            return null;
+        }
+
+        //initializing the first values for comperation.
+        Point closestPoint = pointList.get(0);
+        double distance = pointList.get(0).distance(this.point);
+
+        //iterating over the list.
+        for(Point p : pointList){
+            if(p.distance(this.point) < distance){
+                closestPoint = p;
+            }
+        }
+
+        //returning the result
+        return closestPoint;
+    }
+
 
     /**
      * return a string with the status of the object.
