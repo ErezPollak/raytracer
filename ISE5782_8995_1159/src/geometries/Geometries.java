@@ -33,10 +33,11 @@ public class Geometries implements Intersectable {
 
     /**
      * Add geometry to the collection
-     * @param geometries
+     * @param geometries the list that hte function receive.
      */
     public void add(Intersectable... geometries)
     {
+        //adding all the given geos to the list.
         for (var item: geometries) {
             listOfGeometries.add(item);
         }
