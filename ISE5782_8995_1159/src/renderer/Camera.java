@@ -73,26 +73,6 @@ public class Camera {
      * @return the ray from the camera to the center of that pixel.
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-
-        // Center point of the pixel.
-        Point pIJ = getCenterOfPixel(nX,nY,j,i);
-
-        // The direction of the ray through the pixel.
-        Vector vIJ = pIJ.subtract(location);
-
-        return new Ray(location,vIJ);
-    }
-
-    /**
-     * Get the center point of the pixel in the view plane.
-     * @param nX  represents the amount of columns, the  width of a row.
-     * @param nY represents the amount for rows, the height of a column.
-     * the index of the pixel on the view plane.
-     * @param j represents the column.
-     * @param i represents the row.
-     * @return
-     */
-    private Point getCenterOfPixel(int nX,int nY, int j, int i){
         // Calculate the ratio of the pixel by the height and by the width of the view plane.
         Point pC = location.add(to.scale(distance));
 
@@ -118,8 +98,25 @@ public class Camera {
             pC = pC.add(up.scale(yI));
         }
 
-        return pC;
+        // Center point of the pixel.
+        Point pIJ = pC;
+
+        // The direction of the ray through the pixel.
+        Vector vIJ = pIJ.subtract(location);
+
+        return new Ray(location,vIJ);
     }
+
+    /**
+     * Get the center point of the pixel in the view plane.
+     * @param nX  represents the amount of columns, the  width of a row.
+     * @param nY represents the amount for rows, the height of a column.
+     * the index of the pixel on the view plane.
+     * @param j represents the column.
+     * @param i represents the row.
+     * @return
+     */
+
 
 
 
