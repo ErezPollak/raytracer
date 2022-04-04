@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import renderer.Camera;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * integration test for the combination of the camera and view plain functions.
  *
@@ -26,30 +28,30 @@ public class IntegrationTests {
     @Test
     void testPlainIntegration() {
 
-        Camera camera = new Camera(ZERO_POINT, new Vector(0, 1, 0), new Vector(0, 0, -1))
+        Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
 
         Plane plane;
 
         //Test01: camara in front of a plane 9 interactions expected.
-        plane = new Plane(new Point(0,0,-3), new Vector(0,0,-1));
-        assertEquals(9 , countingFunction(camera , plane , NX , NY) ,
+        plane = new Plane(new Point(0, 0, -3), new Vector(0, 0, -1));
+        assertEquals(9, countingFunction(camera, plane, NX, NY),
                 "Test01 failed: 9 intersections expected.");
 
         //Test02: camara in front of a plane 9 interactions expected.
-        plane = new Plane(new Point(0,0,-5), new Vector(0,-1,2));
-        assertEquals(9 , countingFunction(camera , plane , NX , NY) ,
+        plane = new Plane(new Point(0, 0, -5), new Vector(0, -1, 2));
+        assertEquals(9, countingFunction(camera, plane, NX, NY),
                 "Test01 failed: 9 intersections expected.");
 
         //Test03: camara in front of a sloping plain plane 6 interactions expected.
-        plane = new Plane(new Point(0,0,-5), new Vector(0,-1,1));
-        assertEquals(6 , countingFunction(camera , plane , NX , NY) ,
+        plane = new Plane(new Point(0, 0, -5), new Vector(0, -1, 1));
+        assertEquals(6, countingFunction(camera, plane, NX, NY),
                 "Test01 failed: 9 intersections expected.");
 
         //Test04: camara is behind the plane, 0 interactions expected.
-        plane = new Plane(new Point(0,0,5), new Vector(0,0,1));
-        assertEquals(0 , countingFunction(camera , plane , NX , NY) ,
+        plane = new Plane(new Point(0, 0, 5), new Vector(0, 0, 1));
+        assertEquals(0, countingFunction(camera, plane, NX, NY),
                 "Test01 failed: 9 intersections expected.");
 
     }
@@ -60,19 +62,19 @@ public class IntegrationTests {
     @Test
     void testTriangleIntegration() {
 
-        Camera camera = new Camera(ZERO_POINT, new Vector(0, 1, 0), new Vector(0, 0, -1))
+        Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
         Triangle triangle;
 
         //Test01: camara in front of a plane 9 interactions expected.
-        triangle = new Triangle(new Point(1,-1,-2), new Point(-1,-1,-2),new Point(0,1,-2));
-        assertEquals(1 , countingFunction(camera , triangle , NX , NY) ,
+        triangle = new Triangle(new Point(1, -1, -2), new Point(-1, -1, -2), new Point(0, 1, -2));
+        assertEquals(1, countingFunction(camera, triangle, NX, NY),
                 "Test01 failed: 1 intersections expected.");
 
         //Test02: camara in front of a plane 9 interactions expected.
-        triangle = new Triangle(new Point(1,-1,-2), new Point(-1,-1,-2),new Point(0,20,-2));
-        assertEquals(2 , countingFunction(camera , triangle , NX , NY) ,
+        triangle = new Triangle(new Point(1, -1, -2), new Point(-1, -1, -2), new Point(0, 20, -2));
+        assertEquals(2, countingFunction(camera, triangle, NX, NY),
                 "Test01 failed: 2 intersections expected.");
 
     }
@@ -87,7 +89,7 @@ public class IntegrationTests {
         Sphere sphere;
 
         //Test01: camara outside a small sphere only two intersections expected.
-        camera = new Camera(ZERO_POINT, new Vector(0, 1, 0), new Vector(0, 0, -1))
+        camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
         sphere = new Sphere(1, new Point(0, 0, -3));
@@ -95,7 +97,7 @@ public class IntegrationTests {
                 "Test01 failed: expected only two points.");
 
         //Test02: camara outside a big sphere, 18 intersections expected.
-        camera = new Camera(new Point(0, 0, 0.5), new Vector(0, 1, 0), new Vector(0, 0, -1))
+        camera = new Camera(new Point(0, 0, 0.5), new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
         sphere = new Sphere(2.5, new Point(0, 0, -2.5));
@@ -109,21 +111,22 @@ public class IntegrationTests {
 
         //Test04: camara inside a big sphere, 9 intersections expected.
         sphere = new Sphere(5, new Point(0, 0, -2));
-        assertEquals(10, countingFunction(camera, sphere, NX, NY),
+        assertEquals(9, countingFunction(camera, sphere, NX, NY),
                 "Test04 failed: expected 9 points.");
 
         //Test05: camara behind a sphere, no intersections expected.
         sphere = new Sphere(0.5, new Point(0, 0, 1));
-        assertEquals(10, countingFunction(camera, sphere, NX, NY),
+        assertEquals(0, countingFunction(camera, sphere, NX, NY),
                 "Test05 failed: expected 0 points.");
 
     }
 
     /**
      * go through all the points in the veiw plane, creates all the rays, and calculates all the intersection points.
-     * @param camera the camera that sees the picture.
+     *
+     * @param camera   the camera that sees the picture.
      * @param geometry the shape to find intersections with.
-     * @param nx the resolution of the view plane.
+     * @param nx       the resolution of the view plane.
      * @param ny
      * @return the number of intersection points of the camera with the geometry, through the view plain.
      */
@@ -131,7 +134,8 @@ public class IntegrationTests {
         int sumOfRays = 0;
         for (int i = 0; i < nx; i++) {
             for (int j = 0; j < ny; j++) {
-                sumOfRays += geometry.findIntersections(camera.constructRay(nx, ny, j, i)).size();
+                List<Point> list = geometry.findIntersections(camera.constructRay(nx, ny, j, i));
+                sumOfRays += list == null ? 0 : list.size();
             }
         }
         return sumOfRays;

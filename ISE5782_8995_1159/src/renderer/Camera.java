@@ -24,7 +24,7 @@ public class Camera {
      * @param up the up vector, points up from the camera.
      * @param to points where the camera points to.
      */
-    public Camera(Point location, Vector up, Vector to) {
+    public Camera(Point location, Vector to, Vector up) {
         this.location = location;
 
         //if the given vectors are not orthogonal we need to throw an exception.
@@ -79,9 +79,8 @@ public class Camera {
 
         // The direction of the ray through the pixel.
         Vector vIJ = pIJ.subtract(location);
-        Ray ray = new Ray(location,vIJ);
 
-        return ray;
+        return new Ray(location,vIJ);
     }
 
     /**
@@ -94,25 +93,32 @@ public class Camera {
      * @return
      */
     private Point getCenterOfPixel(int nX,int nY, int j, int i){
-        // Calculate the ratio of the pixel by the height and by the width of the view plane
-        // The ratio Ry = h/Ny, the height of the pixel.
+        // Calculate the ratio of the pixel by the height and by the width of the view plane.
         Point pC = location.add(to.scale(distance));
+
+        // The ratio Ry = h/Ny, the height of the pixel.
         double rY = alignZero(height/nY);
 
         // The ratio Rx = w/Nx, the width of the pixel
         double rX = alignZero(width/nX);
-        double xJ = alignZero((j-((nX-1)/2))*rX);
-        double yI = alignZero(-(i-((nY-1)/2))*rY);
-        Point pIJ = pC;
+
+        //calculating the ratio in witch the vectors of the
+        // view plain needs to be scaled in order to get the correct point.
+        double xJ = alignZero((j-((nX-1)/2.0))*rX);
+        double yI = alignZero(-(i-((nY-1)/2.0))*rY);
+
+        //Point pIJ = pC;
 
         // if xJ and yI are not zero then add them to the calculation of pIJ
         if(xJ!=0){
-            pIJ = pIJ.add(right.scale(xJ));
+            pC = pC.add(right.scale(xJ));
         }
+
         if(yI!=0){
-            pIJ = pIJ.add(up.scale(yI));
+            pC = pC.add(up.scale(yI));
         }
-        return pIJ;
+
+        return pC;
     }
 
 
