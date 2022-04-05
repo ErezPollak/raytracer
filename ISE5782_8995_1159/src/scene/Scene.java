@@ -12,7 +12,7 @@ public class Scene {
     public Geometries geometries;
 
     /**
-     * Scene constructor that gets the scene name and restart the scene fields to be defaulte.
+     * Scene constructor that gets the scene name and restart the scene fields to be default.
      * @param sceneName
      */
     public Scene(String sceneName){

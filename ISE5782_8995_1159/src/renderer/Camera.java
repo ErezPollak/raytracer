@@ -107,17 +107,5 @@ public class Camera {
         return new Ray(location,vIJ);
     }
 
-    /**
-     * Get the center point of the pixel in the view plane.
-     * @param nX  represents the amount of columns, the  width of a row.
-     * @param nY represents the amount for rows, the height of a column.
-     * the index of the pixel on the view plane.
-     * @param j represents the column.
-     * @param i represents the row.
-     * @return
-     */
-
-
-
 
 }
