@@ -23,34 +23,39 @@ public class Scene {
     }
 
     /**
-     * set for ambient light.
+     * set for ambient light, and return the object itself.
      * @param ambientLight
      */
-    public void setAmbientLight(AmbientLight ambientLight) {
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+
         this.ambientLight = ambientLight;
+        return this;
     }
 
     /**
-     * set for background.
+     * set for background, and return the object itself.
      * @param background
      */
-    public void setBackground(Color background) {
+    public Scene setBackground(Color background) {
         this.background = background;
+        return this;
     }
 
     /**
-     * set for geometries
+     * set for geometries, and return the object itself.
      * @param geometries
      */
-    public void setGeometries(Geometries geometries) {
+    public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+        return this;
     }
 
     /**
-     * set name.
+     * set name, and return the object itself.
      * @param name
      */
-    public void setName(String name) {
+    public Scene setName(String name) {
         this.name = name;
+        return this;
     }
 }
