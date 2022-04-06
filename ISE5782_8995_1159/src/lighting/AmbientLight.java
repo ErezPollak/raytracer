@@ -7,7 +7,11 @@ import primitives.Color;
  * Class for Ambient light.
  */
 public class AmbientLight {
-    Color intensity;
+
+    /**
+     * the color of the eminent light.
+     */
+    private Color intensity;
 
     /**
      * Constructor that gets the color power and get the Discount factor
@@ -16,14 +20,14 @@ public class AmbientLight {
      * @param kA
      */
     public AmbientLight(Color Ia, Double3 kA){
-        intensity = Ia.scale(kA);
+        this.intensity = Ia.scale(kA);
     }
 
     /**
      * Defaulte construction - restart the intensity to black.
      */
     public AmbientLight(){
-        intensity =  Color.BLACK;
+        this.intensity =  Color.BLACK;
     }
 
     /**
@@ -31,6 +35,6 @@ public class AmbientLight {
      * @return
      */
     public Color getIntensity() {
-        return intensity;
+        return this.intensity;
     }
 }
