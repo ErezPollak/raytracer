@@ -23,7 +23,7 @@ class ImageWriterTest {
         for (int i = 0; i < 800 ; i++){
             for (int j = 0; j < 500; j++) {
                 if(i % 50 == 0 || j % 50 == 0){
-                    iw.writePixel(i , j , new Color(200,20,200));
+                    iw.writePixel(i , j , new Color(20,20,20));
                 }else{
                     iw.writePixel(i , j , new Color(10,100,100));
                 }
