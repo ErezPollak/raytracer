@@ -66,12 +66,9 @@ public class SceneParser {
                 } else if (keyStr.toString().startsWith("sphere")) {
                     int radius = Integer.parseInt((String) keyValue.get("radius"));
                     String center = (String) keyValue.get("center");
-
                     Double3 dCenter = new Double3(center);
 
                     scene.geometries.add(new Sphere(radius, new Point(dCenter)));
-
-                    System.out.println("sphere" + radius + dCenter);
                 }
             }
 

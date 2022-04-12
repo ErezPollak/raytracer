@@ -112,17 +112,17 @@ public class Point {
 
     /**
      * returns the Y value of the point.
-     * @return
+     * @return the second value of the point.
      */
     public double getY() {
-        return this.xyz.d1;
+        return this.xyz.d2;
     }
 
     /**
      * returns the Z value of the point.
-     * @return
+     * @return the third value of th point
      */
     public double getZ() {
-        return this.xyz.d1;
+        return this.xyz.d3;
     }
 }
