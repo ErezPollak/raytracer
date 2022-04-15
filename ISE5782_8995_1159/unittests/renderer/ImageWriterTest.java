@@ -41,7 +41,7 @@ class ImageWriterTest {
         Random rand = new Random();
 
         int SIZE = 1000;
-        int ACCURACY = 2500000;
+        int ACCURACY = 250000;
 
         ImageWriter iw = new ImageWriter("SierpinskiTriangle" , SIZE + 1 , SIZE + 1);
         for (int i = 0; i < SIZE + 1 ; i++){
@@ -68,6 +68,7 @@ class ImageWriterTest {
             int y = (int) ((p.getY() + threePoints.get(nextPoint).getY())/2);
 
             p = new Point(x,y,0);
+
         }
 
         iw.writeToImage();

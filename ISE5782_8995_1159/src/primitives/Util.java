@@ -48,6 +48,18 @@ public abstract class Util {
 	}
 
 	/**
+	 * Aligns the number to the closest hole number if the deference is almost zero
+	 * @param number the number to align
+	 * @return  the hole number if close enough, and the given number itself if not.
+	 */
+	public static double alignHoleNumber(double number){
+
+		int round = (int)Math.round(number);
+
+		return isZero(number - round) ? round : number;
+	}
+
+	/**
 	 * Check whether two numbers have the same sign
 	 * 
 	 * @param n1 1st number

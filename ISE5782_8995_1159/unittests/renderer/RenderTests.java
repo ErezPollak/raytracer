@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import lighting.AmbientLight;
 import geometries.*;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 import scene.SceneParser;
 
@@ -41,6 +40,8 @@ public class RenderTests {
                 .setVPSize(500, 500) //
                 .setImageWriter(new ImageWriter("base render test", 1000, 1000))
                 .setRayTracer(new RayTracerBasic(scene));
+
+        //camera.cameraTransform(0).cameraRoll().cameraMove(new Vector(100,0,0));
 
         camera.renderImage();
         camera.printGrid(100, new Color(java.awt.Color.YELLOW));

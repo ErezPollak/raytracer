@@ -11,7 +11,6 @@ import primitives.*;
  * Testing Camera Class
  *
  * @author Dan
- *
  */
 class CameraTest {
     static final Point ZERO_POINT = new Point(0, 0, 0);
@@ -57,4 +56,133 @@ class CameraTest {
 
     }
 
+    /**
+     * Test method for
+     * {@link renderer.Camera#cameraRoll(double)}.
+     */
+    @Test
+    void testCameraRoll() {
+
+        Point location = new Point(0, 0, 0);
+        Vector up = new Vector(0, 0, 1);
+        Vector to = new Vector(1, 0, 0);
+        Camera camera = new Camera(location, to, up);
+
+        // ============ Equivalence Partitions Tests ==============
+        //angel is 45 degrees.
+        assertTrue(camera.cameraRoll(45).sameCameraVectorsAndLocation(new Camera(location, new Vector(1, 1, 0), up)),
+                "TC01 failed, camera rolled by 45 degrees.");
+
+        //angel is 135 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(135).sameCameraVectorsAndLocation(new Camera(location, new Vector(-1, 1, 0), up)),
+                "TC02 failed, camera rolled by 135 degrees.");
+
+        //angel is 225 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(225).sameCameraVectorsAndLocation(new Camera(location, new Vector(-1, -1, 0), up)),
+                "TC03 failed, camera rolled by 225 degrees.");
+
+        //angel is 315 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(315).sameCameraVectorsAndLocation(new Camera(location, new Vector(1, -1, 0), up)),
+                "TC04 failed, camera rolled by 315 degrees.");
+
+        // =============== Boundary Values Tests ==================
+        //angel is zero.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(0).sameCameraVectorsAndLocation(camera),
+                "TC05 failed, camera rolled by 0 degrees.");
+
+        //angel is 90
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(90).sameCameraVectorsAndLocation(new Camera(location, new Vector(0, 1, 0), up)),
+                "TC06 failed, camera rolled by 90 degrees.");
+
+        //angel is 90
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(180).sameCameraVectorsAndLocation(new Camera(location, new Vector(-1, 0, 0), up)),
+                "TC07 failed, camera rolled by 180 degrees.");
+
+        //angle is 270.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(270).sameCameraVectorsAndLocation(new Camera(location, new Vector(0, -1, 0), up)),
+                "TC08 failed, camera rolled by 270 degrees.");
+
+        //angle is 360.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraRoll(360).sameCameraVectorsAndLocation(camera),
+                "TC01 failed, camera rolled by 360 degrees.");
+    }
+
+    /**
+     * Test method for
+     * {@link renderer.Camera#cameraTransform(double)}.
+     */
+    @Test
+    void testCameraTransform() {
+        Point location = new Point(0, 0, 0);
+        Vector up = new Vector(1, 0, 0);
+        Vector to = new Vector(0, 0, 1);
+        Camera camera = new Camera(location, to, up);
+
+        // ============ Equivalence Partitions Tests ==============
+        //angel is 45 degrees.
+        assertTrue(camera.cameraTransform(45).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(1, 1, 0))),
+                "TC01 failed, camera rolled by 45 degrees.");
+
+        //angel is 135 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(135).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(-1, 1, 0))),
+                "TC02 failed, camera rolled by 135 degrees.");
+
+        //angel is 225 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(225).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(-1, -1, 0))),
+                "TC03 failed, camera rolled by 225 degrees.");
+
+        //angel is 315 degrees.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(315).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(1, -1, 0))),
+                "TC04 failed, camera rolled by 315 degrees.");
+
+        // =============== Boundary Values Tests ==================
+        //angel is zero.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(0).sameCameraVectorsAndLocation(camera),
+                "TC05 failed, camera rolled by 0 degrees.");
+
+        //angel is 90
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(90).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(0, 1, 0))),
+                "TC06 failed, camera rolled by 90 degrees.");
+
+        //angel is 90
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(180).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(-1, 0, 0))),
+                "TC07 failed, camera rolled by 180 degrees.");
+
+        //angle is 270.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(270).sameCameraVectorsAndLocation(new Camera(location, to, new Vector(0, -1, 0))),
+                "TC08 failed, camera rolled by 270 degrees.");
+
+        //angle is 360.
+        camera = new Camera(location, to, up);
+        assertTrue(camera.cameraTransform(360).sameCameraVectorsAndLocation(camera),
+                "TC01 failed, camera rolled by 360 degrees.");
+    }
+
+    @Test
+    void testCameraMove() {
+        Point location = new Point(0, 0, 0);
+        Vector up = new Vector(1, 0, 0);
+        Vector to = new Vector(0, 0, 1);
+        Camera camera = new Camera(location, to, up);
+
+        //check the point is changing.
+        Vector newLocation = new Vector(0, 1, 0);
+        assertTrue(camera.cameraMove(newLocation).sameCameraVectorsAndLocation(new Camera(new Point(0, 1, 0), to, up)));
+
+    }
 }

@@ -9,6 +9,8 @@ import java.util.MissingResourceException;
 
 import static primitives.Util.*;
 
+enum CAMERA_ROTATION {ROLL, TRANSFORM};
+
 public class Camera {
 
     //camera location and vectors.
@@ -143,7 +145,7 @@ public class Camera {
      * Create an image according to the colors and rays.
      * in addition, checks if all the fields are not empty.
      */
-    public void   renderImage() {
+    public void renderImage() {
         try {
             // if image writer is empty throw exception.
             if (imageWriter == null) {
@@ -252,4 +254,108 @@ public class Camera {
         }
         imageWriter.writeToImage();
     }
+
+    /**
+     * set the to vector by the given degrees.
+     * @param degrees the amount of degrees to move the  to vector of the camera.
+     * @return the camera after the move.
+     */
+    public Camera cameraRoll(double degrees) {
+        cameraRotate(degrees, CAMERA_ROTATION.ROLL);
+        return this;
+    }
+
+    /**
+     * set the up vector by the given degrees.
+     * @param degrees the amount of degrees to move the  to vector of the camera.
+     * @return the camera after the move.
+     */
+    public Camera cameraTransform(double degrees) {
+        cameraRotate(degrees, CAMERA_ROTATION.TRANSFORM);
+        return this;
+    }
+
+    /**
+     * a general function for rotating a camra in some direction.
+     * @param degrees the amount of degrees to rotate the camera with.
+     * @param action the way the move the camera in.
+     */
+    private void cameraRotate(double degrees, CAMERA_ROTATION action) {
+
+        //needed fo the scaling of the right vector:
+        int isRightPositive = action == CAMERA_ROTATION.TRANSFORM ? 1 : -1;
+
+        //putting the value of the changed vector
+        Vector changedVector = action == CAMERA_ROTATION.ROLL ? this.to : this.up;
+
+        //putting the degrees to be between 1 and 360.
+        degrees %= 360;
+
+        //taking care over all the cases that the tangents will be zero or inf.
+        if (degrees == 0) return;
+        else if (degrees == 90) {
+            changedVector = this.right.scale(isRightPositive);
+        } else if (degrees == 270) {
+            changedVector = this.right.scale(-isRightPositive);
+        } else if (degrees == 180) {
+            //if the action is roll we appose the to vector, and if the action is to transform we oppose the up.
+            changedVector = changedVector.scale(-1);
+        } else {
+            //determines of needed to oppose the vectors according to the quarter.
+            int apposeSigns = degrees > 90 && degrees < 270 ? -1 : 1;
+
+            //calculating the scale required for the right vector in order to get the correct vector.
+            double scale = alignHoleNumber(Math.tan(Math.toRadians(degrees)));
+
+            //scaling the right vector.
+            Vector scaledRight = this.right.scale(isRightPositive * apposeSigns * scale);
+
+            //adding it to the new to vector.
+            changedVector = changedVector.scale(apposeSigns).add(scaledRight).normalize();
+        }
+
+        //putting the value in the right vector;
+        if (action == CAMERA_ROTATION.ROLL) {
+            this.to = changedVector;
+        }else{
+            this.up = changedVector;
+        }
+
+        //recalculating the right vector.
+        this.right = this.to.crossProduct(this.up).normalize();
+
+    }
+
+
+    /**
+     * moves the camera to new location according to a vector.
+     * @param newLocation the new Location.
+     */
+    public Camera cameraMove(Vector newLocation) {
+        this.location = this.location.add(newLocation);
+        return this;
+    }
+
+    /**
+     * moves the camera to new location according to a point.
+     * @param newLocation the new Location.
+     */
+    public Camera cameraMove(Point newLocation) {
+        this.location = newLocation;
+        return this;
+    }
+
+    /**
+     * returns rather or not all the vectors and location of the camera are the same with other given camera.
+     * @param camera the camera the compare to.
+     * @return rather or not all the vectors and the point are the same.
+     */
+    public boolean sameCameraVectorsAndLocation(Camera camera) {
+        return this.location.equals(camera.location) &&
+                this.up.equals(camera.up) &&
+                this.to.equals(camera.to) &&
+                this.right.equals(camera.right);
+
+    }
+
 }
