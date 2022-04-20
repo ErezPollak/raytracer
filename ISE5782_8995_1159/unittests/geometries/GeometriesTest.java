@@ -15,7 +15,7 @@ class GeometriesTest {
 
     // Create 3 geometries collection (1 from each geometrie) to test intersection of ray with them.
     Geometries geo = new Geometries(
-            new Sphere (2, new Point(1,0.5,1)),
+            new Sphere (new Point(1,0.5,1) , 2),
             new Plane(
                     new Point(-2,0,0),
                     new Point(0,0,4),

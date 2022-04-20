@@ -8,7 +8,7 @@ import java.util.List;
 
 import static primitives.Util.isZero;
 
-public class Cylinder extends Tube implements Geometry {
+public class Cylinder extends Tube{
     double height;
 
     /**
@@ -28,6 +28,11 @@ public class Cylinder extends Tube implements Geometry {
         return height;
     }
 
+    /**
+     * returns the normal of the cylinder in the given point.
+     * @param p the point to find the normal from.
+     * @return the normal vector.
+     */
     @Override
     public Vector getNormal(Point p) {
 
@@ -66,12 +71,12 @@ public class Cylinder extends Tube implements Geometry {
     }
 
     /**
-     * Finds the intersections of the ray with the cylinder
-     * @param ray
-     * @return
+     * finding the Geo intersections with the geometry.
+     * @param ray the ray to check intersections with.
+     * @return the list of intersections.
      */
-    public List<Point> findIntersections(Ray ray)
-    {
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
         return null;
     }
 }

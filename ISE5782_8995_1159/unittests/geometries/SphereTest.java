@@ -22,7 +22,7 @@ class SphereTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual normal of the sphere.
         Point p = new Point(0,0,0);
-        Sphere s = new Sphere(1,p);
+        Sphere s = new Sphere(p,1);
         Point testPoint = new Point(1,1,1);
         Vector expectedVector = new Vector(1,1,1);
         assertEquals(s.getNormal(testPoint), expectedVector.normalize(),"ERROR: getNormal() wrong value");
@@ -36,7 +36,7 @@ class SphereTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
-        Sphere s = new Sphere(5,p);
+        Sphere s = new Sphere(p,5);
         assertEquals(s.getRadius(),5,"ERROR: getRaduis() wrong value");
     }
 
@@ -48,7 +48,7 @@ class SphereTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual radius of the sphere for the raduis value 5.
         Point p = new Point(1,2,3);
-        Sphere s = new Sphere(5,p);
+        Sphere s = new Sphere(p,5);
         assertEquals(s.getPoint(),p,"ERROR: getPoint() wrong value");
     }
 
@@ -58,7 +58,7 @@ class SphereTest {
     @Test
     public void testFindIntersections() {
 
-        Sphere sphere = new Sphere(1, new Point (1, 0, 0));
+        Sphere sphere = new Sphere(new Point (1, 0, 0),1);
         Point p1;
         Point p2;
         List<Point> result;
@@ -140,7 +140,7 @@ class SphereTest {
                 "TC19 failed: Ray's line tangent to sphere");
 
         // TC19.1: Ray starts before the tangent point
-        Sphere sphere1 = new Sphere(1,new Point(3,0,0));
+        Sphere sphere1 = new Sphere(new Point(3,0,0),1);
         assertNull(sphere1.findIntersections(new Ray(new Point(0,1,0), new Vector(1, 0, 0))),
                 "BVA10: Ray starts before the tangent point");
 

@@ -92,7 +92,7 @@ public class IntegrationTests {
         camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
-        sphere = new Sphere(1, new Point(0, 0, -3));
+        sphere = new Sphere( new Point(0, 0, -3) , 1);
         assertEquals(2, countingFunction(camera, sphere, NX, NY),
                 "Test01 failed: expected only two points.");
 
@@ -100,22 +100,22 @@ public class IntegrationTests {
         camera = new Camera(new Point(0, 0, 0.5), new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPDistance(DISTANCE)
                 .setVPSize(HEIGHT, WIDTH);
-        sphere = new Sphere(2.5, new Point(0, 0, -2.5));
+        sphere = new Sphere(new Point(0, 0, -2.5) , 2.5);
         assertEquals(18, countingFunction(camera, sphere, NX, NY),
                 "Test02 failed: expected 18 points.");
 
         //Test03: camara outside a midsize sphere only two intersections expected.
-        sphere = new Sphere(2, new Point(0, 0, -2));
+        sphere = new Sphere(new Point(0, 0, -2) , 2);
         assertEquals(10, countingFunction(camera, sphere, NX, NY),
                 "Test03 failed: expected 10 points.");
 
         //Test04: camara inside a big sphere, 9 intersections expected.
-        sphere = new Sphere(5, new Point(0, 0, -2));
+        sphere = new Sphere( new Point(0, 0, -2) , 5);
         assertEquals(9, countingFunction(camera, sphere, NX, NY),
                 "Test04 failed: expected 9 points.");
 
         //Test05: camara behind a sphere, no intersections expected.
-        sphere = new Sphere(0.5, new Point(0, 0, 1));
+        sphere = new Sphere(new Point(0, 0, 1), 0.5);
         assertEquals(0, countingFunction(camera, sphere, NX, NY),
                 "Test05 failed: expected 0 points.");
 

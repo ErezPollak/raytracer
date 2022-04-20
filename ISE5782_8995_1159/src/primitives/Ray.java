@@ -8,7 +8,8 @@
 
 package primitives;
 
-import java.util.List;
+ import geometries.Intersectable.GeoPoint;
+ import java.util.List;
 import java.util.Objects;
 
 public class Ray {
@@ -54,28 +55,40 @@ public class Ray {
 
     /**
      * return the closest point from the given list the point that starts the ray.
-     * @param pointList the given list
+     * @param points the given list
      * @return the point
      */
-    public Point findClosestPoint(List<Point> pointList){
+    public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+
+
+    /**
+     * return the closest point from the given list the point that starts the ray.
+     * @param pointList the given list of geoPoints.
+     * @return the closest point to the head of the ray.
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> pointList){
 
         if(pointList == null || pointList.size() == 0){
             return null;
         }
 
         //initializing the first values for comperation.
-        Point closestPoint = pointList.get(0);
-        double distance = pointList.get(0).distance(this.point);
+        GeoPoint closestGeoPoint = pointList.get(0);
+        double distance = pointList.get(0).point.distance(this.point);
 
         //iterating over the list.
-        for(Point p : pointList){
-            if(p.distance(this.point) < distance){
-                closestPoint = p;
+        for(GeoPoint p : pointList){
+            if(p.point.distance(this.point) < distance){
+                distance = p.point.distance(this.point);
+                closestGeoPoint = p;
             }
         }
 
         //returning the result
-        return closestPoint;
+        return closestGeoPoint;
     }
 
 

@@ -11,7 +11,7 @@ import static primitives.Util.*;
  * 
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
 	/**
 	 * List of polygon's vertices
 	 */
@@ -84,17 +84,34 @@ public class Polygon implements Geometry {
 		size = vertices.length;
 	}
 
+	/**
+	 * returns the normal to the polygon.
+	 * @param point the point on the polygon.
+	 * @return the normal vector.
+	 */
 	@Override
 	public Vector getNormal(Point point) {
 		return plane.getNormal().normalize();
 	}
+
+//	/**
+//	 * Finds the intersections of the ray with the polygon
+//	 * @param ray the ray that crosses the polygon.
+//	 * @return the list of the points in witch the ray cross the polygon.
+//	 */
+//	@Override
+//	public List<Point> findIntersections(Ray ray)
+//	{
+//		return null;
+//	}
+
 	/**
 	 * Finds the intersections of the ray with the polygon
-	 * @param ray
-	 * @return
+	 * @param ray the ray that crosses the polygon.
+	 * @return the list of the points in witch the ray cross the polygon.
 	 */
-	public List<Point> findIntersections(Ray ray)
-	{
+	@Override
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 		return null;
 	}
 }

@@ -68,7 +68,7 @@ public class SceneParser {
                     String center = (String) keyValue.get("center");
                     Double3 dCenter = new Double3(center);
 
-                    scene.geometries.add(new Sphere(radius, new Point(dCenter)));
+                    scene.geometries.add(new Sphere(new Point(dCenter),radius));
                 }
             }
 

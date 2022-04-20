@@ -6,7 +6,7 @@ import primitives.Vector;
 
 import java.util.List;
 
-public class Tube implements Geometry {
+public class Tube extends Geometry {
     protected  double raduis;
     protected Ray ray;
 
@@ -61,13 +61,19 @@ public class Tube implements Geometry {
         return p.subtract(rayPoint).normalize();
     }
 
-    /**
-     * Finds the intersections of the ray with the tube
-     * @param ray
-     * @return
-     */
-    public List<Point> findIntersections(Ray ray)
-    {
+//    /**
+//     * Finds the intersections of the ray with the tube
+//     * @param ray
+//     * @return
+//     */
+//    @Override
+//    public List<Point> findIntersections(Ray ray)
+//    {
+//        return null;
+//    }
+
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }
 }
