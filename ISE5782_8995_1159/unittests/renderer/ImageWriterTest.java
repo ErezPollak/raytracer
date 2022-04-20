@@ -34,14 +34,14 @@ class ImageWriterTest {
 
 
     /**
-     * Testing
+     * Testing the sierpinski triangle.
      */
     @Test
     void writeToImage2(){
         Random rand = new Random();
 
         int SIZE = 1000;
-        int ACCURACY = 250000;
+        int ACCURACY = 300000;
 
         ImageWriter iw = new ImageWriter("SierpinskiTriangle" , SIZE + 1 , SIZE + 1);
         for (int i = 0; i < SIZE + 1 ; i++){

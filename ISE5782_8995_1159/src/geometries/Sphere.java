@@ -24,7 +24,7 @@ public class Sphere implements Geometry {
      * @param radius
      * @param point
      */
-    public Sphere(double radius, Point point) {
+    public Sphere(Point point, double radius) {
         this.radius = radius;
         this.center = point;
     }
