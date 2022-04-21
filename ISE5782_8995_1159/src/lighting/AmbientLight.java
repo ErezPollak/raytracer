@@ -6,35 +6,23 @@ import primitives.Color;
 /**
  * Class for Ambient light.
  */
-public class AmbientLight {
-
-    /**
-     * the color of the eminent light.
-     */
-    private Color intensity;
+public class AmbientLight extends Lighting {
 
     /**
      * Constructor that gets the color power and get the Discount factor
-     * and calculate the intensicty.
-     * @param Ia
-     * @param kA
+     * and calculate the intensity.
+     * @param Ia the intensity of the light.
+     * @param kA the officiant of the light.
      */
     public AmbientLight(Color Ia, Double3 kA){
-        this.intensity = Ia.scale(kA);
+        super(Ia.scale(kA));
     }
 
     /**
-     * Defaulte construction - restart the intensity to black.
+     * Default construction - restart the intensity to black.
      */
     public AmbientLight(){
-        this.intensity =  Color.BLACK;
+        super(Color.BLACK);
     }
 
-    /**
-     * return the intensity of the ambient light.
-     * @return
-     */
-    public Color getIntensity() {
-        return this.intensity;
-    }
 }

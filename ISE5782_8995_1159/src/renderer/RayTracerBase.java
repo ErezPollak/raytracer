@@ -1,5 +1,6 @@
 package renderer;
 
+import lighting.LightSource;
 import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
@@ -21,7 +22,8 @@ public abstract class RayTracerBase {
         this.scene = new Scene(scene.name)
                   .setBackground(scene.background)
                   .setAmbientLight(scene.ambientLight)
-                  .setGeometries(scene.geometries);
+                  .setGeometries(scene.geometries)
+                  .setLights(scene.lights);
     }
 
     /**
