@@ -5,8 +5,17 @@ package primitives;
  */
 public class Material {
 
+    /**
+     * the defensive coefficient
+     */
     public Double3 kD = Double3.ZERO;
+    /**
+     * the shininess coefficient.
+     */
     public Double3 kS = Double3.ZERO;
+    /**
+     * the times to multiply the cos in itself.
+     */
     public int nShininess = 0;
 
     public Material setKd(Double kD) {

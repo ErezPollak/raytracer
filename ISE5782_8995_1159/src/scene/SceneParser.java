@@ -3,6 +3,7 @@ package scene;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import primitives.Color;
@@ -48,29 +49,33 @@ public class SceneParser {
 
             //go over all the geometries in the file and
             JSONObject geometries = (JSONObject) jsonScene.get("geometries");
-            for (Object keyStr : geometries.keySet()) {
-                JSONObject keyValue = (JSONObject) geometries.get(keyStr);
-                //if the object is a triangle, parsing it in the way it need to be and add it to the geometry element of the scene.
-                if (keyStr.toString().startsWith("triangle")) {
 
-                    String p0 = (String) keyValue.get("p0");
-                    String p1 = (String) keyValue.get("p1");
-                    String p2 = (String) keyValue.get("p2");
+            JSONArray triangles = (JSONArray) geometries.get("triangles");
+            for(Object t : triangles.toArray()){
+                JSONObject triangle = (JSONObject)t;
+                String p0 = (String) triangle.get("p0");
+                String p1 = (String) triangle.get("p1");
+                String p2 = (String) triangle.get("p2");
 
-                    Double3 d0 = new Double3(p0);
-                    Double3 d1 = new Double3(p1);
-                    Double3 d2 = new Double3(p2);
+                Double3 d0 = new Double3(p0);
+                Double3 d1 = new Double3(p1);
+                Double3 d2 = new Double3(p2);
 
-                    scene.geometries.add(new Triangle(new Point(d0), new Point(d1), new Point(d2)));
-
-                } else if (keyStr.toString().startsWith("sphere")) {
-                    int radius = Integer.parseInt((String) keyValue.get("radius"));
-                    String center = (String) keyValue.get("center");
-                    Double3 dCenter = new Double3(center);
-
-                    scene.geometries.add(new Sphere(new Point(dCenter),radius));
-                }
+                scene.geometries.add(new Triangle(new Point(d0), new Point(d1), new Point(d2)));
             }
+
+            JSONArray spheres = (JSONArray) geometries.get("spheres");
+            for(Object s : spheres){
+                JSONObject sphere = (JSONObject) s;
+                int radius = Integer.parseInt((String) sphere.get("radius"));
+                String center = (String) sphere.get("center");
+                Double3 dCenter = new Double3(center);
+
+                scene.geometries.add(new Sphere(new Point(dCenter),radius));
+            }
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -257,6 +257,7 @@ public class Camera {
 
     /**
      * set the to vector by the given degrees.
+     *
      * @param degrees the amount of degrees to move the  to vector of the camera.
      * @return the camera after the move.
      */
@@ -267,6 +268,7 @@ public class Camera {
 
     /**
      * set the up vector by the given degrees.
+     *
      * @param degrees the amount of degrees to move the  to vector of the camera.
      * @return the camera after the move.
      */
@@ -277,8 +279,9 @@ public class Camera {
 
     /**
      * a general function for rotating a camra in some direction.
+     *
      * @param degrees the amount of degrees to rotate the camera with.
-     * @param action the way the move the camera in.
+     * @param action  the way the move the camera in.
      */
     private void cameraRotate(double degrees, CAMERA_ROTATION action) {
 
@@ -317,7 +320,7 @@ public class Camera {
         //putting the value in the right vector;
         if (action == CAMERA_ROTATION.ROLL) {
             this.to = changedVector;
-        }else{
+        } else {
             this.up = changedVector;
         }
 
@@ -328,25 +331,51 @@ public class Camera {
 
 
     /**
-     * moves the camera to new location according to a vector.
-     * @param newLocation the new Location.
+     * relocating the camera to be in the new location.
+     * the new up vector is on the same plane with the y.
+     *
+     * @param from the new location of the camera.
+     * @param to   the point that the camera sees,
+     * @return the camera after the changes.
      */
-    public Camera cameraMove(Vector newLocation) {
-        this.location = this.location.add(newLocation);
-        return this;
-    }
+    public Camera cameraMove(Point from, Point to) {
 
-    /**
-     * moves the camera to new location according to a point.
-     * @param newLocation the new Location.
-     */
-    public Camera cameraMove(Point newLocation) {
-        this.location = newLocation;
+        if(from.equals(to))
+            throw new IllegalArgumentException();
+
+        //initialize the location of the camera to be the "from" point.
+        this.location = from;
+
+        //the const of the y vector.
+        Vector y = new Vector(0, 1, 0);
+
+        //calculate the new to vector to be between the two given points.
+        this.to = to.subtract(from).normalize();
+
+        //if the to vector is on the y vector, we need to set the up vector with no parameters.
+        if (this.to.equals(y) || this.to.equals(y.scale(-1))) {
+
+            //set the up vector to be the x vector.
+            this.up = new Vector(1, 0, 0);
+
+            //calculation of the right vector according to the cross product of the given vectors.
+            this.right = new Vector(0, 0, -this.to.getY());
+
+            return this;
+        }
+
+        //calculate the right vector at first because we can know that the y vector and the to vector are its product..
+        this.right = this.to.crossProduct(y).normalize(); // finding the common vector is the dot product between their normals.
+
+        //the up vector is the cross product between the to vector and the common vector.
+        this.up = this.right.crossProduct(this.to).normalize();
+
         return this;
     }
 
     /**
      * returns rather or not all the vectors and location of the camera are the same with other given camera.
+     *
      * @param camera the camera the compare to.
      * @return rather or not all the vectors and the point are the same.
      */

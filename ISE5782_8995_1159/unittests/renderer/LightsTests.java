@@ -7,6 +7,7 @@ import geometries.*;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+
 import static java.awt.Color.*;
 
 /**
@@ -29,7 +30,7 @@ public class LightsTests {
             new Point(-110, -110, -150), // the shared left-bottom
             new Point(95, 100, -150), // the shared right-top
             new Point(110, -110, -150), // the right-bottom
-            new Point(-75, 78, 100) }; // the left-top
+            new Point(-75, 78, 100)}; // the left-top
     private Point trPL = new Point(30, 10, -100); // Triangles test Position of Light
     private Point spPL = new Point(-50, -50, 25); // Sphere test Position of Light
     private Color trCL = new Color(800, 500, 250); // Triangles test Color of Light
@@ -78,7 +79,7 @@ public class LightsTests {
     @Test
     public void sphereSpot() {
         scene1.geometries.add(sphere);
-        scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0001));
+        scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
         camera1.setImageWriter(imageWriter) //
@@ -94,7 +95,7 @@ public class LightsTests {
     public void sphereSpotSharp() {
         scene1.geometries.add(sphere);
         scene1.lights
-                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(10).setKl(0.001).setKq(0.00004));
+                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(10).setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharp", 500, 500);
         camera1.setImageWriter(imageWriter) //
@@ -102,6 +103,48 @@ public class LightsTests {
                 .renderImage(); //
         camera1.writeToImage(); //
     }
+
+    /**
+     * a test that combines few light sources on the sphere.
+     */
+    @Test
+    public void generalTest() {
+        scene1.geometries.add(sphere,
+
+                new Sphere(new Point(-50, 50, -100), 60)
+                        .setEmission(new Color(RED).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                new Sphere(new Point(18, -20, 500), 15)
+                        .setEmission(new Color(GREEN).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                new Sphere(new Point(20, -22, 600), 7)
+                        .setEmission(new Color(CYAN).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300))
+        );
+
+        scene1.lights.add(
+                new SpotLight(new Color(255, 0, 0), spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002));
+        scene1.lights.add(
+                new DirectionalLight(spCL.scale(0.5), new Vector(1, -1, -0.5)));
+        scene1.lights.add(
+                new PointLight(new Color(0, 255, 0), new Point(100, -100, 0)).setKl(0.001).setKq(0.0002));
+//
+//        scene1.lights.add(
+//                new SpotLight(new Color(255, 0, 0), spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002),
+//                new DirectionalLight(spCL.scale(0.5), new Vector(1, -1, -0.5)),
+//                new PointLight(new Color(0, 255, 0), new Point(100, -100, 0)).setKl(0.001).setKq(0.0002)
+//        );
+
+        ImageWriter imageWriter = new ImageWriter("lightSphereGeneralTest", 1000, 1000);
+        camera1.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene1)) //
+                .renderImage(); //
+        camera1.writeToImage(); //
+
+    }
+
 
     /**
      * Produce a picture of two triangles lighted by a directional light

@@ -80,12 +80,12 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * calculating the specular part of the light.
      *
-     * @param material
-     * @param n
-     * @param l
-     * @param nl
-     * @param v
-     * @return
+     * @param material the material containing the properties of
+     * @param n        the normal vector of the point in the intersection.
+     * @param l        the direction point of the camera.
+     * @param nl       the dot product between them.
+     * @param v        the to vector of the camera.
+     * @return the specular coefficient.
      */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
 
@@ -102,14 +102,13 @@ public class RayTracerBasic extends RayTracerBase {
         for (int i = 0; i < material.nShininess; i++) {
             vrMult *= vr;
         }
-
         return material.kS.scale(vrMult);
     }
 
     /**
      * calculate the diffusive part of the light source.
      *
-     * @param material the material;
+     * @param material the material.
      * @param nl       the direction degree between the direction vector of the light to the direction between the light and geometry.
      * @return the defensive coefficient.
      */

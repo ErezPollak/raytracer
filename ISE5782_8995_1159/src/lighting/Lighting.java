@@ -23,6 +23,6 @@ public abstract class Lighting {
      * @return the intensity of the object.
      */
     public Color getIntensity() {
-        return intensity;
+        return this.intensity;
     }
 }
