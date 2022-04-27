@@ -45,18 +45,6 @@ public class Double3 {
     }
 
 
-    /**
-     * receives a string in the format of the jason file: "x y z".
-     * and parse that into a double3 value.
-     * @param double3format a string in the format "x y z".
-     */
-    public Double3(String double3format){
-        String numbers[] = double3format.split(" ");
-        this.d1 = Integer.parseInt(numbers[0]);
-        this.d2 = Integer.parseInt(numbers[1]);
-        this.d3 = Integer.parseInt(numbers[2]);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

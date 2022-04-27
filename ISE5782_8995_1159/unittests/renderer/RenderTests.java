@@ -6,7 +6,7 @@ import lighting.AmbientLight;
 import geometries.*;
 import primitives.*;
 import scene.Scene;
-import scene.SceneParser;
+import scene.SceneBuilder;
 
 import static java.awt.Color.*;
 
@@ -87,7 +87,11 @@ public class RenderTests {
 
         // enter XML file name and parse from XML file into scene object
         // ...
-        Scene scene = SceneParser.parseSceneFromJson("\\Json\\firstScene.json" , "Json Test scene");
+
+        SceneBuilder sb = new SceneBuilder();
+        sb.loadSceneFromFile("\\Json\\firstScene.json" , "Json Test scene");
+
+        Scene scene = null;//SceneParser.parseSceneFromJson("\\Json\\firstScene.json" , "Json Test scene");
 
         Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPDistance(100) //

@@ -15,6 +15,11 @@ import static primitives.Util.alignZero;
 public class RayTracerBasic extends RayTracerBase {
 
     /**
+     * the distance to move the point of the shade ray, in case of shade.
+     */
+    private static final double DELTA = 0.000001;
+
+    /**
      * construction the class with the given scene.
      *
      * @param scene the scene to pass on to the superclass.
@@ -71,8 +76,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(l.dotProduct(n));
             Color iL = lightSource.getIntensity(gp.point);
-            color = color.add(iL.scale(calcDiffusive(material, nl)),
-                    iL.scale(calcSpecular(material, n, l, nl, v)));
+
+            if (unshaded(gp, l, n, lightSource)) {
+                color = color.add(iL.scale(calcDiffusive(material, nl)),
+                        iL.scale(calcSpecular(material, n, l, nl, v)));
+            }
         }
         return color;
     }
@@ -115,4 +123,43 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 calcDiffusive(Material material, double nl) {
         return material.kD.scale(nl < 0 ? -nl : nl);
     }
+
+
+    /**
+     * calculate if the point is shaded, then the phong model is useless.
+     *
+     * @param gp the intersection point.
+     * @param l  the vector from the light source to the point.
+     * @param n  the normal vector.
+     * @return true if the point is unshaded, false if it is shaded.
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, LightSource lightSource) {
+
+        Vector lightDirection = l.scale(-1);
+
+        //calculate the  vector to move the starting point of the ray form.
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+
+        //the point to start the ray with.
+        Point startRayPoint = gp.point.add(delta);
+
+        //the ray from the modified point to the light source.
+        Ray lightRay = new Ray(startRayPoint, lightDirection);
+
+        List<GeoPoint> shadePoints = scene.geometries.findGeoIntersections(lightRay);
+
+        //check if there are any intersections and return the result.
+        if(shadePoints == null)
+            return true;
+
+        //iterate over all the points and check if there is a point that is closer to the head
+        // of the ray more than to the light source return false.
+        for (GeoPoint shadeGp : shadePoints) {
+            if(lightSource.getDistance(startRayPoint) > startRayPoint.distance(shadeGp.point))
+                return  false;
+        }
+
+        return true;
+    }
+
 }

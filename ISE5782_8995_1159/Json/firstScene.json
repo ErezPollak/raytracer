@@ -1,6 +1,11 @@
 {
-  "ambient-light": "255 191 191",
-  "background": "75 127 190",
+  "name" : "jsonFirstTest",
+  "ambient-light": "0 191 191",
+  "background":
+  {
+    "color" : "75 127 190",
+    "Ka" : "1 1 1"
+  },
   "geometries": {
     "triangles" : [
       {
@@ -25,21 +30,5 @@
         "center": "0 0 -100"
       }
     ]
-  },
-
-  "lightSources" : {
-    "directional" : [
-      {
-        "direction" : "",
-      }
-    ],
-    "point" : [
-      {
-
-      }
-    ],
-    "spot" : []
-
   }
-
 }
