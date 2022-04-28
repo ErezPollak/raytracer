@@ -1,5 +1,7 @@
 package primitives;
 
+import javax.swing.plaf.basic.BasicTextUI;
+
 /**
  * the properties of teh material the object is made from.
  */
@@ -18,7 +20,17 @@ public class Material {
      */
     public int nShininess = 0;
 
-    public Material setKd(Double kD) {
+    /**
+     * the transparency coeffitint.
+     */
+    public Double3 kT = new Double3(0);
+    /**
+     * the refraction coefficient.
+     */
+    public Double3 kR = new Double3(0);
+
+
+    public Material setKd(double kD) {
         this.kD = new Double3(kD);
         return this;
     }
@@ -28,7 +40,7 @@ public class Material {
         return this;
     }
 
-    public Material setKs(Double kS) {
+    public Material setKs(double kS) {
         this.kS = new Double3(kS);
         return this;
     }
@@ -37,6 +49,26 @@ public class Material {
         this.kS = kS;
         return this;
     }
+
+    public Material setKt(double kT) {
+        this.kT = new Double3(kT);
+        return this;
+    }
+    public Material setKt(Double3 kT) {
+        this.kT = kT;
+        return this;
+    }
+
+    public Material setKr(double kR) {
+        this.kR = new Double3(kR);
+        return this;
+    }
+    public Material setKr(Double3 kR) {
+        this.kR = kR;
+        return this;
+    }
+
+
 
     public Material setShininess(int nShininess) {
         this.nShininess = nShininess;

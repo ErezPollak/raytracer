@@ -5,7 +5,7 @@ import primitives.Color;
 /**
  * the abstract information about a light source.
  */
-public abstract class Lighting {
+abstract class Lighting {
     /**
      * the property every light source has: the color.
      */

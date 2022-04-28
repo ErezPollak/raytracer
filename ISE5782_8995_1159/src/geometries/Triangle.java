@@ -68,11 +68,15 @@ public class Triangle extends Polygon{
 //        return null;
 //    }
 
+    /**
+     *
+     * @param ray the ray that crosses the polygon.
+     * @return
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
 
         //implementation in the algebraic way.
-
         List<GeoPoint> planeIntersection = this.plane.findGeoIntersections(ray);
 
         //if there is no crossing with the plane of course there is no crossing of the triangle.
@@ -81,6 +85,9 @@ public class Triangle extends Polygon{
         }
 
         Point intersectionPoint = planeIntersection.get(0).point;
+
+        if(intersectionPoint.equals(ray.getPoint()))
+            return null;
 
         //the main vector from the point of the ray to the intersection point.
         Vector v = ray.getPoint().subtract(intersectionPoint);
