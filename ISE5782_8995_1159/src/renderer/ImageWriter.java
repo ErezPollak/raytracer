@@ -21,7 +21,7 @@ public class ImageWriter {
     private int nX;
     private int nY;
 
-    private static final String FOLDER_PATH = System.getProperty("user.dir") + "\\ISE5782_8995_1159/images";
+    private static final String FOLDER_PATH = System.getProperty("user.dir") + "/images";
 
     private BufferedImage image;
     private String imageName;

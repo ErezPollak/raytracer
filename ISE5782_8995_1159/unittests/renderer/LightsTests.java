@@ -54,8 +54,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(); //
-        camera1.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -69,8 +69,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(); //
-        camera1.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -84,8 +84,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(); //
-        camera1.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -100,49 +100,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharp", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(); //
-        camera1.writeToImage(); //
-    }
-
-    /**
-     * a test that combines few light sources on the sphere.
-     */
-    @Test
-    public void generalTest() {
-        scene1.geometries.add(sphere,
-
-                new Sphere(new Point(-50, 50, -100), 60)
-                        .setEmission(new Color(RED).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
-
-                new Sphere(new Point(18, -20, 500), 15)
-                        .setEmission(new Color(GREEN).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
-
-                new Sphere(new Point(20, -22, 600), 7)
-                        .setEmission(new Color(CYAN).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300))
-        );
-
-        scene1.lights.add(
-                new SpotLight(new Color(255, 0, 0), spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002));
-        scene1.lights.add(
-                new DirectionalLight(spCL.scale(0.5), new Vector(1, -1, -0.5)));
-        scene1.lights.add(
-                new PointLight(new Color(0, 255, 0), new Point(100, -100, 0)).setKl(0.001).setKq(0.0002));
-//
-//        scene1.lights.add(
-//                new SpotLight(new Color(255, 0, 0), spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002),
-//                new DirectionalLight(spCL.scale(0.5), new Vector(1, -1, -0.5)),
-//                new PointLight(new Color(0, 255, 0), new Point(100, -100, 0)).setKl(0.001).setKq(0.0002)
-//        );
-
-        ImageWriter imageWriter = new ImageWriter("lightSphereGeneralTest", 1000, 1000);
-        camera1.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage(); //
-        camera1.writeToImage(); //
-
+                .renderImage() //
+                .writeToImage(); //
     }
 
 
@@ -157,8 +116,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightTrianglesDirectional", 500, 500);
         camera2.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene2)) //
-                .renderImage(); //
-        camera2.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -172,8 +131,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightTrianglesPoint", 500, 500);
         camera2.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene2)) //
-                .renderImage(); //
-        camera2.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -187,8 +146,8 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpot", 500, 500);
         camera2.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene2)) //
-                .renderImage(); //
-        camera2.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
 
     /**
@@ -202,8 +161,91 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
         camera2.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene2)) //
-                .renderImage(); //
-        camera2.writeToImage(); //
+                .renderImage() //
+                .writeToImage(); //
     }
+
+
+    /**
+     * a test that combines few light sources on the sphere.
+     */
+    @Test
+    public void generalTest() {
+
+        Point spotLocation = new Point(300, 0, 0);
+        Point pointLocation = new Point(0, -200, 0);
+
+        Scene generalScene = new Scene("Test scene")
+                .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
+
+        Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+                .setVPSize(150, 150) //
+                .setVPDistance(250)
+                //.cameraMove(new Point(250, 0, 0), new Point(0, 0, 0))
+                //.cameraTransform(0)
+                .cameraRoll(-5)
+                ;
+
+        generalScene.geometries.add(
+
+//                new Plane(new Point(-1000,0,0),new Vector(-1,-0.001,0))
+//                        .setEmission(new Color(BLACK).reduce(2)) //
+//                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300).setKr(1)),
+
+                new Sphere(new Point(-70, 70, -100), 60)
+                        .setEmission(new Color(RED).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                new Sphere(new Point(0, 0, -50), 50) //
+                        .setEmission(new Color(BLUE).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                new Sphere(new Point(30, -30, 50), 30)
+                        .setEmission(new Color(GREEN).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                new Sphere(new Point(40, -40, 100), 20)
+                        .setEmission(new Color(CYAN).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+
+                //the mirrors:
+
+
+                new Plane(new Point(300, 300, -300), new Vector(2, 1, -6))
+                        .setEmission(new Color(Double3.ZERO))
+                        .setMaterial(new Material().setKr(1)),
+
+                new Plane(new Point(-300, -300, -300), new Vector(1, 2, 6))
+                        .setEmission(new Color(new Double3(5)))
+                        .setMaterial(new Material().setKr(1)),
+
+
+                //spheres for the light sources:
+
+                new Sphere(spotLocation, 10)
+                        .setEmission(new Color(WHITE).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300).setKt(1)),
+                new Sphere(pointLocation, 10)
+                        .setEmission(new Color(WHITE).reduce(2)) //
+                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300).setKt(1))
+
+        );
+
+        generalScene.lights.add(
+                new DirectionalLight(new Color(YELLOW), new Vector(1, -1, -0.5)));
+        generalScene.lights.add(
+                new SpotLight(new Color(WHITE), spotLocation, new Vector(-1, 0, 0)).setNarrowBeam(30).setKl(0.0000001).setKq(0.0000002));
+        generalScene.lights.add(
+                new PointLight(new Color(WHITE), pointLocation).setKl(0.00001).setKq(0.00002));
+
+
+        ImageWriter imageWriter = new ImageWriter("lightSphereGeneralTest", 1000, 1000);
+        generalCamera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(generalScene)) //
+                .renderImage() //
+                .writeToImage(); //
+
+    }
+
 
 }

@@ -1,9 +1,9 @@
 {
   "name" : "jsonFirstTest",
-  "ambient-light": "0 191 191",
-  "background":
+  "background": "75 127 190",
+  "ambientLight":
   {
-    "color" : "75 127 190",
+    "color" : "0 191 191",
     "Ka" : "1 1 1"
   },
   "geometries": {

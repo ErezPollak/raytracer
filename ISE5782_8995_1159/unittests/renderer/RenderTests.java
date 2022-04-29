@@ -83,15 +83,13 @@ public class RenderTests {
      * Test for XML based scene - for bonus
      */
     @Test
-    public void basicRenderXml() {
+    public void basicRenderJson() {
 
         // enter XML file name and parse from XML file into scene object
         // ...
+        Scene scene = new Scene("Json Test scene");
 
-        SceneBuilder sb = new SceneBuilder();
-        sb.loadSceneFromFile("\\Json\\firstScene.json" , "Json Test scene");
-
-        Scene scene = null;//SceneParser.parseSceneFromJson("\\Json\\firstScene.json" , "Json Test scene");
+        scene = new SceneBuilder("\\Json\\firstScene.json" , scene).loadSceneFromFile();
 
         Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPDistance(100) //

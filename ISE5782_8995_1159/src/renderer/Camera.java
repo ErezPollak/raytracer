@@ -145,7 +145,7 @@ public class Camera {
      * Create an image according to the colors and rays.
      * in addition, checks if all the fields are not empty.
      */
-    public void renderImage() {
+    public Camera renderImage() {
         try {
             // if image writer is empty throw exception.
             if (imageWriter == null) {
@@ -199,6 +199,8 @@ public class Camera {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
                     + e.getClassName());
         }
+
+        return this;
     }
 
     /**

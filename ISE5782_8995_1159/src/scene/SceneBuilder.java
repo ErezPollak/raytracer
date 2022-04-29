@@ -14,6 +14,9 @@ import primitives.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * the class is parsing a scene from files.
@@ -23,6 +26,8 @@ import java.io.FileReader;
  */
 public class SceneBuilder {
 
+    private final String PATH = System.getProperty("user.dir");
+
     private SceneDescriptor sceneDesc;
     private Scene scene;
     private String filePath;
@@ -30,23 +35,25 @@ public class SceneBuilder {
     /**
      * ctor
      */
-    public SceneBuilder() {
+    public SceneBuilder(String filePath, Scene scene) {
         this.sceneDesc = new SceneDescriptor();
-        this.scene = new Scene("");
+        this.scene = scene;
         this.filePath = filePath;
     }
 
     /**
      * @return
      */
-    public Scene loadSceneFromFile(String filePath, String sceneName) {
-        String path = System.getProperty("user.dir");
+    public Scene loadSceneFromFile() {
         //loads the scene from the file and initialize the describer with its properties.
         try {
-            FileReader fr = new FileReader(path + filePath);
 
-            this.sceneDesc.initializeFromJsonObject(fr);
+            String str = Files.readString(Path.of(PATH + this.filePath));
+            this.sceneDesc.initializeFromJsonObject(str);
+
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

@@ -1,6 +1,6 @@
- /**
+/**
  * the Point class
- *
+ * <p>
  * written by Erez Polak
  * and Eliran Salama
  */
@@ -8,27 +8,44 @@
 
 package primitives;
 
- import geometries.Intersectable;
+public class Ray {
 
- import java.util.List;
-
- public class Ray {
+    /**
+     * the distance to move the point of the shade ray, in case of shade.
+     */
+    private static final double DELTA = 0.01;
 
     private final Point point;
     private final Vector vector;
 
     /**
      * Ray Constructor
+     *
      * @param v
      * @param p
      */
-    public Ray(Point p , Vector v){
+    public Ray(Point p, Vector v) {
         point = p;
         vector = v.normalize();
     }
 
     /**
+     * the head of the constructed ray will be moves by the direction vector multiplied by delta.
+     * the direction ov the move with or against the normal vector determined by the dot product of the direction and normal.
+     *
+     * @param head      the point that the ray suppose to start with.
+     * @param direction the direction of the ray.
+     * @param normal    the direction to move the ray with.
+     */
+    public Ray(Point head, Vector direction, Vector normal) {
+        double mult = direction.dotProduct(normal);
+        this.point = head.add(normal.scale(mult >= 0 ? DELTA : -DELTA));
+        this.vector = direction;
+    }
+
+    /**
      * Get ray's point
+     *
      * @return
      */
     public Point getPoint() {
@@ -38,64 +55,27 @@ package primitives;
 
     /**
      * Get ray's vector
+     *
      * @return
      */
     public Vector getVector() {
         return vector;
     }
 
+
     /**
      * returns the Point on the ray that is given by the scaling of the vector by the parameter t.
+     *
      * @param t the parameter that needed for scaling the vector.
      * @return the result point.
      */
-    public Point getPoint(double t){
-        if(Util.isZero(t / 100000000))
-            return this.point;
+    public Point getPoint(double t) {
         return this.point.add(this.vector.normalize().scale(t));
     }
 
-//    /**
-//     * return the closest point from the given list the point that starts the ray.
-//     * @param points the given list
-//     * @return the point
-//     */
-//    public Point findClosestPoint(List<Point> points) {
-//        return points == null || points.isEmpty() ? null
-//                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
-//    }
-
-
-//    /**
-//     * return the closest point from the given list the point that starts the ray.
-//     * @param pointList the given list of geoPoints.
-//     * @return the closest point to the head of the ray.
-//     */
-//    public GeoPoint findClosestGeoPoint(List<GeoPoint> pointList){
-//
-//        if(pointList == null || pointList.size() == 0){
-//            return null;
-//        }
-//
-//        //initializing the first values for comperation.
-//        GeoPoint closestGeoPoint = pointList.get(0);
-//        double distance = pointList.get(0).point.distance(this.point);
-//
-//        //iterating over the list.
-//        for(GeoPoint p : pointList){
-//            if(p.point.distance(this.point) < distance){
-//                distance = p.point.distance(this.point);
-//                closestGeoPoint = p;
-//            }
-//        }
-//
-//        //returning the result
-//        return closestGeoPoint;
-//    }
-
-
     /**
      * return a string with the status of the object.
+     *
      * @return
      */
     @Override
@@ -108,6 +88,7 @@ package primitives;
 
     /**
      * returns the equal of the point and the vector.
+     *
      * @param o
      * @return
      */

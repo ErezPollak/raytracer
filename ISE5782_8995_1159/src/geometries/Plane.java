@@ -91,35 +91,6 @@ public class Plane extends Geometry{
         return this.normal;
     }
 
-//    /**
-//     * Finds the intersections of the ray with the plane
-//     * @param ray The ray that is intersecting with the plane.
-//     * @return A list containing the point that the ray crossing the plane by.
-//     */
-//    @Override
-//    public List<Point> findIntersections(Ray ray)
-//    {
-//        //if the starting point of the ray is the same point that the plane start with, the return value is null.
-//        if(this.q0.equals(ray.getPoint()))
-//            return null;
-//
-//        //calculating t according to the given formula:
-//        double t = (this.normal.dotProduct(this.q0.subtract(ray.getPoint())))/(this.normal.dotProduct(ray.getVector()));
-//
-//        //if t is equal to zero, the point is on the plane, and it does not count.
-//        if(t > 0) {
-//
-//            //creating the list only if there is a need for that.
-//            LinkedList<Point> intersectionPoints = new LinkedList<>();
-//
-//            //adding the point to the list and returning the list.
-//            intersectionPoints.add(ray.getPoint(t));
-//            return intersectionPoints;
-//
-//        }
-//
-//        return null;
-//    }
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
