@@ -12,6 +12,7 @@ import static primitives.Util.isZero;
 
 /**
  * the class
+ * @author Erez Polak
  */
 public class RayTracerBasic extends RayTracerBase {
 
@@ -163,7 +164,8 @@ public class RayTracerBasic extends RayTracerBase {
 
         //the specular vector, to check the match between it and the camera to vector.
         if(isZero(2*nl)){
-            r = l;
+            return Double3.ZERO;
+            //r = l;
         }else {
             r = l.subtract(n.scale(2 * nl)).normalize();
         }

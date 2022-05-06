@@ -8,6 +8,8 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
+import java.util.List;
+
 import static java.awt.Color.*;
 
 /**
@@ -95,7 +97,7 @@ public class LightsTests {
     public void sphereSpotSharp() {
         scene1.geometries.add(sphere);
         scene1.lights
-                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(10).setKl(0.001).setKq(0.0002));
+                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(5).setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharp", 500, 500);
         camera1.setImageWriter(imageWriter) //
@@ -156,7 +158,7 @@ public class LightsTests {
     @Test
     public void trianglesSpotSharp() {
         scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(40).setKl(0.001).setKq(0.00004));
+        scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(5).setKl(0.001).setKq(0.00004));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
         camera2.setImageWriter(imageWriter) //
@@ -165,6 +167,39 @@ public class LightsTests {
                 .writeToImage(); //
     }
 
+    /**
+     * test narrow beam
+     * @author Eerz
+     */
+    @Test
+    public void narrowBeamTest(){
+
+        Scene generalScene = new Scene("Test scene")
+                .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)))
+                .setGeometries(new Geometries(
+                    new Plane(new Point(-50,0,0),new Point(25,-50,0),new Point(25,50,0))
+                            .setMaterial(new Material().setShininess(300).setKd(0.5).setKs(0.5))
+                            .setEmission(new Color(GREEN).reduce(3))
+                ))
+                .setLights(List.of(
+                        new SpotLight(new Color(WHITE),new Point(0,0,100), new Vector(0,0,-1))
+                                .setNarrowBeam(10).setKl(0.00001).setKq(0.00002))
+                );
+
+
+        Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+                .setVPSize(150, 150) //
+                .setVPDistance(150)
+                .cameraMove(new Point(0, 0, 1000), new Point(0, 0, 0))
+                .cameraTransform(90).cameraRoll(0)
+                ;
+
+        ImageWriter imageWriter = new ImageWriter("lightPlaneSpotNarrowBeamTestTest", 1000, 1000);
+        generalCamera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(generalScene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
 
     /**
      * a test that combines few light sources on the sphere.
@@ -181,9 +216,9 @@ public class LightsTests {
         Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(250)
-                //.cameraMove(new Point(250, 0, 0), new Point(0, 0, 0))
-                //.cameraTransform(0)
+                //.cameraMove(new Point(100, -500, 50), new Point(40, -40, 100))
                 .cameraRoll(-5)
+                .cameraTransform(0)
                 ;
 
         generalScene.geometries.add(

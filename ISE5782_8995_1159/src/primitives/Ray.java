@@ -5,7 +5,6 @@
  * and Eliran Salama
  */
 
-
 package primitives;
 
 public class Ray {

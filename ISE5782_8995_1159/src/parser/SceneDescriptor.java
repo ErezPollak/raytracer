@@ -42,22 +42,26 @@ public class SceneDescriptor {
             JSONObject jsonScene = (JSONObject) new JSONParser().parse(jsonString);
 
             //initializing the scene attributes;
-            this.sceneAttributes.put("name",(String) jsonScene.get("name"));
-            this.sceneAttributes.put("background",(String) jsonScene.get("background"));
+            this.sceneAttributes =
+                    SceneJsonParser.setSceneAttributes(jsonScene);
 
             //initializing the ambientLight:
-            JSONObject ambientLightJson = (JSONObject) jsonScene.get("ambientLight");
-            this.ambientLightAttributes.put("color", (String)ambientLightJson.get("color"));
-            this.ambientLightAttributes.put("Ka",(String)ambientLightJson.get("Ka"));
+            JSONObject ambientLight = (JSONObject)jsonScene.get("ambientLight");
+            this.ambientLightAttributes =
+                    SceneJsonParser.setSceneAmbientLight(ambientLight);
 
             //extracting the geometries json object.
             JSONObject geometriesJson = (JSONObject) jsonScene.get("geometries");
 
             //extraction the triangles.
             JSONArray triangles = (JSONArray) geometriesJson.get("triangles");
-            for (Object triangle : triangles.toArray()) {
+            this.triangles = SceneJsonParser.setSceneTriangles(triangles);
 
-            }
+            //extraction the triangles.
+            JSONArray spheres = (JSONArray) geometriesJson.get("spheres");
+            this.spheres = SceneJsonParser.setSceneSpheres(spheres);
+
+
 
         } catch (ParseException e) {
             e.printStackTrace();

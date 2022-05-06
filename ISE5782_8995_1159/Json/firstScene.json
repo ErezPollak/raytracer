@@ -1,33 +1,72 @@
 {
-  "name" : "jsonFirstTest",
+  "name": "jsonFirstTest",
   "background": "75 127 190",
-  "ambientLight":
-  {
-    "color" : "0 191 191",
-    "Ka" : "1 1 1"
+  "ambientLight": {
+    "color": "0 191 191",
+    "Ka": "1 1 1"
   },
   "geometries": {
-    "triangles" : [
+    "triangles": [
       {
         "p0": "-100 0 -100",
         "p1": "0 100 -100",
-        "p2": "-100 100 -100"
+        "p2": "-100 100 -100",
+        "material": {
+          "kD": "0 0 0",
+          "kS": "0 0 0",
+          "nShininess": "0",
+          "kT" : "0 0 0",
+          "kR" : "0 0 0"
+        },
+        "emission" : {
+          "color" : "0 0 0"
+        }
       },
       {
         "p0": "-100 0 -100",
         "p1": "0 -100 -100",
-        "p2": "-100 -100 -100"
+        "p2": "-100 -100 -100",
+        "material": {
+          "kD": "0 0 0",
+          "kS": "0 0 0",
+          "nShininess": "0",
+          "kT" : "0 0 0",
+          "kR" : "0 0 0"
+        },
+        "emission" : {
+          "color" : "0 0 0"
+        }
       },
       {
         "p0": "100 0 -100",
         "p1": "0 -100 -100",
-        "p2": "100 -100 -100"
+        "p2": "100 -100 -100",
+        "material": {
+          "kD": "0 0 0",
+          "kS": "0 0 0",
+          "nShininess": "0",
+          "kT" : "0 0 0",
+          "kR" : "0 0 0"
+        },
+        "emission" : {
+          "color" : "0 0 0"
+        }
       }
     ],
-    "spheres" : [
+    "spheres": [
       {
         "radius": "50",
-        "center": "0 0 -100"
+        "center": "0 0 -100",
+        "material": {
+          "kD": "0 0 0",
+          "kS": "0 0 0",
+          "nShininess": "0",
+          "kT" : "0 0 0",
+          "kR" : "0 0 0"
+        },
+        "emission" : {
+          "color" : "0 0 0"
+        }
       }
     ]
   }

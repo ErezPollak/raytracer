@@ -1,22 +1,23 @@
 package scene;
 
+import geometries.Geometries;
+import geometries.Intersectable;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import parser.SceneDescriptor;
 import primitives.Color;
 import primitives.Double3;
+import primitives.Material;
 import primitives.Point;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * the class is parsing a scene from files.
@@ -59,89 +60,154 @@ public class SceneBuilder {
 
 
         //inserts the props to the scene object.
-        //scene.
+        scene.setName(this.sceneDesc.getSceneAttributes().get("name"))
+                .setBackground(getColorFromMap(this.sceneDesc.getSceneAttributes(), "background"))
+                .setAmbientLight(
+                        new AmbientLight(getColorFromMap(this.sceneDesc.getAmbientLightAttributes(), "color"),
+                                stringToDouble3(this.sceneDesc.getAmbientLightAttributes().get("Ka"))))
+                .setGeometries(getGeometriesFormDesc());
 
         return scene;
     }
 
+    private Geometries getGeometriesFormDesc() {
+        Geometries geometries = new Geometries();
+        geometries.addAll(getTriangles(), getSpheres());
+        return geometries;
+    }
 
-//    /**
-//     * receives a string in the format of the jason file: "x y z".
-//     * and parse that into a double3 value.
-//     * @param double3format a string in the format "x y z".
-//     */
-//    public Double3(String double3format){
-//        String numbers[] = double3format.split(" ");
-//        this.d1 = Integer.parseInt(numbers[0]);
-//        this.d2 = Integer.parseInt(numbers[1]);
-//        this.d3 = Integer.parseInt(numbers[2]);
-//    }
+    private List<Intersectable> getSpheres() {
+        List<Intersectable> spheres = new LinkedList<>();
+        for (var sphereMap : this.sceneDesc.getSpheres()) {
+            Sphere sphere = getSphereFromMap(sphereMap);
+            sphere.setMaterial(getMaterialFromMap(sphereMap));
+            sphere.setEmission(getEmissionFromMap(sphereMap));
+            spheres.add(sphere);
+        }
+        return spheres;
+    }
 
+    /**
+     * gets the triangle from the map of hte sphere.
+     * @param sphereMap the sphere map
+     * @return the sphere object.
+     */
+    private Sphere getSphereFromMap(Map<String, String> sphereMap) {
+        return new Sphere(getPointFromMap(sphereMap, "center"),
+                            getDoubleFromMap(sphereMap,"radius"));
+    }
 
-//    /**
-//     * parsing a scene from a Json file.
-//     * the json must contain the variables in the specific order and key names.
-//     *
-//     * @param filePath  the path to the file.
-//     * @param sceneName the name that the scene will have in the end of the operation.
-//     * @return the scene that is created by the parameters given in the file.
-//     */
-//    public static Scene parseSceneFromJson(String filePath, String sceneName) {
-//
-//        Scene scene = new Scene(sceneName);
-//
-//        String path = System.getProperty("user.dir");
-//
-//        JSONParser parser = new JSONParser();
-//        try {
-//
-//            JSONObject jsonScene = (JSONObject) parser.parse(new FileReader(path + filePath));
-//
-//            //extracting thr ambientLight parameter from the file, and update the scene accordingly.
-//            String ambientLight = (String) jsonScene.get("ambient-light");
-//            Double3 dAmbientLight = new Double3(ambientLight);
-//            scene.setAmbientLight(new AmbientLight(new Color(dAmbientLight), new Double3(1, 1, 1)));
-//
-//            //extracting thr background parameter from the file, and update the scene accordingly.
-//            String background = (String) jsonScene.get("background");
-//            Double3 dBackground = new Double3(background);
-//            scene.setBackground(new Color(dBackground));
-//
-//            //go over all the geometries in the file and
-//            JSONObject geometries = (JSONObject) jsonScene.get("geometries");
-//
-//            JSONArray triangles = (JSONArray) geometries.get("triangles");
-//            for (Object t : triangles.toArray()) {
-//                JSONObject triangle = (JSONObject) t;
-//                String p0 = (String) triangle.get("p0");
-//                String p1 = (String) triangle.get("p1");
-//                String p2 = (String) triangle.get("p2");
-//
-//                Double3 d0 = new Double3(p0);
-//                Double3 d1 = new Double3(p1);
-//                Double3 d2 = new Double3(p2);
-//
-//                scene.geometries.add(new Triangle(new Point(d0), new Point(d1), new Point(d2)));
-//            }
-//
-//            JSONArray spheres = (JSONArray) geometries.get("spheres");
-//            for (Object s : spheres) {
-//                JSONObject sphere = (JSONObject) s;
-//                int radius = Integer.parseInt((String) sphere.get("radius"));
-//                String center = (String) sphere.get("center");
-//                Double3 dCenter = new Double3(center);
-//
-//                scene.geometries.add(new Sphere(new Point(dCenter), radius));
-//            }
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return scene;
-//
-//    }
+    /**
+     * gets a list of map containing the props of triangles
+     *
+     * @return the list object.
+     */
+    private List<Intersectable> getTriangles() {
+        List<Intersectable> triangles = new LinkedList<>();
+        for (var triangleMap : this.sceneDesc.getTriangles()) {
+            Triangle triangle = getTriangleFromMap(triangleMap);
+            triangle.setMaterial(getMaterialFromMap(triangleMap));
+            triangle.setEmission(getEmissionFromMap(triangleMap));
+            triangles.add(triangle);
+        }
+        return triangles;
+    }
+
+    /**
+     * gets the triangle object form the map.
+     *
+     * @param triangleMap the map containing the properties of the triangles
+     * @return the triangle object.
+     */
+    private Triangle getTriangleFromMap(Map<String, String> triangleMap) {
+        return new Triangle(
+                getPointFromMap(triangleMap, "p0"),
+                getPointFromMap(triangleMap, "p1"),
+                getPointFromMap(triangleMap, "p2")
+        );
+    }
+
+    /**
+     * returns material from a map with its properties.
+     *
+     * @param emissionMap the map containing the properties of the emission,
+     * @return the emission color.
+     */
+    private Color getEmissionFromMap(Map<String, String> emissionMap) {
+        return new Color(stringToDouble3(emissionMap.get("color")));
+    }
+
+    /**
+     * returns material from a map with its properties.
+     *
+     * @param materialMap the map containing the properties of a material.
+     * @return the material object.
+     */
+    private Material getMaterialFromMap(Map<String, String> materialMap) {
+        return new Material()
+                .setKs(stringToDouble3(materialMap.get("kS")))
+                .setKd(stringToDouble3(materialMap.get("kD")))
+                .setShininess(getIntFromMap(materialMap, "nShininess"))
+                .setKr(stringToDouble3(materialMap.get("kR")))
+                .setKt(stringToDouble3(materialMap.get("kT")));
+
+    }
+
+    /**
+     * returns the background from the scene.
+     *
+     * @param map the map to extract the
+     * @return the background of the scene.
+     */
+    private Color getColorFromMap(Map<String, String> map, String key) {
+        Double3 color = stringToDouble3(map.get(key));
+        return new Color(color);
+    }
+
+    /**
+     * returns the background from the scene.
+     *
+     * @param map the map to extract the
+     * @return the background of the scene.
+     */
+    private Point getPointFromMap(Map<String, String> map, String key) {
+        Double3 point = stringToDouble3(map.get(key));
+        return new Point(point);
+    }
+
+    /**
+     * returns the double value from a map.
+     *
+     * @param map the map to extract the
+     * @return the double value from the map.
+     */
+    private double getDoubleFromMap(Map<String, String> map, String key) {
+        return Double.parseDouble(map.get(key));
+    }
+
+    /**
+     * returns the int value from the scene.
+     *
+     * @param map the map to extract the
+     * @return the int from the map.
+     */
+    private int getIntFromMap(Map<String, String> map, String key) {
+        return Integer.parseInt(map.get(key));
+    }
+
+    /**
+     * retuens a double3 from a string in a double3 format.
+     *
+     * @param double3 the String
+     * @return the double3 it represents.
+     */
+    private Double3 stringToDouble3(String double3) {
+        String numbers[] = double3.split(" ");
+        return new Double3(
+                Double.parseDouble(numbers[0]),
+                Double.parseDouble(numbers[1]),
+                Double.parseDouble(numbers[2]));
+    }
 
 }
 

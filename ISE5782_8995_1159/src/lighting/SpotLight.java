@@ -4,6 +4,8 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+enum NarrowBeamArchitecture{DAN_ARCHITECTURE, MY_ARCHITECTURE};
+
 /**
  *
  */
@@ -14,10 +16,12 @@ public class SpotLight extends PointLight implements LightSource {
      */
     private Vector direction;
 
+
+    private NarrowBeamArchitecture ARCHITECTURE = NarrowBeamArchitecture.DAN_ARCHITECTURE;
     /**
      * represents the angle of the seenable light from the spot.
      */
-    private double narrowBeam = 0;
+    private double narrowBeam = ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE ? 1 : 0;
 
     /**
      * the ctor to initialize the SpotLight.
@@ -39,7 +43,12 @@ public class SpotLight extends PointLight implements LightSource {
      * @return the spotlight after the change.
      */
     public SpotLight setNarrowBeam(int i) {
-        this.narrowBeam = Math.cos(Math.toRadians(i));
+
+        this.narrowBeam = ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE ? i : Math.cos(Math.toRadians(i));
+
+        //this.narrowBeam = Math.cos(Math.toRadians(i));
+        //this.narrowBeam = i;
+
         return this;
     }
 
@@ -53,7 +62,15 @@ public class SpotLight extends PointLight implements LightSource {
     public Color getIntensity(Point p) {
         //calculates the degree between the direction of the light source to the direction of the light source to the point.
         double degree = this.direction.dotProduct(super.getL(p));
-        if (degree <= narrowBeam) return Color.BLACK;
+
+        if(degree < 0 || (ARCHITECTURE == NarrowBeamArchitecture.MY_ARCHITECTURE && degree < narrowBeam))
+            return Color.BLACK;
+
+        if(ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE){
+            for (int i = 0; i < narrowBeam - 1; i++) {
+                degree *= degree;
+            }
+        }
         return super.getIntensity(p).scale(degree);
     }
 
