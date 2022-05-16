@@ -223,29 +223,28 @@ public class LightsTests {
 
         generalScene.geometries.add(
 
-//                new Plane(new Point(-1000,0,0),new Vector(-1,-0.001,0))
-//                        .setEmission(new Color(BLACK).reduce(2)) //
-//                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300).setKr(1)),
-
                 new Sphere(new Point(-70, 70, -100), 60)
                         .setEmission(new Color(RED).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+                        .setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300).setKr(0.4)),
 
                 new Sphere(new Point(0, 0, -50), 50) //
                         .setEmission(new Color(BLUE).reduce(2)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
 
                 new Sphere(new Point(30, -30, 50), 30)
-                        .setEmission(new Color(GREEN).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+                        .setEmission(new Color(GREEN).reduce(4)) //
+                        .setMaterial(new Material().setKd(0.1).setKs(0.1).setShininess(300).setKt(0.8)),
 
                 new Sphere(new Point(40, -40, 100), 20)
-                        .setEmission(new Color(CYAN).reduce(2)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300)),
+                        .setEmission(new Color(CYAN).reduce(3)) //
+                        .setMaterial(new Material().setKd(0.1).setKs(0.1).setShininess(300).setKt(0.8)),
 
                 //the mirrors:
 
-
+//                new Sphere(new Point(800, 800, -1200), 1000)
+//                        .setEmission(new Color(Double3.ZERO))
+//                        .setMaterial(new Material().setKr(1).setKs(0)),
+////
                 new Plane(new Point(300, 300, -300), new Vector(2, 1, -6))
                         .setEmission(new Color(Double3.ZERO))
                         .setMaterial(new Material().setKr(1)),

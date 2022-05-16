@@ -12,6 +12,7 @@ import static primitives.Util.isZero;
 
 /**
  * the class
+ *
  * @author Erez Polak
  */
 public class RayTracerBasic extends RayTracerBase {
@@ -73,7 +74,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
         Color color = scene.ambientLight.getIntensity()
-                .add(calcLocalEffects(gp, ray))
+                .add(calcLocalEffects(gp, ray, k))
                 .add(gp.geometry.getEmission());
         if (level > 1) {
             color = color.add(calcGlobalEffects(gp, ray, level, k));
@@ -127,7 +128,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param ray the ray to check the light from.
      * @return the sum of all the light sources on the point.
      */
-    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+    private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
         Color color = Color.BLACK;
         Vector v = ray.getVector();
         Vector n = gp.geometry.getNormal(gp.point);
@@ -138,12 +139,22 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(l.dotProduct(n));
-            Color iL = lightSource.getIntensity(gp.point);
 
-            if (unshaded(gp, l, n, lightSource)) {
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+            if (nl * nv > 0) {
+                Double3 ktr = transparency(gp, lightSource, l, n);
+                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
+                    Color iL = lightSource.getIntensity(gp.point).scale(ktr);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)),
+                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
+
+
+//            Color iL = lightSource.getIntensity(gp.point);
+//            if (unshaded(gp, l, n, lightSource)) {
+//                color = color.add(iL.scale(calcDiffusive(material, nl)),
+//                        iL.scale(calcSpecular(material, n, l, nl, v)));
+//            }
         }
         return color;
     }
@@ -163,10 +174,10 @@ public class RayTracerBasic extends RayTracerBase {
         Vector r;
 
         //the specular vector, to check the match between it and the camera to vector.
-        if(isZero(2*nl)){
+        if (isZero(2 * nl)) {
             return Double3.ZERO;
             //r = l;
-        }else {
+        } else {
             r = l.subtract(n.scale(2 * nl)).normalize();
         }
         double vr = -v.dotProduct(r);
@@ -226,6 +237,32 @@ public class RayTracerBasic extends RayTracerBase {
         return true;
     }
 
+    /**
+     * calculates the mult of all the intersections of the shadow ray
+     *
+     * @param gp             the point of intersection
+     * @param ls             the light source, for hte distance calculation
+     * @param lightDirection the direction from the light source to the point
+     * @param n              the normal vector to the point of the intersection
+     * @return the mult of all the points of intersection from the point to the light source.
+     */
+    private Double3 transparency(GeoPoint gp, LightSource ls, Vector lightDirection, Vector n) {
+
+        //the ray from the modified point to the light source.
+        Ray lightRay = new Ray(gp.point, lightDirection.scale(-1), n);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+
+        Double3 ktr = new Double3(1.0);
+
+        if (intersections == null) return ktr;
+
+        for (GeoPoint shadeGp : intersections) {
+            if (ls.getDistance(gp.point) > gp.point.distance(shadeGp.point))
+                ktr = ktr.product(shadeGp.geometry.getMaterial().kT);
+        }
+        return ktr;
+    }
+
 
     /**
      * the function calculate the reflected ray.
@@ -274,5 +311,6 @@ public class RayTracerBasic extends RayTracerBase {
         //returning the result
         return closestGeoPoint;
     }
+
 
 }
