@@ -1,5 +1,6 @@
 package renderer;
 
+import geometries.Plane;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -7,6 +8,7 @@ import primitives.Color;
 
 import java.util.MissingResourceException;
 
+import static java.lang.Math.sqrt;
 import static primitives.Util.*;
 
 enum CAMERA_ROTATION {ROLL, TRANSFORM};
@@ -27,6 +29,14 @@ public class Camera {
     private double height;
     private double width;
     private double distance;
+
+
+    /////Aperture properties.///////
+    private final int NUMBER_OF_POINTS = 64; // number with integer square for the matrix of points.
+    private final double FP_DISTANCE = 200;
+    private Point[] aperturePoints;
+    private final Plane FOCAL_PLANE;
+    private double apertureSize;
 
     /**
      * the camera constructor, there is only constructor that contains parameters.
@@ -49,6 +59,11 @@ public class Camera {
 
         //calculation of the right vector according to the cross product of the given vectors.
         this.right = this.to.crossProduct(this.up).normalize();
+
+
+        ////initialize field parameters.
+        this.FOCAL_PLANE = new Plane(this.location.add(this.to.scale(FP_DISTANCE)), this.to);
+        this.apertureSize = 0;
     }
 
     /**
@@ -76,6 +91,41 @@ public class Camera {
     }
 
     /**
+     * @param size
+     * @return
+     */
+    public Camera setApertureSize(double size) {
+        this.apertureSize = size;
+
+        /////initializing the points of the aperture.
+        if(size != 0) initializeAperturePoint();
+
+        return this;
+    }
+
+    /**
+     *
+     */
+    private void initializeAperturePoint() {
+        int pointsInRow = (int) sqrt(NUMBER_OF_POINTS);
+
+        this.aperturePoints = new Point[pointsInRow * pointsInRow];
+
+        double pointsDistance = (this.apertureSize * 2) / pointsInRow;
+        Point initialPoint = this.location
+                .add(this.up.scale(-this.apertureSize - pointsDistance / 2)
+                        .add(this.right.scale(-this.apertureSize - pointsDistance / 2)));
+
+        for (int i = 1; i <= pointsInRow; i++) {
+            for (int j = 1; j <= pointsInRow; j++) {
+                this.aperturePoints[(i - 1) + (j - 1) * pointsInRow] = initialPoint
+                        .add(this.up.scale(i * pointsDistance).add(this.right.scale(j * pointsDistance)));
+            }
+        }
+    }
+
+
+    /**
      * creates the ray from the camera to the pixel that is given by the i,j indexes.
      * the resolution of the view plane.
      *
@@ -93,10 +143,10 @@ public class Camera {
         // The ratio Ry = h/Ny, the height of the pixel.
         double rY = alignZero(height / nY);
 
-        // The ratio Rx = w/Nx, the width of the pixel
+        // The ratio Rx = w/Nx, the width of the pixel.
         double rX = alignZero(width / nX);
 
-        //calculating the ratio in witch the vectors of the
+        // calculating the ratio in witch the vectors of the
         // view plain needs to be scaled in order to get the correct point.
         double xJ = alignZero((j - ((nX - 1) / 2.0)) * rX);
         double yI = alignZero(-(i - ((nY - 1) / 2.0)) * rY);
@@ -216,8 +266,25 @@ public class Camera {
     private Color castRay(int nX, int nY, int col, int row) {
         Color pixelColor;
         Ray ray = this.constructRay(nX, nY, col, row);
-        pixelColor = rayTracer.traceRay(ray);
+        pixelColor = isZero(this.apertureSize) ? rayTracer.traceRay(ray) : averagedBeamColor(ray);
         return pixelColor;
+    }
+
+    /**
+     * @param ray
+     * @return
+     */
+    private Color averagedBeamColor(Ray ray) {
+        Color averageColor = Color.BLACK, apertureColor;
+        int numOfPoints = this.aperturePoints.length;
+        Ray apertureRay;
+        Point focalPoint = this.FOCAL_PLANE.findGeoIntersections(ray).get(0).point;
+        for (Point aperturePoint : this.aperturePoints) {
+            apertureRay = new Ray(aperturePoint, focalPoint.subtract(aperturePoint));
+            apertureColor = rayTracer.traceRay(apertureRay);
+            averageColor = averageColor.add(apertureColor.reduce(numOfPoints));
+        }
+        return averageColor;
     }
 
     /**
@@ -342,7 +409,7 @@ public class Camera {
      */
     public Camera cameraMove(Point from, Point to) {
 
-        if(from.equals(to))
+        if (from.equals(to))
             throw new IllegalArgumentException();
 
         //initialize the location of the camera to be the "from" point.
