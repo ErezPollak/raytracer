@@ -33,10 +33,13 @@ public class Camera {
 
     /////Aperture properties.///////
     private final int NUMBER_OF_POINTS = 64; // number with integer square for the matrix of points.
-    private final double FP_DISTANCE = 200;
-    private Point[] aperturePoints;
-    private final Plane FOCAL_PLANE;
     private double apertureSize;
+    private Point[] aperturePoints;
+
+    //the focal plane parameters.
+    private final double FP_DISTANCE = 500;// as instructed it is a constant value of the class.
+    private final Plane FOCAL_PLANE;
+
 
     /**
      * the camera constructor, there is only constructor that contains parameters.
@@ -61,9 +64,11 @@ public class Camera {
         this.right = this.to.crossProduct(this.up).normalize();
 
 
-        ////initialize field parameters.
+        ////initialize DoF parameters.
         this.FOCAL_PLANE = new Plane(this.location.add(this.to.scale(FP_DISTANCE)), this.to);
         this.apertureSize = 0;
+
+
     }
 
     /**
@@ -91,31 +96,39 @@ public class Camera {
     }
 
     /**
-     * @param size
-     * @return
+     * setting the aperture size as the given parameter, and initialize the points array.
+     *
+     * @param size the given parameter.
+     * @return the camera itself for farther initialization.
      */
     public Camera setApertureSize(double size) {
         this.apertureSize = size;
 
         /////initializing the points of the aperture.
-        if(size != 0) initializeAperturePoint();
+        if (size != 0) initializeAperturePoint();
 
         return this;
     }
 
+
     /**
-     *
+     * the function that initialize the aperture size and the points that it represents.
      */
     private void initializeAperturePoint() {
+        //the number of points in a row
         int pointsInRow = (int) sqrt(NUMBER_OF_POINTS);
 
+        //the array of point saved as an array
         this.aperturePoints = new Point[pointsInRow * pointsInRow];
 
+        //calculating the initial values.
         double pointsDistance = (this.apertureSize * 2) / pointsInRow;
+        //calculte the initial point to be the point with coordinates outside the aperture in the down left point, so we won`t have to deal with illegal vectors.
         Point initialPoint = this.location
                 .add(this.up.scale(-this.apertureSize - pointsDistance / 2)
                         .add(this.right.scale(-this.apertureSize - pointsDistance / 2)));
 
+        //initializing the points array
         for (int i = 1; i <= pointsInRow; i++) {
             for (int j = 1; j <= pointsInRow; j++) {
                 this.aperturePoints[(i - 1) + (j - 1) * pointsInRow] = initialPoint
@@ -271,8 +284,10 @@ public class Camera {
     }
 
     /**
-     * @param ray
-     * @return
+     * the function that goes through every point in the array and calculate the average color.
+     *
+     * @param ray the original ray to construct the surrounding beam.
+     * @return the average color of the beam.
      */
     private Color averagedBeamColor(Ray ray) {
         Color averageColor = Color.BLACK, apertureColor;

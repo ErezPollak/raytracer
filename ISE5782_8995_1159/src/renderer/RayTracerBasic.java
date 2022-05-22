@@ -274,6 +274,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Ray constructReflectedRay(Vector n, Point intersection, Vector rayVector) {
         double scale = -2 * rayVector.dotProduct(n);
+        if(isZero(scale)) return new Ray(intersection, n,n);
         return new Ray(intersection, rayVector.add(n.scale(scale)), n);
     }
 

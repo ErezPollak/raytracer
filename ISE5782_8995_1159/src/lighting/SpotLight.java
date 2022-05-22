@@ -4,7 +4,7 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
-enum NarrowBeamArchitecture{DAN_ARCHITECTURE, MY_ARCHITECTURE};
+;
 
 /**
  *
@@ -42,13 +42,9 @@ public class SpotLight extends PointLight implements LightSource {
      * @param i the new angle to the narrow.
      * @return the spotlight after the change.
      */
-    public SpotLight setNarrowBeam(int i) {
-
+    public SpotLight setNarrowBeam(NarrowBeamArchitecture architecture, int i) {
+        this.ARCHITECTURE = architecture;
         this.narrowBeam = ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE ? i : Math.cos(Math.toRadians(i));
-
-        //this.narrowBeam = Math.cos(Math.toRadians(i));
-        //this.narrowBeam = i;
-
         return this;
     }
 

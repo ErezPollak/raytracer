@@ -97,7 +97,7 @@ public class LightsTests {
     public void sphereSpotSharp() {
         scene1.geometries.add(sphere);
         scene1.lights
-                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setNarrowBeam(5).setKl(0.001).setKq(0.0002));
+                .add(new SpotLight(spCL, spPL, new Vector(1, 1, -1.1)).setNarrowBeam(NarrowBeamArchitecture.MY_ARCHITECTURE , 20).setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharp", 500, 500);
         camera1.setImageWriter(imageWriter) //
@@ -158,7 +158,7 @@ public class LightsTests {
     @Test
     public void trianglesSpotSharp() {
         scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(5).setKl(0.001).setKq(0.00004));
+        scene2.lights.add(new SpotLight(trCL, trPL, trDL).setNarrowBeam(NarrowBeamArchitecture.DAN_ARCHITECTURE, 5).setKl(0.001).setKq(0.00004));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesSpotSharp", 500, 500);
         camera2.setImageWriter(imageWriter) //
@@ -183,7 +183,7 @@ public class LightsTests {
                 ))
                 .setLights(List.of(
                         new SpotLight(new Color(WHITE),new Point(0,0,100), new Vector(0,0,-1))
-                                .setNarrowBeam(10).setKl(0.00001).setKq(0.00002))
+                                .setNarrowBeam(NarrowBeamArchitecture.DAN_ARCHITECTURE, 10).setKl(0.00001).setKq(0.00002))
                 );
 
 
@@ -268,7 +268,7 @@ public class LightsTests {
         generalScene.lights.add(
                 new DirectionalLight(new Color(YELLOW), new Vector(1, -1, -0.5)));
         generalScene.lights.add(
-                new SpotLight(new Color(WHITE), spotLocation, new Vector(-1, 0, 0)).setNarrowBeam(30).setKl(0.0000001).setKq(0.0000002));
+                new SpotLight(new Color(WHITE), spotLocation, new Vector(-1, 0, 0)).setNarrowBeam( NarrowBeamArchitecture.DAN_ARCHITECTURE, 30).setKl(0.0000001).setKq(0.0000002));
         generalScene.lights.add(
                 new PointLight(new Color(WHITE), pointLocation).setKl(0.00001).setKq(0.00002));
 
