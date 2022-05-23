@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import lighting.*;
 import geometries.*;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
 import java.util.List;
@@ -127,8 +126,16 @@ public class LightsTests {
      */
     @Test
     public void trianglesPoint() {
-        scene2.geometries.add(triangle1, triangle2);
-        scene2.lights.add(new PointLight(trCL, trPL).setKl(0.001).setKq(0.0002));
+
+
+        Geometry sphere = new Sphere(new Point(20,50,-100),30)
+                .setMaterial(new Material().setKs(0.5).setKd(0.5).setShininess(300))
+                .setEmission(new Color(RED));
+
+        scene2.geometries.add(triangle1, triangle2,sphere);
+        scene2.lights.add(new SpotLight(trCL, new Point(30,-50,-100), new Vector(0,1,0))
+        //scene2.lights.add(new PointLight(trCL, new Point(30,-50,-100))
+                .setKl(0.001).setKq(0.0002).setRadius(10));
 
         ImageWriter imageWriter = new ImageWriter("lightTrianglesPoint", 500, 500);
         camera2.setImageWriter(imageWriter) //
@@ -142,6 +149,7 @@ public class LightsTests {
      */
     @Test
     public void trianglesSpot() {
+
         scene2.geometries.add(triangle1, triangle2);
         scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
 

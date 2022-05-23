@@ -1,6 +1,9 @@
 package renderer;
 
+import lighting.DirectionalLight;
 import lighting.LightSource;
+import lighting.PointLight;
+import lighting.SpotLight;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
@@ -141,21 +144,21 @@ public class RayTracerBasic extends RayTracerBase {
             double nl = alignZero(l.dotProduct(n));
 
             if (nl * nv > 0) {
+
                 Double3 ktr = transparency(gp, lightSource, l, n);
-                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
-                    Color iL = lightSource.getIntensity(gp.point).scale(ktr);
-                    color = color.add(iL.scale(calcDiffusive(material, nl)),
-                            iL.scale(calcSpecular(material, n, l, nl, v)));
-                }
+                double heatRate = heatPercentageColor(lightSource, gp);
+
+                Color iL = lightSource.getIntensity(gp.point).scale(heatRate);
+
+                iL = !ktr.product(k).lowerThan(MIN_CALC_COLOR_K) || heatRate == 1.0 ? iL.scale(ktr) : iL;
+
+                color = color.add(iL.scale(calcDiffusive(material, nl)),
+                        iL.scale(calcSpecular(material, n, l, nl, v)));
+
             }
-
-
-//            Color iL = lightSource.getIntensity(gp.point);
-//            if (unshaded(gp, l, n, lightSource)) {
-//                color = color.add(iL.scale(calcDiffusive(material, nl)),
-//                        iL.scale(calcSpecular(material, n, l, nl, v)));
-//            }
         }
+
+
         return color;
     }
 
@@ -274,7 +277,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Ray constructReflectedRay(Vector n, Point intersection, Vector rayVector) {
         double scale = -2 * rayVector.dotProduct(n);
-        if(isZero(scale)) return new Ray(intersection, n,n);
+        if (isZero(scale)) return new Ray(intersection, n, n);
         return new Ray(intersection, rayVector.add(n.scale(scale)), n);
     }
 
@@ -289,6 +292,12 @@ public class RayTracerBasic extends RayTracerBase {
         return new Ray(intersection, incomeRayVector, normal);
     }
 
+    /**
+     * the function that replaces the ray function of find intersection.
+     *
+     * @param ray the ray to find intersection for.
+     * @return the closest intersection.
+     */
     private GeoPoint findClosestIntersection(Ray ray) {
 
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
@@ -297,7 +306,7 @@ public class RayTracerBasic extends RayTracerBase {
             return null;
         }
 
-        //initializing the first values for comperation.
+        //initializing the first values for cooperation.
         GeoPoint closestGeoPoint = intersections.get(0);
         double distance = intersections.get(0).point.distance(ray.getPoint());
 
@@ -311,6 +320,39 @@ public class RayTracerBasic extends RayTracerBase {
 
         //returning the result
         return closestGeoPoint;
+    }
+
+    ////////////SOFT SHADOW////////////
+
+    /**
+     * the function that calculates the precentage of rays that heat by the object,
+     * from all the rays that were created by the points of hte light source.
+     *
+     * @param ls       the light source.
+     * @param geoPoint the intersection point.
+     * @return the percentage of rays that are heat by some object.
+     */
+    private double heatPercentageColor(LightSource ls, GeoPoint geoPoint) {
+
+        if (ls instanceof DirectionalLight)
+            return 1;
+        if (!(ls instanceof SpotLight)) {
+            ((PointLight) ls).initializePoints(geoPoint.point);
+        }
+        PointLight pl = (PointLight) ls;
+        if (pl.getPoints() == null)
+            return 1;
+        int counter = 0;
+        double distance = ls.getDistance(geoPoint.point);
+        Ray ray;
+        for (Point point : pl.getPoints()) {
+            ray = new Ray(geoPoint.point, point.subtract(geoPoint.point), point.subtract(geoPoint.point));
+            GeoPoint intersection = findClosestIntersection(ray);
+            if (intersection != null && distance > intersection.point.distance(geoPoint.point)) {
+                counter++;
+            }
+        }
+        return 1.0 - (double) counter / (double) pl.getNUMBER_OF_POINTS();
     }
 
 

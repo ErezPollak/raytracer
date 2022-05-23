@@ -1,6 +1,9 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.Color;
+import primitives.Point;
+import scene.Scene;
 
 /**
  * the abstract information about a light source.
@@ -25,4 +28,5 @@ abstract class Lighting {
     public Color getIntensity() {
         return this.intensity;
     }
+
 }

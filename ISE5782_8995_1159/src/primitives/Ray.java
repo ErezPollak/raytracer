@@ -39,7 +39,7 @@ public class Ray {
     public Ray(Point head, Vector direction, Vector normal) {
         double mult = direction.dotProduct(normal);
         this.point = head.add(normal.scale(mult >= 0 ? DELTA : -DELTA));
-        this.vector = direction;
+        this.vector = direction.normalize();
     }
 
     /**

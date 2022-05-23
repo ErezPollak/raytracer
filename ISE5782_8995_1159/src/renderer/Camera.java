@@ -32,14 +32,13 @@ public class Camera {
 
 
     /////Aperture properties.///////
-    private final int NUMBER_OF_POINTS = 64; // number with integer square for the matrix of points.
+    private final int NUMBER_OF_POINTS = 1000; // number with integer square for the matrix of points.
     private double apertureSize;
     private Point[] aperturePoints;
 
     //the focal plane parameters.
-    private final double FP_DISTANCE = 500;// as instructed it is a constant value of the class.
-    private final Plane FOCAL_PLANE;
-
+    private double FP_distance;// as instructed it is a constant value of the class.
+    private Plane FOCAL_PLANE;
 
     /**
      * the camera constructor, there is only constructor that contains parameters.
@@ -65,9 +64,7 @@ public class Camera {
 
 
         ////initialize DoF parameters.
-        this.FOCAL_PLANE = new Plane(this.location.add(this.to.scale(FP_DISTANCE)), this.to);
         this.apertureSize = 0;
-
 
     }
 
@@ -92,6 +89,13 @@ public class Camera {
      */
     public Camera setVPDistance(double distance) {
         this.distance = distance;
+        this.setFPDistance(distance);
+        return this;
+    }
+
+    public Camera setFPDistance(double distance){
+        this.FP_distance = distance;
+        this.FOCAL_PLANE = new Plane(this.location.add(this.to.scale(FP_distance)), this.to);
         return this;
     }
 
@@ -257,6 +261,7 @@ public class Camera {
                     Color pixelColor = castRay(Nx, Ny, j, i);
                     imageWriter.writePixel(j, i, pixelColor);
                 }
+                System.out.println(i +" / " + Nx);
             }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
@@ -282,6 +287,7 @@ public class Camera {
         pixelColor = isZero(this.apertureSize) ? rayTracer.traceRay(ray) : averagedBeamColor(ray);
         return pixelColor;
     }
+
 
     /**
      * the function that goes through every point in the array and calculate the average color.

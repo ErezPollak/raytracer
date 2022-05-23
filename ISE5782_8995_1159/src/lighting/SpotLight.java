@@ -70,4 +70,20 @@ public class SpotLight extends PointLight implements LightSource {
         return super.getIntensity(p).scale(degree);
     }
 
+    //////////SOFT SHADOW FUNCTIONS/////
+
+    @Override
+    public SpotLight setRadius(double radius) {
+        this.radius = radius;
+       this.initializePoints();
+        return this;
+    }
+
+        private void initializePoints() {
+        super.initializePoints(this.position.add(direction));
+    }
+
+
+
+
 }

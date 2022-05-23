@@ -4,6 +4,8 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+import java.util.Random;
+
 /**
  *
  */
@@ -12,7 +14,7 @@ public class PointLight extends Lighting implements LightSource{
     /**
      * the location of the lightSource.
      */
-    private Point position;
+    protected Point position;
 
     /**
      * the coefficients for the point light.
@@ -23,6 +25,16 @@ public class PointLight extends Lighting implements LightSource{
     private double kC = 1;
     private double kL = 0;
     private double kQ = 0;
+
+
+    ///////SOFT SHADOW FIELDS////////
+    protected double radius = 0;
+    private Point[] points;
+    private final int NUMBER_OF_POINTS = 1000;
+    private final Random rand = new Random();
+
+
+
 
     /**
      * ctor for initializing the intensity.
@@ -73,5 +85,70 @@ public class PointLight extends Lighting implements LightSource{
     public double getDistance(Point point) {
         return this.position.distance(point);
     }
+
+
+    /////////SOFT SHADOW FUNCTIONS/////////////
+
+    /**
+     * Sets the size of the array of points
+     *
+     * @param radius Size of the
+     * @return the Point light with array of point
+     */
+    public PointLight setRadius(double radius) {
+        this.radius = radius;
+        return this;
+    }
+
+    /**
+     * the function that calculates the array of points.
+     * @param p the point to creat the points on the plain that is orthogonal to
+     *          the vector between it and the light location.
+     */
+    public void initializePoints(Point p) {
+        if (radius == 0)
+            return;
+        this.points = new Point[this.NUMBER_OF_POINTS];
+        Vector n = p.subtract(position).normalize();
+        Vector vX = getOrthogonal(n).normalize();
+        Vector vY = vX.crossProduct(n).normalize();
+        double x, y, radius;
+        for (int i = 0; i < NUMBER_OF_POINTS; i += 4) {
+            radius = rand.nextDouble(this.radius);
+            x = rand.nextDouble(radius);
+            y = getCircleScale(x, radius);
+            for (int j = 0; j < 4; j++) {
+                points[i + j] = position.add(vX.scale(j % 2 == 0 ? x : -x)).add(vY.scale((j <= 1 ? -y : y)));//TODO debug
+            }
+        }
+    }
+
+    /**
+     * creates an orthogonal vector to a given vector.
+     * @param vector the vector to find the orthogonal to.
+     * @return the orthogonal vector.
+     */
+    private Vector getOrthogonal(Vector vector) {
+        return vector.getX() == 0 ? new Vector(1, 0, 0) : new Vector(-vector.getY(), vector.getX(), 0);
+    }
+
+    /**
+     * Pythagoras function.
+     * @param x the x value of the triengle.
+     * @param radius the radios of the circle
+     * @return the y value of the poit
+     */
+    private double getCircleScale(double x, double radius) {
+        return Math.sqrt(radius * radius - x * x);
+    }
+
+    public Point[] getPoints() {
+        return this.points;
+    }
+
+    public int getNUMBER_OF_POINTS() {
+        return this.NUMBER_OF_POINTS;
+    }
+
 
 }

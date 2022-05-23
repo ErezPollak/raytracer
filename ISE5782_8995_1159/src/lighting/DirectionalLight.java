@@ -1,13 +1,16 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+import scene.Scene;
 
 /**
  *
  */
-public class DirectionalLight extends Lighting implements LightSource{
+public class DirectionalLight extends Lighting implements LightSource {
 
     /**
      * the direction of the light.
@@ -26,6 +29,7 @@ public class DirectionalLight extends Lighting implements LightSource{
 
     /**
      * returns the light of the directional light on a point on an object.
+     *
      * @param p the point on the geometry.
      * @return the light on the object.
      */
@@ -36,6 +40,7 @@ public class DirectionalLight extends Lighting implements LightSource{
 
     /**
      * the direction of the light.
+     *
      * @param p the point on the geometry.
      * @return the direction of the light.
      */
@@ -48,4 +53,6 @@ public class DirectionalLight extends Lighting implements LightSource{
     public double getDistance(Point point) {
         return Double.POSITIVE_INFINITY;
     }
+
+
 }
