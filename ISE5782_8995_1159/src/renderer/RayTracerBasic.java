@@ -145,20 +145,22 @@ public class RayTracerBasic extends RayTracerBase {
 
             if (nl * nv > 0) {
 
-                Double3 ktr = transparency(gp, lightSource, l, n);
-                double heatRate = heatPercentageColor(lightSource, gp);
+                Double3 heatRate = heatPercentageColor(lightSource, gp, n);//the percentage of rays that intersect with the lithgsourrce.
 
-                Color iL = lightSource.getIntensity(gp.point).scale(heatRate);
+                Color iL = lightSource.getIntensity(gp.point);
 
-                iL = !ktr.product(k).lowerThan(MIN_CALC_COLOR_K) || heatRate == 1.0 ? iL.scale(ktr) : iL;
+                if (!heatRate.equals(new Double3(-1, -1, -1))) {
+                    //System.out.println(heatRate);
+                    iL = iL.scale(heatRate);
+                } else {
+                    iL = iL.scale(transparency(gp, lightSource, l, n));
+                }
 
                 color = color.add(iL.scale(calcDiffusive(material, nl)),
                         iL.scale(calcSpecular(material, n, l, nl, v)));
 
             }
         }
-
-
         return color;
     }
 
@@ -325,34 +327,32 @@ public class RayTracerBasic extends RayTracerBase {
     ////////////SOFT SHADOW////////////
 
     /**
-     * the function that calculates the precentage of rays that heat by the object,
+     * the function that calculates the percentage of rays that heat by the object,
      * from all the rays that were created by the points of hte light source.
      *
      * @param ls       the light source.
      * @param geoPoint the intersection point.
      * @return the percentage of rays that are heat by some object.
      */
-    private double heatPercentageColor(LightSource ls, GeoPoint geoPoint) {
+    private Double3 heatPercentageColor(LightSource ls, GeoPoint geoPoint, Vector n) {
 
         if (ls instanceof DirectionalLight)
-            return 1;
+            return new Double3(1, 1, 1);
         if (!(ls instanceof SpotLight)) {
             ((PointLight) ls).initializePoints(geoPoint.point);
         }
         PointLight pl = (PointLight) ls;
         if (pl.getPoints() == null)
-            return 1;
-        int counter = 0;
-        double distance = ls.getDistance(geoPoint.point);
-        Ray ray;
+            return new Double3(-1, -1, -1);
+
+        Double3 average = Double3.ZERO;
+
         for (Point point : pl.getPoints()) {
-            ray = new Ray(geoPoint.point, point.subtract(geoPoint.point), point.subtract(geoPoint.point));
-            GeoPoint intersection = findClosestIntersection(ray);
-            if (intersection != null && distance > intersection.point.distance(geoPoint.point)) {
-                counter++;
-            }
+
+            average = average.add(transparency(geoPoint, ls, geoPoint.point.subtract(point), n).reduce(pl.getNUMBER_OF_POINTS()));
         }
-        return 1.0 - (double) counter / (double) pl.getNUMBER_OF_POINTS();
+
+        return average;
     }
 
 

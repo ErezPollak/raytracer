@@ -21,7 +21,7 @@ public class softShadowTest {
         Intersectable sphere = new Sphere(new Point(0, 0, -200), 60d) //
                 .setEmission(new Color(BLUE)) //
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30));
-        Material trMaterial = new Material().setKd(0.5).setKs(0.5).setShininess(30);
+        Material trMaterial = new Material().setKd(0.2).setKs(0.3).setShininess(30);
         Geometry triangle = new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4))
                 .setEmission(new Color(BLUE)).setMaterial(trMaterial);
         Scene scene = new Scene("TestScene");
@@ -29,10 +29,10 @@ public class softShadowTest {
                 .setVPSize(200, 200).setVPDistance(1000) //
                 .setRayTracer(new RayTracerBasic(scene));
 
-        scene.geometries.add(sphere, triangle.setEmission(new Color(BLUE)).setMaterial(trMaterial));
+        scene.geometries.add(sphere, triangle.setEmission(new Color(BLUE)).setMaterial(trMaterial.setKt(0.5)));
         scene.lights.add( //
                 new SpotLight(new Color(400, 240, 0), new Point(-90, -90, 200), new Vector(1, 1, -3)) //
-                        .setKl(1E-5).setKq(1.5E-7).setRadius(0));
+                        .setKl(1E-5).setKq(1.5E-7).setRadius(5));
         camera.setImageWriter(new ImageWriter("softShadowTest", 500, 500)) //
                 .renderImage() //
                 .writeToImage();
