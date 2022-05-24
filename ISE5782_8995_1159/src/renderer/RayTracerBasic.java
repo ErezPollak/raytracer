@@ -150,7 +150,6 @@ public class RayTracerBasic extends RayTracerBase {
                 Color iL = lightSource.getIntensity(gp.point);
 
                 if (!heatRate.equals(new Double3(-1, -1, -1))) {
-                    //System.out.println(heatRate);
                     iL = iL.scale(heatRate);
                 } else {
                     iL = iL.scale(transparency(gp, lightSource, l, n));
@@ -338,17 +337,16 @@ public class RayTracerBasic extends RayTracerBase {
 
         if (ls instanceof DirectionalLight)
             return new Double3(1, 1, 1);
-        if (!(ls instanceof SpotLight)) {
-            ((PointLight) ls).initializePoints(geoPoint.point);
+        if (!(ls instanceof SpotLight)) {//means that this is the point light.
+            ((PointLight) ls).initializePoints(geoPoint.point);//so need to initialize the points vector.
         }
         PointLight pl = (PointLight) ls;
-        if (pl.getPoints() == null)
+        if (pl.getPoints() == null)//means that the light sours has no size thus we have to return the code that indicates so.
             return new Double3(-1, -1, -1);
 
+        //if this is a relevant light source, and it has size, we are iterating over the points of the light source and averaging the transparency of all of them.
         Double3 average = Double3.ZERO;
-
         for (Point point : pl.getPoints()) {
-
             average = average.add(transparency(geoPoint, ls, geoPoint.point.subtract(point), n).reduce(pl.getNUMBER_OF_POINTS()));
         }
 

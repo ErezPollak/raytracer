@@ -4,6 +4,7 @@ import static java.awt.Color.BLUE;
 import static java.awt.Color.gray;
 
 import geometries.Geometry;
+import geometries.Intersectable;
 import geometries.Plane;
 import geometries.Sphere;
 import lighting.DirectionalLight;
@@ -36,17 +37,7 @@ public class DepthOfFieldTest {
     @Test
     void testDepthOfField() {
 
-
         Scene scene = new Scene("Test scene");
-
-//        Geometry sphere1 = new Sphere(new Point(0, 0, -50), 50d) //
-//                .setEmission(new Color(BLUE).reduce(2)) //
-//                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
-//
-//        Geometry sphere2 = new Sphere(new Point(10, 0, 800), 4) //
-//                .setEmission(new Color(BLUE).reduce(2)) //
-//                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
-
 
         Geometry[] spheres = new Sphere[10];
 
@@ -63,13 +54,16 @@ public class DepthOfFieldTest {
         Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(1000)
+
                 //moving camera.
                 //.cameraMove(new Point(0, 100, -500), new Point(0, 0, 0))
                 //.setVPDistance(500)
                 //.cameraRoll(-5)
+
                 //set the DoF.
                 .setFPDistance(500)
-                .setApertureSize(5);
+                .setApertureSize(1);
+                //.setAlias(true);
 
 
         //scene.geometries.add(sphere1, sphere2);
@@ -85,6 +79,5 @@ public class DepthOfFieldTest {
                 .writeToImage(); //
 
     }
-
 
 }

@@ -28,17 +28,21 @@ public class Camera {
     ////view plain properties.
     private double height;
     private double width;
-    private double distance;
+    private double VP_distance;
 
 
     /////Aperture properties.///////
-    private final int NUMBER_OF_POINTS = 1000; // number with integer square for the matrix of points.
+    private final int APERTURE_NUMBER_OF_POINTS = 100; // number with integer square for the matrix of points.
     private double apertureSize;
     private Point[] aperturePoints;
-
     //the focal plane parameters.
     private double FP_distance;// as instructed it is a constant value of the class.
     private Plane FOCAL_PLANE;
+
+    ////////Anti Aliasing params///////
+    private boolean alias = false;
+    private final int PIXEL_NUMBER_OF_POINTS = 100;
+    private Vector[][] relativeVectors;
 
     /**
      * the camera constructor, there is only constructor that contains parameters.
@@ -88,16 +92,17 @@ public class Camera {
      * @return
      */
     public Camera setVPDistance(double distance) {
-        this.distance = distance;
+        this.VP_distance = distance;
         this.setFPDistance(distance);
         return this;
     }
 
-    public Camera setFPDistance(double distance){
+    public Camera setFPDistance(double distance) {
         this.FP_distance = distance;
         this.FOCAL_PLANE = new Plane(this.location.add(this.to.scale(FP_distance)), this.to);
         return this;
     }
+
 
     /**
      * setting the aperture size as the given parameter, and initialize the points array.
@@ -120,7 +125,7 @@ public class Camera {
      */
     private void initializeAperturePoint() {
         //the number of points in a row
-        int pointsInRow = (int) sqrt(NUMBER_OF_POINTS);
+        int pointsInRow = (int)sqrt(this.APERTURE_NUMBER_OF_POINTS);
 
         //the array of point saved as an array
         this.aperturePoints = new Point[pointsInRow * pointsInRow];
@@ -141,6 +146,10 @@ public class Camera {
         }
     }
 
+    public Camera setAlias(boolean alias) {
+        this.alias = alias;
+        return this;
+    }
 
     /**
      * creates the ray from the camera to the pixel that is given by the i,j indexes.
@@ -155,7 +164,7 @@ public class Camera {
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         // Calculate the ratio of the pixel by the height and by the width of the view plane.
-        Point pC = location.add(to.scale(distance));
+        Point pC = location.add(to.scale(VP_distance));
 
         // The ratio Ry = h/Ny, the height of the pixel.
         double rY = alignZero(height / nY);
@@ -250,10 +259,13 @@ public class Camera {
             if (width == 0) {
                 throw new MissingResourceException("missing resource", double.class.getName(), "");
             }
-            if (distance == 0) {
+            if (VP_distance == 0) {
                 throw new MissingResourceException("missing resource", double.class.getName(), "");
             }
+
             int Nx = imageWriter.getNx(), Ny = imageWriter.getNy();
+
+            if (this.alias) initializePixelVector(Nx, Ny);
 
             //Go all over the matrix, and create ray and get color for each pixel.
             for (int i = 0; i < Nx; i++) {
@@ -261,7 +273,7 @@ public class Camera {
                     Color pixelColor = castRay(Nx, Ny, j, i);
                     imageWriter.writePixel(j, i, pixelColor);
                 }
-                System.out.println(i +" / " + Nx);
+                System.out.println(i + " / " + Nx);
             }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
@@ -272,6 +284,35 @@ public class Camera {
     }
 
     /**
+     * initializing the matrix of vectors that used to move the point in order to calculate the color.
+     *
+     * @param nX the resolution values for the picture.
+     * @param nY
+     */
+    private void initializePixelVector(int nX, int nY) {
+        int sqrt = (int) Math.sqrt(PIXEL_NUMBER_OF_POINTS);
+        int arraySize = sqrt % 2 == 0 ? sqrt + 1 : sqrt;
+
+        this.relativeVectors = new Vector[arraySize + 1][arraySize + 1];
+
+        double pixelWidth = this.width / nX;
+        double pixelHeight = this.height / nY;
+
+        double xInterval = pixelHeight / arraySize;
+        double yInterval = pixelWidth / arraySize;
+
+        for (int i = 1; i <= arraySize + 1; i++) {
+            for (int j = 1; j <= arraySize + 1; j++) {
+                this.relativeVectors[i - 1][j - 1] =
+                        this.up.scale(i * xInterval).add(this.up.scale(-pixelHeight / 2 - xInterval))
+                                .add(this.right.scale(j * yInterval).add(this.right.scale(-pixelWidth / 2 - yInterval)))
+                                .scale(1/this.VP_distance);
+            }
+        }
+
+    }
+
+    /**
      * The function calculates the color of the given pixel, according to the ray.
      *
      * @param nX  represents the amount of columns, the  width of a row.
@@ -279,13 +320,28 @@ public class Camera {
      *            the index of the pixel on the view plane.
      * @param col represents the column.
      * @param row represents the row.
-     * @return
+     * @areturn
      */
     private Color castRay(int nX, int nY, int col, int row) {
         Color pixelColor;
         Ray ray = this.constructRay(nX, nY, col, row);
-        pixelColor = isZero(this.apertureSize) ? rayTracer.traceRay(ray) : averagedBeamColor(ray);
+        pixelColor = isZero(this.apertureSize) ?
+                (this.alias ? traceBeam(ray) : rayTracer.traceRay(ray))
+                : averagedBeamColor(ray);
         return pixelColor;
+    }
+
+    private Color traceBeam(Ray ray) {
+        Color average = Color.BLACK;
+        Ray movingRay;
+        int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
+        for (Vector[] array : this.relativeVectors) {
+            for (Vector v : array) {
+                movingRay = new Ray(ray.getPoint() , ray.getVector().add(v));
+                average = average.add(rayTracer.traceRay(movingRay).reduce(actualNumberOfPoints));
+            }
+        }
+        return average;
     }
 
 
