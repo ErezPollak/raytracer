@@ -6,8 +6,11 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
+
 public class Tube extends Geometry {
-    protected  double raduis;
+    protected double raduis;
     protected Ray ray;
 
     public Vector getNormal() {
@@ -16,6 +19,7 @@ public class Tube extends Geometry {
 
     /**
      * Tube Constructor
+     *
      * @param raduis
      * @param ray
      */
@@ -26,6 +30,7 @@ public class Tube extends Geometry {
 
     /**
      * Get raduis of tube.
+     *
      * @return
      */
     public double getRaduis() {
@@ -34,6 +39,7 @@ public class Tube extends Geometry {
 
     /**
      * Get ray of tube.
+     *
      * @return
      */
     public Ray getRay() {
@@ -61,19 +67,119 @@ public class Tube extends Geometry {
         return p.subtract(rayPoint).normalize();
     }
 
-//    /**
-//     * Finds the intersections of the ray with the tube
-//     * @param ray
-//     * @return
-//     */
-//    @Override
-//    public List<Point> findIntersections(Ray ray)
-//    {
-//        return null;
-//    }
-
+    /**
+     * find intersection points between ray and 3D tube
+     *
+     * @param ray ray towards the sphere
+     * @return immutable list containing 0/1/2 intersection points as {@link GeoPoint}s objects
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        Vector v = ray.getVector();
+        Vector vt = this.ray.getVector();
+        Point pa = this.ray.getPoint();
+        Point p0 = ray.getPoint();
+
+        // ray is parallel to tube
+        if (v.equals(vt))
+            return null;
+
+        /**
+         * link for formula explanation
+         * @link https://mrl.cs.nyu.edu/~dzorin/rend05/lecture2.pdf
+         */
+
+        // glossary : (p,v) = dot product of p,v
+        //              ∆p = vector from tube point to ray point
+        //              v = tube's direction vector
+        //              vt = ray's direction vector
+        //------------------------------------------------------
+        // two points found by scaling ray by t1,t2 scalars
+        // t1,t2 = results of polynomial equation At^2 + Bt + C = 0
+        // where:
+        // A = (v -(v,vt)*vt)²
+        // B = 2 * (v -(v,vt)*vt , ∆p - (∆p,vt)*vt)
+        // C = (∆p - (∆p,vt)*vt)² - radius²
+
+        double vvt, a, b, c;
+        // calculate (v,vt)
+        vvt = v.dotProduct(vt);
+
+        Vector vMinusVt = null;
+        Vector delta = null;
+
+        // scaling factor == 0 ->  A = v²
+        if (isZero(vvt))
+            a = v.lengthSquared();
+        else { // scaling factor != 0 -> A = (v -(v,vt)*vt)²
+            vMinusVt = v.subtract(vt.scale(vvt));
+            a = vMinusVt.lengthSquared();
+        }
+
+        // origin points are equal -> ∆p == 0
+        // -> B = 0, C = -radius²
+        if (p0.equals(pa)) {
+            b = 0;
+            c = -(raduis * raduis);
+        } else {
+
+            // calculate ∆p
+            delta = p0.subtract(pa);
+
+            // attempt to calculate B formula - if succeeded
+            // B and C will be calculated appropriately
+            // will fail if one of two occurs:
+            // 1. (∆p, vt) == 0 , cannot scale vector with 0
+            // 2. (∆p - (∆p , vt)vt) == 0 , dot product constructs vector(0,0,0)
+            // if exception is thrown , catch block calculates B,C appropriately
+            try {
+                Vector deltaMinusVt = delta.subtract(vt.scale(delta.dotProduct(vt)));
+                // vvt == 0 -> B = 2 * (v , ∆p - (∆p,vt)*vt)
+                if (isZero(vvt))
+                    b = 2 * v.dotProduct(deltaMinusVt);
+                    // vvt != 0
+                else
+                    b = 2 * (vMinusVt.dotProduct(deltaMinusVt));
+
+                c = deltaMinusVt.lengthSquared() - (raduis * raduis);
+            } catch (IllegalArgumentException ex) {
+                double scaleFactor = delta.dotProduct(vt);
+
+                // scale factor (∆p, vt) == 0
+                if (isZero(scaleFactor)) {
+                    b = 2 * v.dotProduct(delta);
+                    c = delta.lengthSquared() - (raduis * raduis);
+                }
+                // ∆p - (∆p , vt)vt == 0
+                else {
+                    b = 0;
+                    c = -(raduis * raduis);
+                }
+            }
+        }
+        // calculate roots of polynomial equation (-b+/- sqrt(b²-4ac))/2a
+        double discriminant = alignZero(b * b - 4 * a * c);
+
+        // results ∈ C -> no intersection points
+        if (discriminant <= 0)
+            return null;
+        else {
+            // calculate two roots - t1,t2
+            double t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+            double t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+            // root> 0 indicates that scaling factor is in
+            // forward direction of ray and , intersection occurs
+            // root < 0 indicates scale factor is in opposite direction
+            // no intersection occurs
+            if (t1 > 0 && t2 > 0)
+                return List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+            if (t1 > 0)
+                return List.of(new GeoPoint(this, ray.getPoint(t1)));
+            if (t2 > 0)
+                return List.of(new GeoPoint(this, ray.getPoint(t2)));
+        }
+
         return null;
     }
 }

@@ -15,6 +15,10 @@ enum CAMERA_ROTATION {ROLL, TRANSFORM};
 
 public class Camera {
 
+    //threading parameters
+    private double printInterval = 1;
+    private int threadsCount = 1;
+
     //camera location and vectors.
     private Point location;
     private Vector up;
@@ -73,6 +77,26 @@ public class Camera {
     }
 
     /**
+     * sets the print interval parameter.
+     * @param printInterval the new parameter.
+     * @return the fixed camera.
+     */
+    public Camera setPrintInterval(double printInterval) {
+        this.printInterval = printInterval;
+        return this;
+    }
+
+    /**
+     * sets the number of threads to a new number.
+     * @param threadsCount the ner threads number.
+     * @return the fixed camera.
+     */
+    public Camera setThreadsCount(int threadsCount) {
+        this.threadsCount = threadsCount;
+        return this;
+    }
+
+    /**
      * updates the height and width properties of the view plane, needed for the Builder architecture.
      *
      * @param width  the width of the plane.
@@ -125,7 +149,7 @@ public class Camera {
      */
     private void initializeAperturePoint() {
         //the number of points in a row
-        int pointsInRow = (int)sqrt(this.APERTURE_NUMBER_OF_POINTS);
+        int pointsInRow = (int) sqrt(this.APERTURE_NUMBER_OF_POINTS);
 
         //the array of point saved as an array
         this.aperturePoints = new Point[pointsInRow * pointsInRow];
@@ -268,13 +292,28 @@ public class Camera {
             if (this.alias) initializePixelVector(Nx, Ny);
 
             //Go all over the matrix, and create ray and get color for each pixel.
-            for (int i = 0; i < Nx; i++) {
-                for (int j = 0; j < Ny; j++) {
-                    Color pixelColor = castRay(Nx, Ny, j, i);
-                    imageWriter.writePixel(j, i, pixelColor);
-                }
-                System.out.println(i + " / " + Nx);
+            Pixel.initialize(Ny, Nx, printInterval);
+            while (threadsCount-- > 0) {
+                new Thread(() -> {
+                    for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
+                        //castRay(Nx, Ny, pixel.col, pixel.row);
+                        int i = pixel.row;
+                        int j = pixel.col;
+                        Color pixelColor = castRay(Nx, Ny, j, i);
+                        imageWriter.writePixel(j, i, pixelColor);
+                    }
+                }).start();
             }
+            Pixel.waitToFinish();
+
+
+//            for (int i = 0; i < Nx; i++) {
+//                for (int j = 0; j < Ny; j++) {
+//                    Color pixelColor = castRay(Nx, Ny, j, i);
+//                    imageWriter.writePixel(j, i, pixelColor);
+//                }
+//                System.out.println(i + " / " + Nx);
+//            }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
                     + e.getClassName());
@@ -306,7 +345,7 @@ public class Camera {
                 this.relativeVectors[i - 1][j - 1] =
                         this.up.scale(i * xInterval).add(this.up.scale(-pixelHeight / 2 - xInterval))
                                 .add(this.right.scale(j * yInterval).add(this.right.scale(-pixelWidth / 2 - yInterval)))
-                                .scale(1/this.VP_distance);
+                                .scale(1 / this.VP_distance);
             }
         }
 
@@ -331,17 +370,21 @@ public class Camera {
         return pixelColor;
     }
 
+    /**
+     * @param ray
+     * @return
+     */
     private Color traceBeam(Ray ray) {
         Color average = Color.BLACK;
         Ray movingRay;
         int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
         for (Vector[] array : this.relativeVectors) {
             for (Vector v : array) {
-                movingRay = new Ray(ray.getPoint() , ray.getVector().add(v));
-                average = average.add(rayTracer.traceRay(movingRay).reduce(actualNumberOfPoints));
+                movingRay = new Ray(ray.getPoint(), ray.getVector().add(v));
+                average = average.add(rayTracer.traceRay(movingRay));
             }
         }
-        return average;
+        return average.reduce(actualNumberOfPoints);
     }
 
 
@@ -484,7 +527,7 @@ public class Camera {
      * @param to   the point that the camera sees,
      * @return the camera after the changes.
      */
-    public Camera cameraMove(Point from, Point to) {
+    public Camera cameraMove(Point from, Point to, Vector up) {
 
         if (from.equals(to))
             throw new IllegalArgumentException();
@@ -493,25 +536,26 @@ public class Camera {
         this.location = from;
 
         //the const of the y vector.
-        Vector y = new Vector(0, 1, 0);
+        Vector upVector = up.normalize();
 
         //calculate the new to vector to be between the two given points.
         this.to = to.subtract(from).normalize();
 
         //if the to vector is on the y vector, we need to set the up vector with no parameters.
-        if (this.to.equals(y) || this.to.equals(y.scale(-1))) {
+        if (this.to.equals(upVector) || this.to.equals(upVector.scale(-1))) {
 
             //set the up vector to be the x vector.
-            this.up = new Vector(1, 0, 0);
+            this.up = upVector.getOrthogonal().normalize();
 
             //calculation of the right vector according to the cross product of the given vectors.
-            this.right = new Vector(0, 0, -this.to.getY());
+            this.right = this.to.crossProduct(this.up).normalize();
+            ;
 
             return this;
         }
 
         //calculate the right vector at first because we can know that the y vector and the to vector are its product..
-        this.right = this.to.crossProduct(y).normalize(); // finding the common vector is the dot product between their normals.
+        this.right = this.to.crossProduct(upVector).normalize(); // finding the common vector is the dot product between their normals.
 
         //the up vector is the cross product between the to vector and the common vector.
         this.up = this.right.crossProduct(this.to).normalize();

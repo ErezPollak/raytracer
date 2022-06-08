@@ -15,6 +15,8 @@ import primitives.Vector;
 import java.util.LinkedList;
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 public class Plane extends Geometry{
 
     private Point q0;
@@ -103,7 +105,7 @@ public class Plane extends Geometry{
         double t = (this.normal.dotProduct(this.q0.subtract(ray.getPoint())))/(this.normal.dotProduct(ray.getVector()));
 
         //if t is equal to zero, the point is on the plane, and it does not count.
-        if(t > 0) {
+        if(t > 0 && !isZero(t)) {
 
             //creating the list only if there is a need for that.
             LinkedList<GeoPoint> intersectionPoints = new LinkedList<>();

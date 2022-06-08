@@ -176,7 +176,7 @@ class CameraTest {
 
     /**
      * Test method for
-     * {@link renderer.Camera#cameraMove(Point, Point)}.
+     * {@link renderer.Camera#cameraMove(Point, Point,Vector)}.
      */
     @Test
     void testCameraMove() {
@@ -187,21 +187,21 @@ class CameraTest {
 
         // ============ Equivalence Partitions Tests ==============
         //TC01 the classic case.
-        Camera movedCamera = camera.cameraMove(new Point(0, 0, 0), new Point(1, -1, 0));
+        Camera movedCamera = camera.cameraMove(new Point(0, 0, 0), new Point(1, -1, 0), new Vector(0,1,0));
         Camera expectedCamera = new Camera(new Point(0, 0, 0), new Vector(1, -1, 0), new Vector(1, 1, 0));
 
         assertTrue(movedCamera.sameCameraVectorsAndLocation(expectedCamera), "camera is not in the expected place.");
 
         // =============== Boundary Values Tests ==================
         //TC02 the new line is on the y.
-        movedCamera = camera.cameraMove(new Point(0, 1, 0), new Point(0, -1, 0));
+        movedCamera = camera.cameraMove(new Point(0, 1, 0), new Point(0, -1, 0), new Vector(0,1,0));
         expectedCamera = new Camera(new Point(0, 1, 0), new Vector(0, -1, 0), new Vector(1, 0, 0));
 
         assertTrue(movedCamera.sameCameraVectorsAndLocation(expectedCamera), "camera is not in the expected place.");
 
 
         //TC03: assert throwing an exception when the points are teh same;
-        assertThrows(IllegalArgumentException.class, () -> camera.cameraMove(new Point(1, 1, 1), new Point(1, 1, 1)),
+        assertThrows(IllegalArgumentException.class, () -> camera.cameraMove(new Point(1, 1, 1), new Point(1, 1, 1), new Vector(0,1,0)),
                 "if the points are the same needs to throw an exception.");
 
     }

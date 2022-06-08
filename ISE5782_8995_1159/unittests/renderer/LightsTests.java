@@ -54,6 +54,9 @@ public class LightsTests {
 
         ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
         camera1.setImageWriter(imageWriter) //
+                .setAlias(true)
+                .setPrintInterval(1)
+                .setThreadsCount(4)
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage() //
                 .writeToImage(); //
@@ -70,6 +73,9 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
+                .setAlias(true)
+                .setPrintInterval(0.0001)
+                .setThreadsCount(10)
                 .renderImage() //
                 .writeToImage(); //
     }
@@ -80,6 +86,8 @@ public class LightsTests {
     @Test
     public void sphereSpot() {
         scene1.geometries.add(sphere);
+
+
         scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0002));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
@@ -192,7 +200,7 @@ public class LightsTests {
         Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(150)
-                .cameraMove(new Point(0, 0, 1000), new Point(0, 0, 0))
+                .cameraMove(new Point(0, 0, 1000), new Point(0, 0, 0), new Vector(0,1,0))
                 .cameraTransform(90).cameraRoll(0)
                 ;
 
@@ -224,6 +232,11 @@ public class LightsTests {
                 ;
 
         generalScene.geometries.add(
+
+                new Cylinder(new Ray(new Point(0,0,-50), new Vector(1,-1,-1)),10,1000)
+                        .setEmission(new Color(RED)) //
+                        .setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300).setKr(0.4)),
+
 
                 new Sphere(new Point(-70, 70, -100), 60)
                         .setEmission(new Color(RED).reduce(2)) //
@@ -277,6 +290,9 @@ public class LightsTests {
 
         ImageWriter imageWriter = new ImageWriter("lightSphereGeneralTest", 1000, 1000);
         generalCamera.setImageWriter(imageWriter) //
+                .setAlias(true)
+                .setThreadsCount(4)
+                .setPrintInterval(0.1)
                 .setRayTracer(new RayTracerBasic(generalScene)) //
                 .renderImage() //
                 .writeToImage(); //

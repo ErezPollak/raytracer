@@ -89,6 +89,15 @@ public class Vector extends Point{
     }
 
     /**
+     * creates an orthogonal vector to a given vector.
+     * @return the orthogonal vector.
+     */
+    public Vector getOrthogonal() {
+        return this.getX() == 0 ? new Vector(1, 0, 0) : new Vector(-this.xyz.d2, this.xyz.d1, 0);
+    }
+
+
+    /**
      * Calculates length of vector
      * @return
      */
@@ -103,16 +112,6 @@ public class Vector extends Point{
     public Vector normalize(){
         return new Vector(this.xyz.reduce(length()));
     }
-
-//    /**
-//     * returns the equals function of the father
-//     * @param o
-//     * @return
-//     */
-//    @Override
-//    public boolean equals(Object o) {
-//        return super.equals(o);
-//    }
 
     /**
      * returns the function implemented the father.

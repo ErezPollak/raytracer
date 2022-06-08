@@ -4,10 +4,13 @@
 package geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 import geometries.*;
 import primitives.*;
+
+import java.util.List;
 
 /**
  * Testing Polygons
@@ -79,10 +82,40 @@ class PolygonTests {
     }
 
     /**
-     * Test method for {@link geometries.Intersectable#findIntersections(primitives.Ray)} ()}.
+     * Test method for {@link geometries.Polygon#findIntersections(Ray)}
      */
     @Test
-    void testFindIntersections() {
+    void findIntersections() {
+
+        // ============ Equivalence Partitions Tests ==============
+
+        //TC01: ray in inside the polygon
+        Vector v = new Vector(0, 0, -1);
+        Polygon t1 = new Polygon(new Point(2, 0, 1), new Point(2, 2, 1), new Point(0, 2, 1), new Point(0, 0, 1));
+        Ray r1 = new Ray(new Point(0.5, 0.5, 2), v);
+        assertEquals(t1.findIntersections(r1), List.of(new Point(0.5, 0.5, 1)), "Not expected point");
+
+        //TC02: ray is outside: against edge
+        Ray r2 = new Ray(new Point(3, 3, 1), v);
+        assertNull(t1.findIntersections(r2), "Intersects outside");
+
+        //TC03: ray is outside: against vertex
+        Ray r3 = new Ray(new Point(0.5, 0.5, 1), v);
+        assertNull(t1.findIntersections(r3), "Intersects outside");
+
+        // =============== Boundary Values Tests ==================
+
+        //TC11: ray is On the Polygon edge
+        Ray r4 = new Ray(new Point(2, 2, 1), v);
+        assertNull(t1.findIntersections(r4), "Intersects on the edge");
+
+        //TC12: ray is in vertex
+        Ray r5 = new Ray(new Point(2, 1, 1), v);
+        assertNull(t1.findIntersections(r5), "Intersects in vertex");
+
+        //TC13: ray is on edge's continuation
+        Ray r6 = new Ray(new Point(2, 3, 1), v);
+        assertNull(t1.findIntersections(r6), "Intersects on edge continuation");
 
     }
 }

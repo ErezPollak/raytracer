@@ -3,10 +3,7 @@ package renderer;
 import static java.awt.Color.BLUE;
 import static java.awt.Color.gray;
 
-import geometries.Geometry;
-import geometries.Intersectable;
-import geometries.Plane;
-import geometries.Sphere;
+import geometries.*;
 import lighting.DirectionalLight;
 import lighting.NarrowBeamArchitecture;
 import lighting.SpotLight;
@@ -20,18 +17,19 @@ import scene.Scene;
  *
  * @author Erez Polak and Eliran Salama.
  */
+
 public class DepthOfFieldTest {
 
-    private Scene scene = new Scene("Test scene");
-    private Geometry sphere1 = new Sphere(new Point(0, 0, -50), 50d) //
-            .setEmission(new Color(BLUE).reduce(2)) //
-            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
-
-    private Geometry sphere2 = new Sphere(new Point(10, 0, 800), 4) //
-            .setEmission(new Color(BLUE).reduce(2)) //
-            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
-
-    private Color spCL = new Color(800, 500, 0); // Sphere test Color of Light
+//    private Scene scene = new Scene("Test scene");
+//    private Geometry sphere1 = new Sphere(new Point(0, 0, -50), 50d) //
+//            .setEmission(new Color(BLUE).reduce(2)) //
+//            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
+//
+//    private Geometry sphere2 = new Sphere(new Point(10, 0, 800), 4) //
+//            .setEmission(new Color(BLUE).reduce(2)) //
+//            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
+//
+//    private Color spCL = new Color(800, 500, 0); // Sphere test Color of Light
 
 
     @Test
@@ -44,32 +42,38 @@ public class DepthOfFieldTest {
         for (int i = 0; i < 10; i++) {
             spheres[i] = new Sphere(new Point(10 - i * 8, 0, 800 - 100 * i), 3) //
                     .setEmission(new Color(BLUE).reduce(2)) //
-                    .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
+                    .setMaterial(new Material().setKd(0.3).setKs(0.2).setShininess(300).setKr(0.5));
         }
-        Geometry plane = new Plane(new Point(0, -20, 0), new Vector(0, 1, 0))
+        Geometry polygon = new Polygon(
+                new Point(100, -50, 1000),
+                new Point(-100, -50, 1000),
+                new Point(-100, -50, -100),
+                new Point(100, -50, -100))
                 .setEmission(new Color(gray))
                 .setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(300).setKr(0.5));
 
-        Color spCL = new Color(800, 500, 0); // Sphere test Color of Light
         Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(1000)
 
                 //moving camera.
-                //.cameraMove(new Point(0, 100, -500), new Point(0, 0, 0))
-                //.setVPDistance(500)
-                //.cameraRoll(-5)
+                //.cameraMove(new Point(0, 100, -500), new Point(0, 0, 0),new Vector(0,1,0)).cameraRoll(-5)
+                //.cameraMove(new Point(0, 100, -1000), new Point(0, -50, 1000),new Vector(0,1,0))
+                //.setVPDistance(250)
+
 
                 //set the DoF.
                 .setFPDistance(500)
                 .setApertureSize(1);
+
+                //set anti aliasing
                 //.setAlias(true);
 
 
         //scene.geometries.add(sphere1, sphere2);
         scene.geometries.add(spheres);
-        scene.geometries.add(plane);
-        scene.lights.add(new DirectionalLight(spCL, new Vector(1, -1, -0.5)));
+        scene.geometries.add(polygon);
+        scene.lights.add(new DirectionalLight(new Color(800, 500, 0), new Vector(1, -1, -0.5)));
         scene.lights.add(new SpotLight(new Color(0, 255, 0), new Point(100, 100, 800), new Vector(-1, -1, 0)).setNarrowBeam(NarrowBeamArchitecture.MY_ARCHITECTURE, 10));
 
         ImageWriter imageWriter = new ImageWriter("lightSphereDirectionalDepthOfFieldTesting1", 500, 500);

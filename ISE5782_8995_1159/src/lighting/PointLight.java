@@ -30,7 +30,7 @@ public class PointLight extends Lighting implements LightSource{
     ///////SOFT SHADOW FIELDS////////
     protected double radius = 0;
     private Point[] points;
-    private final int NUMBER_OF_POINTS = 1000;
+    private final int NUMBER_OF_POINTS = 100;
     private final Random rand = new Random();
 
 
@@ -110,7 +110,7 @@ public class PointLight extends Lighting implements LightSource{
             return;
         this.points = new Point[this.NUMBER_OF_POINTS];
         Vector n = p.subtract(position).normalize();
-        Vector vX = getOrthogonal(n).normalize();
+        Vector vX = n.getOrthogonal().normalize();
         Vector vY = vX.crossProduct(n).normalize();
         double x, y, radius;
         for (int i = 0; i < NUMBER_OF_POINTS; i += 4) {
@@ -123,14 +123,7 @@ public class PointLight extends Lighting implements LightSource{
         }
     }
 
-    /**
-     * creates an orthogonal vector to a given vector.
-     * @param vector the vector to find the orthogonal to.
-     * @return the orthogonal vector.
-     */
-    private Vector getOrthogonal(Vector vector) {
-        return vector.getX() == 0 ? new Vector(1, 0, 0) : new Vector(-vector.getY(), vector.getX(), 0);
-    }
+
 
     /**
      * Pythagoras function.

@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -94,17 +95,6 @@ public class Polygon extends Geometry {
 		return plane.getNormal().normalize();
 	}
 
-//	/**
-//	 * Finds the intersections of the ray with the polygon
-//	 * @param ray the ray that crosses the polygon.
-//	 * @return the list of the points in witch the ray cross the polygon.
-//	 */
-//	@Override
-//	public List<Point> findIntersections(Ray ray)
-//	{
-//		return null;
-//	}
-
 	/**
 	 * Finds the intersections of the ray with the polygon
 	 * @param ray the ray that crosses the polygon.
@@ -112,6 +102,26 @@ public class Polygon extends Geometry {
 	 */
 	@Override
 	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-		return null;
+		List<GeoPoint> intersections = this.plane.findGeoIntersections(ray);
+		if (intersections == null)
+			return null;
+		Vector v = ray.getVector();
+		LinkedList<Vector> vectorList = new LinkedList<>();
+		//vi = pi - p0
+		for (Point p : this.vertices) {
+			vectorList.add(p.subtract(ray.getPoint()));
+		}
+		double nv = v.dotProduct((vectorList.get(0).crossProduct(vectorList.get(1))).normalize());
+		if (isZero(nv))
+			return null;
+		boolean positiveSign = nv > 0;
+		//checks if all ni*vi have same sign
+		for (int i = 1; i < this.size; i++) {
+			nv = v.dotProduct((vectorList.get(i).crossProduct(vectorList.get((i + 1) % this.size))).normalize());
+			if (isZero(nv)) return null; //if Normal and Vi are orthogonal
+			if (nv > 0 && !positiveSign || nv < 0 && positiveSign) return null; //if there is a logic contradiction
+		}
+		intersections.get(0).geometry = this;
+		return intersections;
 	}
 }

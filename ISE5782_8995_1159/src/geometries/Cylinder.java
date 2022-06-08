@@ -4,24 +4,27 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.isZero;
 
-public class Cylinder extends Tube{
+public class Cylinder extends Tube {
     double height;
 
     /**
      * Cylinder Constructor
+     *
      * @param high
      */
-    public Cylinder(double raduis, Ray ray, double high) {
+    public Cylinder(Ray ray, double raduis, double high) {
         super(raduis, ray);
         this.height = high;
     }
 
     /**
      * Get high of cylinder
+     *
      * @return
      */
     public double getHeight() {
@@ -30,6 +33,7 @@ public class Cylinder extends Tube{
 
     /**
      * returns the normal of the cylinder in the given point.
+     *
      * @param p the point to find the normal from.
      * @return the normal vector.
      */
@@ -53,11 +57,11 @@ public class Cylinder extends Tube{
                 //then this is the normal of the cylinder in that point.
                 return ray.getVector().normalize();
 
-            }else{
+            } else {
                 //the point is on the edge of the cylinder.
                 throw new IllegalArgumentException();
             }
-        }else{
+        } else {
             //the point is on the tube.
             return super.getNormal(p);
         }
@@ -70,13 +74,104 @@ public class Cylinder extends Tube{
                 '}';
     }
 
+//    /**
+//     * finding the Geo intersections with the geometry.
+//     * @param ray the ray to check intersections with.
+//     * @return the list of intersections.
+//     */
+//    @Override
+//    public List<GeoPoint> findGeoIntersections(Ray ray) {
+//        return null;
+//    }
+
+
     /**
-     * finding the Geo intersections with the geometry.
-     * @param ray the ray to check intersections with.
-     * @return the list of intersections.
+     * find intersection points between ray and 3D cylinder
+     *
+     * @param ray ray towards the sphere
+     * @return immutable list containing 0/1/2 intersection points as {@link GeoPoint}s objects
      */
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        // origin point of cylinder (on bottom base)
+        Point basePoint = super.ray.getPoint();
+        // point across base point on top base
+        Point topPoint = super.ray.getPoint(height);
+        // direction vector of cylinder (orthogonal to base point)
+        Vector vC = super.ray.getVector();
+
+        // find intersection points of ray with bottom base of cylinder
+        List<GeoPoint> result = new LinkedList<>();
+        // crate plane that contains base point in it
+        Plane basePlane = new Plane(basePoint, vC);
+        // find intersection between ray and plane
+        List<GeoPoint> intersectionsBase = basePlane.findGeoIntersections(ray);
+
+        // if intersections were found, check that point are actually on the base of the cylinder
+        //if distance from base point to intersection point holds the equation ->  distance² < from radius²
+        if (intersectionsBase != null) {
+            for (GeoPoint p : intersectionsBase) {
+                Point pt = p.point;
+                // intersection point is the base point itself
+                if (pt.equals(basePoint))
+                    result.add(new GeoPoint(this, basePoint));
+                    // intersection point is different to base point but is on the bottom base
+                else if (pt.subtract(basePoint).dotProduct(pt.subtract(basePoint)) < super.raduis * super.raduis)
+                    result.add(new GeoPoint(this, pt));
+            }
+        }
+
+        // find intersection points of ray with bottom base of cylinder
+        // crate plane that contains top point in it
+        Plane topPlane = new Plane(topPoint, vC);
+        // find intersection between ray and plane
+        List<GeoPoint> intersectionsTop = topPlane.findGeoIntersections(ray);
+        // if intersections were found, check that point are actually on the base of the cylinder
+        //if distance from top point to intersection point holds the equation ->  distance² < from radius²
+        if (intersectionsTop != null) {
+            for (var p : intersectionsTop) {
+                Point pt = p.point;
+                // intersection point is the top point itself
+                if (pt.equals(topPoint))
+                    result.add(new GeoPoint(this, topPoint));
+                    // intersection point is different to base point but is on the bottom base
+                else if (pt.subtract(topPoint).dotProduct(pt.subtract(topPoint)) < super.raduis * super.raduis)
+                    result.add(new GeoPoint(this, pt));
+            }
+        }
+
+        // if rsy intersects both bases , no other intersections possible - return the result list
+        if (result.size() == 2)
+            return result;
+
+        // use tube parent class function to find intersections with the cylinder represented
+        // as an infinite tube
+        List<GeoPoint> intersectionsTube = super.findGeoIntersectionsHelper(ray);
+
+        // if intersection points were found check that they are within the finite cylinder's boundary
+        // by checking if  scalar product fo direction vector with a vector from intersection point
+        // to bottom base point is positive, and scalar product of direction vector with a
+        // vector from intersection point to top base point is negative
+        if (intersectionsTube != null) {
+            for (var p : intersectionsTube) {
+                Point pt = p.point;
+                if (vC.dotProduct(pt.subtract(basePoint)) > 0 && vC.dotProduct(pt.subtract(topPoint)) < 0)
+                    result.add(new GeoPoint(this, pt));
+            }
+        }
+
+        // return an immutable list
+        int len = result.size();
+        if (len > 0)
+            if (len == 1)
+                return List.of(result.get(0));
+            else
+                return List.of(result.get(0), result.get(1));
+
+        // no intersections
         return null;
     }
 }
+
+
+
