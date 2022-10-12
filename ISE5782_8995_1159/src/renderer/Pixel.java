@@ -45,6 +45,7 @@ class Pixel {
         cRow = 0;
         cCol = -1;
         pixels = 0;
+        last = -1;
         printInterval = (int) (interval * 1000);
         print = !Util.isZero(interval);
     }

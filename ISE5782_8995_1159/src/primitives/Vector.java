@@ -52,6 +52,16 @@ public class Vector extends Point{
         return new Vector(this.xyz.scale(scale));
     }
 
+
+    /**
+     * Calculates reduction between vector and scalar
+     * @param scale
+     * @return
+     */
+    public Vector reduce(double scale){
+        return new Vector(this.xyz.reduce(scale));
+    }
+
     /**
      * Calculates Scalar double between two vectors
      * @param v

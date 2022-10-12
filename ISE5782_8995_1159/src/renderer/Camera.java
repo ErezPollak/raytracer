@@ -45,6 +45,7 @@ public class Camera {
 
     ////////Anti Aliasing params///////
     private boolean alias = false;
+    private boolean adaptAliasing = false;
     private final int PIXEL_NUMBER_OF_POINTS = 100;
     private Vector[][] relativeVectors;
 
@@ -78,6 +79,7 @@ public class Camera {
 
     /**
      * sets the print interval parameter.
+     *
      * @param printInterval the new parameter.
      * @return the fixed camera.
      */
@@ -88,6 +90,7 @@ public class Camera {
 
     /**
      * sets the number of threads to a new number.
+     *
      * @param threadsCount the ner threads number.
      * @return the fixed camera.
      */
@@ -170,8 +173,14 @@ public class Camera {
         }
     }
 
-    public Camera setAlias(boolean alias) {
-        this.alias = alias;
+    /**
+     *
+     * @param adaptAliasing
+     * @return
+     */
+    public Camera toAlias(boolean adaptAliasing) {
+        this.alias = true;
+        this.adaptAliasing = adaptAliasing;
         return this;
     }
 
@@ -291,9 +300,11 @@ public class Camera {
 
             if (this.alias) initializePixelVector(Nx, Ny);
 
+            int localThreadsCount = this.threadsCount;
+
             //Go all over the matrix, and create ray and get color for each pixel.
             Pixel.initialize(Ny, Nx, printInterval);
-            while (threadsCount-- > 0) {
+            while (localThreadsCount-- > 0) {
                 new Thread(() -> {
                     for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone()) {
                         //castRay(Nx, Ny, pixel.col, pixel.row);
@@ -375,18 +386,22 @@ public class Camera {
      * @return
      */
     private Color traceBeam(Ray ray) {
-        Color average = Color.BLACK;
-        Ray movingRay;
-        int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
-        for (Vector[] array : this.relativeVectors) {
-            for (Vector v : array) {
-                movingRay = new Ray(ray.getPoint(), ray.getVector().add(v));
-                average = average.add(rayTracer.traceRay(movingRay));
+        if (this.adaptAliasing) {
+            return Color.BLACK;
+            //return calcAdaptiveSuperSamplingColor(ray, 0, 0, this.relativeVectors.length - 1, relativeVectors[0].length - 1);
+        } else {
+            Color average = Color.BLACK;
+            Ray movingRay;
+            for (Vector[] array : this.relativeVectors) {
+                for (Vector v : array) {
+                    movingRay = new Ray(ray.getPoint(), ray.getVector().add(v));
+                    average = average.add(rayTracer.traceRay(movingRay));
+                }
             }
+            int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
+            return average.reduce(actualNumberOfPoints);
         }
-        return average.reduce(actualNumberOfPoints);
     }
-
 
     /**
      * the function that goes through every point in the array and calculate the average color.

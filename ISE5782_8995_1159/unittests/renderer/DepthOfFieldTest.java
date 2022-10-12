@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 import scene.Scene;
 
+import java.util.Random;
+
 /**
  * Testing Depth of field Class
  *
@@ -31,17 +33,18 @@ public class DepthOfFieldTest {
 //
 //    private Color spCL = new Color(800, 500, 0); // Sphere test Color of Light
 
+    Random r = new Random();
 
     @Test
     void testDepthOfField() {
 
         Scene scene = new Scene("Test scene");
 
-        Geometry[] spheres = new Sphere[10];
+        Geometry[] spheres = new Sphere[11];
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i <= 10; i++) {
             spheres[i] = new Sphere(new Point(10 - i * 8, 0, 800 - 100 * i), 3) //
-                    .setEmission(new Color(BLUE).reduce(2)) //
+                    .setEmission(new Color(25 * i, -(i - 800) * (i + 200) / 1000, 250 - 25 * i)) //
                     .setMaterial(new Material().setKd(0.3).setKs(0.2).setShininess(300).setKr(0.5));
         }
         Geometry polygon = new Polygon(
@@ -61,13 +64,19 @@ public class DepthOfFieldTest {
                 //.cameraMove(new Point(0, 100, -1000), new Point(0, -50, 1000),new Vector(0,1,0))
                 //.setVPDistance(250)
 
+                //set treading
+                .setThreadsCount(3)
+
+                //set Aliasing
+                //.toAlias(false)
 
                 //set the DoF.
-                .setFPDistance(500)
-                .setApertureSize(1);
+                .setFPDistance(800)
+                .setApertureSize(1)
+                ;
 
-                //set anti aliasing
-                //.setAlias(true);
+        //set anti aliasing
+        //.setAlias(true);
 
 
         //scene.geometries.add(sphere1, sphere2);
