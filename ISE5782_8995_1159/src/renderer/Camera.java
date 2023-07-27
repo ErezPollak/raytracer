@@ -49,6 +49,10 @@ public class Camera {
     private final int PIXEL_NUMBER_OF_POINTS = 100;
     private Vector[][] relativeVectors;
 
+
+    public Camera() {
+    }
+
     /**
      * the camera constructor, there is only constructor that contains parameters.
      *
@@ -174,7 +178,6 @@ public class Camera {
     }
 
     /**
-     *
      * @param adaptAliasing
      * @return
      */
