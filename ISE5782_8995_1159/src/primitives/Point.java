@@ -9,6 +9,8 @@
 package primitives;
 
 
+import java.util.Objects;
+
 public class Point {
 
     public static final Point ZERO = new Point(0,0,0);
@@ -124,5 +126,10 @@ public class Point {
      */
     public double getZ() {
         return this.xyz.d3;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(xyz);
     }
 }
