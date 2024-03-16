@@ -90,26 +90,22 @@ public class RenderTests {
     @Test
     public void basicRenderJson() throws IOException {
 
-        // enter XML file name and parse from XML file into scene object
-        // ...
-
         Scene scene = new SceneBuilder("\\Json\\firstScene.json" , "Scene name").build();
 
         Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .cameraMove(new Point(100,100,100), Point.ZERO, new Vector(0,0,1))
                 .setVPDistance(100) //
                 .setVPSize(500, 500)
-                .setImageWriter(new ImageWriter("json render test", 1000, 1000))
+                .setImageWriter(new ImageWriter(1000, 1000))
                 .setRayTracer(new RayTracerBasic(scene));
         camera.renderImage();
         // camera.printGrid(100, new Color(YELLOW));
-        camera.writeToImage();
+        camera.writeToImage("json render test");
 
 
 
 
-        File file = new File(System.getProperty("user.dir") + "\\images\\fromBuffer.png");
-        FileOutputStream f = new FileOutputStream(file);
+        FileOutputStream f = new FileOutputStream(System.getProperty("user.dir") + "\\images\\fromBuffer.png");
         f.write(camera.getImageBytes());
         f.close();
     }

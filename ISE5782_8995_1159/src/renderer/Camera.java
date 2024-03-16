@@ -459,7 +459,17 @@ public class Camera {
         if (imageWriter == null) {
             throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
         }
+        if (!imageWriter.hasName()) {
+            throw new MissingResourceException("missing resource", "image name", "");
+        }
         imageWriter.writeToImage();
+    }
+
+    public void writeToImage(String imageName) {
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+        }
+        imageWriter.writeToImage(imageName);
     }
 
     public byte[] getImageBytes() {
