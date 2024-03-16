@@ -462,6 +462,14 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
+    public byte[] getImageBytes() {
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+        }
+        byte[] stream = imageWriter.getImageBytes();
+        return stream;
+    }
+
     /**
      * set the to vector by the given degrees.
      *

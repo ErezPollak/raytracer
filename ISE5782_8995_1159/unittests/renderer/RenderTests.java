@@ -8,6 +8,11 @@ import primitives.*;
 import scene.Scene;
 import scene.SceneBuilder;
 
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import static java.awt.Color.*;
 
 /**
@@ -83,7 +88,7 @@ public class RenderTests {
      * Test for XML based scene - for bonus
      */
     @Test
-    public void basicRenderJson() {
+    public void basicRenderJson() throws IOException {
 
         // enter XML file name and parse from XML file into scene object
         // ...
@@ -99,6 +104,14 @@ public class RenderTests {
         camera.renderImage();
         // camera.printGrid(100, new Color(YELLOW));
         camera.writeToImage();
+
+
+
+
+        File file = new File(System.getProperty("user.dir") + "\\images\\fromBuffer.png");
+        FileOutputStream f = new FileOutputStream(file);
+        f.write(camera.getImageBytes());
+        f.close();
     }
 }
 

@@ -2,6 +2,7 @@ package renderer;
 
 import primitives.Color;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -72,6 +73,18 @@ public class ImageWriter {
         try {
             File file = new File(FOLDER_PATH + '/' + imageName + ".png");
             ImageIO.write(image, "png", file);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "I/O error", e);
+            throw new IllegalStateException("I/O error - may be missing directory " + FOLDER_PATH, e);
+        }
+    }
+
+
+    public byte[] getImageBytes() {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", stream);
+            return stream.toByteArray();
         } catch (IOException e) {
             logger.log(Level.SEVERE, "I/O error", e);
             throw new IllegalStateException("I/O error - may be missing directory " + FOLDER_PATH, e);
