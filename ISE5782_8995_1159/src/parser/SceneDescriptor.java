@@ -57,7 +57,7 @@ public class SceneDescriptor {
             JSONArray triangles = (JSONArray) geometriesJson.get("triangles");
             this.triangles = SceneJsonParser.setSceneTriangles(triangles);
 
-            //extraction the triangles.
+            //extracting the triangles.
             JSONArray spheres = (JSONArray) geometriesJson.get("spheres");
             this.spheres = SceneJsonParser.setSceneSpheres(spheres);
 

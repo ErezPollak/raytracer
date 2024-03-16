@@ -29,29 +29,27 @@ public class SceneBuilder {
 
     private final String PATH = System.getProperty("user.dir");
 
-    private SceneDescriptor sceneDesc;
+    private SceneDescriptor sceneDescriptor;
     private Scene scene;
-    private String filePath;
+    private String sceneFilePath;
 
     /**
      * ctor
      */
-    public SceneBuilder(String filePath, Scene scene) {
-        this.sceneDesc = new SceneDescriptor();
-        this.scene = scene;
-        this.filePath = filePath;
+    public SceneBuilder(String filePath, String sceneName) {
+        this.sceneDescriptor = new SceneDescriptor();
+        this.scene = new Scene(sceneName);
+        this.sceneFilePath = filePath;
     }
 
     /**
      * @return
      */
-    public Scene loadSceneFromFile() {
+    public Scene build() {
         //loads the scene from the file and initialize the describer with its properties.
         try {
-
-            String str = Files.readString(Path.of(PATH + this.filePath));
-            this.sceneDesc.initializeFromJsonObject(str);
-
+            String sceneDescription = Files.readString(Path.of(PATH + this.sceneFilePath));
+            this.sceneDescriptor.initializeFromJsonObject(sceneDescription);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -60,15 +58,19 @@ public class SceneBuilder {
 
 
         //inserts the props to the scene object.
-        scene.setName(this.sceneDesc.getSceneAttributes().get("name"))
-                .setBackground(getColorFromMap(this.sceneDesc.getSceneAttributes(), "background"))
+        scene.setName(this.sceneDescriptor.getSceneAttributes().get("name"))
+                .setBackground(getColorFromMap(this.sceneDescriptor.getSceneAttributes(), "background"))
                 .setAmbientLight(
-                        new AmbientLight(getColorFromMap(this.sceneDesc.getAmbientLightAttributes(), "color"),
-                                stringToDouble3(this.sceneDesc.getAmbientLightAttributes().get("Ka"))))
+                        new AmbientLight(getColorFromMap(this.sceneDescriptor.getAmbientLightAttributes(), "color"),
+                                stringToDouble3(this.sceneDescriptor.getAmbientLightAttributes().get("Ka"))))
                 .setGeometries(getGeometriesFormDesc());
 
         return scene;
     }
+
+
+
+
 
     private Geometries getGeometriesFormDesc() {
         Geometries geometries = new Geometries();
@@ -78,7 +80,7 @@ public class SceneBuilder {
 
     private List<Intersectable> getSpheres() {
         List<Intersectable> spheres = new LinkedList<>();
-        for (var sphereMap : this.sceneDesc.getSpheres()) {
+        for (var sphereMap : this.sceneDescriptor.getSpheres()) {
             Sphere sphere = getSphereFromMap(sphereMap);
             sphere.setMaterial(getMaterialFromMap(sphereMap));
             sphere.setEmission(getEmissionFromMap(sphereMap));
@@ -104,7 +106,7 @@ public class SceneBuilder {
      */
     private List<Intersectable> getTriangles() {
         List<Intersectable> triangles = new LinkedList<>();
-        for (var triangleMap : this.sceneDesc.getTriangles()) {
+        for (var triangleMap : this.sceneDescriptor.getTriangles()) {
             Triangle triangle = getTriangleFromMap(triangleMap);
             triangle.setMaterial(getMaterialFromMap(triangleMap));
             triangle.setEmission(getEmissionFromMap(triangleMap));
