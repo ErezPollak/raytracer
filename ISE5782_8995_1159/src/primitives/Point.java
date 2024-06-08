@@ -23,7 +23,7 @@ public class Point extends JSONable {
     public static final Point ZERO = new Point(0, 0, 0);
     protected final Double3 xyz;
 
-    public Point(JSONObject jsonObject) throws Exception {
+    public Point(JSONObject jsonObject) {
         super(jsonObject);
         Point instance = this.getJsonCreatedInstance(this.getClass());
         this.xyz = instance.xyz;
@@ -159,7 +159,7 @@ public class Point extends JSONable {
     }
 
     @Override
-    public Map<Schema, Function<JSONObject, Object[]>> getCreationMap() {
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
         return Map.of(
                 SchemaLoader.load(new JSONObject(
                         "{" +
@@ -178,7 +178,7 @@ public class Point extends JSONable {
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"x\", \"y\", \"z\" " +
-                                "   ]" +
+                                "   ], additionalProperties: false" +
                                 "}")),
                 json -> new Object[]{json.get("x"), json.get("y"), json.get("z")},
                 SchemaLoader.load(new JSONObject(
@@ -192,7 +192,7 @@ public class Point extends JSONable {
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"d\" " +
-                                "   ]" +
+                                "   ], additionalProperties: false" +
                                 "}")),
                 json -> new Object[]{new Double3((JSONObject) json.get("d"))}
         );

@@ -1,11 +1,32 @@
 package primitives;
 
-import javax.swing.plaf.basic.BasicTextUI;
+import json.JSONable;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * the properties of teh material the object is made from.
  */
-public class Material {
+public class Material extends JSONable {
+
+    public Material() {
+    }
+
+    public Material(JSONObject json) {
+        super(json);
+        Material material = (Material) getObject();
+        this.kD = material.kD;
+        this.kS = material.kS;
+        this.nShininess = material.nShininess;
+        this.kT = material.kT;
+        this.kR = material.kR;
+    }
+
 
     /**
      * the defensive coefficient
@@ -54,6 +75,7 @@ public class Material {
         this.kT = new Double3(kT);
         return this;
     }
+
     public Material setKt(Double3 kT) {
         this.kT = kT;
         return this;
@@ -72,5 +94,43 @@ public class Material {
     public Material setShininess(int nShininess) {
         this.nShininess = nShininess;
         return this;
+    }
+
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"kD\": {" +
+                                "          \"type\": [\"object\", \"number\"]" +
+                                "      }," +
+                                "      \"kS\": {" +
+                                "          \"type\": [\"object\", \"number\"]" +
+                                "      }," +
+                                "      \"nShininess\": {" +
+                                "          \"type\": \"integer\"" +
+                                "      }," +
+                                "      \"kT\": {" +
+                                "          \"type\": [\"object\", \"number\"]" +
+                                "      }," +
+                                "      \"kR\": {" +
+                                "          \"type\": [\"object\", \"number\"]" +
+                                "      }" +
+                                "   }," +
+                                "   additionalProperties: false" +
+                                "}")),
+                json -> {
+                    Material m = new Material();
+                    if (json.has("kD")) if (json.get("kD") instanceof Number) m.setKd(json.getDouble("kD")); else m.setKd(new Double3(json.getJSONObject("kD")));
+                    if (json.has("kS")) if (json.get("kS") instanceof Number) m.setKs(json.getDouble("kS")); else m.setKs(new Double3(json.getJSONObject("kS")));
+                    if (json.has("kT")) if (json.get("kT") instanceof Double) m.setKt(json.getDouble("kT")); else m.setKt(new Double3(json.getJSONObject("kT")));
+                    if (json.has("kR")) if (json.get("kR") instanceof Double) m.setKr(json.getDouble("kR")); else m.setKr(new Double3(json.getJSONObject("kR")));
+                    if (json.has("nShininess")) m.setShininess(json.getInt("nShininess"));
+                    return m;
+                }
+        );
     }
 }

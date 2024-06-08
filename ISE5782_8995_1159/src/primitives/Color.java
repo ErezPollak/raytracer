@@ -1,7 +1,12 @@
 package primitives;
 
 import json.JSONable;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
@@ -11,7 +16,7 @@ import org.json.JSONObject;
  *
  * @author Dan Zilberstein
  */
-public class Color {
+public class Color extends JSONable {
     /**
      * The internal fields tx`o maintain RGB components as double numbers from 0 to
      * whatever...
@@ -29,6 +34,13 @@ public class Color {
     private Color() {
         rgb = Double3.ZERO;
     }
+
+    public Color(JSONObject jsonObject) {
+        super(jsonObject);
+        Color color = getJsonCreatedInstance(this.getClass());
+        this.rgb = color.rgb;
+    }
+
 
     /**
      * Constructor to generate a color according to RGB components Each component in
@@ -147,15 +159,16 @@ public class Color {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Color)
-            return Util.isZero(this.rgb.d1-((Color) obj).rgb.d1) &&
-                    Util.isZero(this.rgb.d2-((Color) obj).rgb.d2) &&
-                    Util.isZero(this.rgb.d3-((Color) obj).rgb.d3);
+        if (obj instanceof Color)
+            return Util.isZero(this.rgb.d1 - ((Color) obj).rgb.d1) &&
+                    Util.isZero(this.rgb.d2 - ((Color) obj).rgb.d2) &&
+                    Util.isZero(this.rgb.d3 - ((Color) obj).rgb.d3);
         return false;
     }
 
     /**
      * return the properties of the color for debugging purposes.
+     *
      * @return the string describing the color.
      */
     @Override
@@ -164,42 +177,47 @@ public class Color {
                 "rgb=" + rgb +
                 '}';
     }
-//
-//
-//    public Color(JSONObject json){
-//        super(json);
-//        int r = (int) (long) json.get("r");
-//        int g = (int) (long) json.get("g");
-//        int b = (int) (long) json.get("b");
-//        rgb = new Double3(r, g, b);
-//    }
-//
-//    public static String getSchemaString(){
-//        return "{\n" +
-//                "  \"type\": \"object\",\n" +
-//                "  \"properties\": {\n" +
-//                "    \"r\": {\n" +
-//                "      \"type\": \"string\"\n" +
-//                "    },\n"+
-//                "    \"ge\": {\n" +
-//                "      \"type\": \"string\"\n" +
-//                "    },\n"+
-//                "    \"b\": {\n" +
-//                "      \"type\": \"string\"\n" +
-//                "    },\n"+
-//                "  },\n" +
-//                "  \"required\": [\"name\", \"age\", \"email\", \"address\"]\n" +
-//                "}";
-//    }
 
-//    public static Color fromJson(JSONObject jsonObject) {
-//        int r = (int) (long) jsonObject.get("r");
-//        int g = (int) (long) jsonObject.get("g");
-//        int b = (int) (long) jsonObject.get("b");
-//        Color color = new Color(r,g,b);
-//        return color;
-//    }
 
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Color\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"r\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"g\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"b\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }" +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"r\", \"g\", \"b\" " +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{json.get("r"), json.get("g"), json.get("b")},
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"rgb\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"rgb\" " +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Double3((JSONObject) json.get("rgb"))}
+        );
+    }
 
 }
 

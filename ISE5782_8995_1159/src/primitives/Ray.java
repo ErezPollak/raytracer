@@ -7,7 +7,15 @@
 
 package primitives;
 
-public class Ray {
+import json.JSONable;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.function.Function;
+
+public class Ray extends JSONable {
 
     /**
      * the distance to move the point of the shade ray, in case of shade.
@@ -16,6 +24,13 @@ public class Ray {
 
     private final Point point;
     private final Vector vector;
+
+    public Ray(JSONObject jsonObject) {
+        super(jsonObject);
+        Ray ray = this.getJsonCreatedInstance(this.getClass());
+        this.point = ray.getPoint();
+        this.vector = ray.getVector();
+    }
 
     /**
      * Ray Constructor
@@ -99,4 +114,50 @@ public class Ray {
         return point.equals(ray.point) && vector.equals(ray.vector);
     }
 
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"p\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"v\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"p\", \"v\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Point(json.getJSONObject("p")), new Vector(json.getJSONObject("v"))},
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"head\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"direction\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"normal\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"head\", \"direction\", \"normal\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Point(json.getJSONObject("head")),
+                        new Vector(json.getJSONObject("direction")),
+                        new Vector(json.getJSONObject("normal"))}
+
+
+        );
+    }
 }

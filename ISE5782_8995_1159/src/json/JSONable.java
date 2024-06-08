@@ -14,6 +14,7 @@ import java.util.function.Function;
 
 public abstract class JSONable {
 
+    private JSONable object;
     private Object[] params;
 
     public JSONable() {
@@ -22,15 +23,19 @@ public abstract class JSONable {
 
     public JSONable(JSONObject json) {
 
-        Map<Schema, Function<JSONObject, Object[]>> creationMap = getCreationMap();
+        Map<Schema, Function<JSONObject, ? extends Object>> creationMap = getCreationMap();
 
         String overAllError = "";
 
-        for (Map.Entry<Schema, Function<JSONObject, Object[]>> entry : creationMap.entrySet()) {
+        for (Map.Entry<Schema, Function<JSONObject, ? extends Object>> entry : creationMap.entrySet()) {
             try {
                 entry.getKey().validate(json);
                 System.out.println("FoundSchema");
-                this.params = entry.getValue().apply(json);
+                Object returned = entry.getValue().apply(json);
+                if (returned instanceof Object[])
+                    this.params = (Object[]) returned;
+                else if (returned instanceof JSONable)
+                    this.object = (JSONable) returned;
                 break;
             } catch (ValidationException e) {
                 overAllError += "JSON is not valid against the schema: " + e.getMessage();
@@ -40,16 +45,25 @@ public abstract class JSONable {
             }
         }
 
-        if (this.params == null || this.params.length == 0) {
+        if (this.object == null && (this.params == null || this.params.length == 0)) {
             throw new ValidationException("JSON object is not valid against the schemas" + overAllError);
         }
 
     }
 
+    public JSONable getObject() {
+        return this.object;
+    }
 
-    public abstract Map<Schema, Function<JSONObject, Object[]>> getCreationMap();
+
+    public abstract Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap();
 
     public <T> T getJsonCreatedInstance(Class<T> clazz) {
+        if (this.object != null) {
+            System.out.println("JSON object is already created using object itself");
+            return null;
+        }
+
         Class<?>[] paramTypes = null;
         try {
             paramTypes = Arrays.stream(this.params).map(cls -> getPrimitiveClass(cls.getClass())).toArray(Class<?>[]::new);

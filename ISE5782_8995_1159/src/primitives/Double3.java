@@ -151,16 +151,9 @@ public class Double3 extends JSONable {
         return d1 < k && d2 < k && d3 < k;
     }
 
-//    public static Double3 fromJson(JSONObject jsonObject) {
-//        int d1 = (int) (long) jsonObject.get("1");
-//        int d2 = (int) (long) jsonObject.get("2");
-//        int d3 = (int) (long) jsonObject.get("3");
-//        Double3 double3 = new Double3(d1, d2, d3);
-//        return double3;
-//    }
 
     @Override
-    public Map<Schema, Function<JSONObject, Object[]>> getCreationMap() {
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
         return Map.of(
                 SchemaLoader.load(new JSONObject(
                         "{" +
@@ -173,7 +166,7 @@ public class Double3 extends JSONable {
                                 "   }," +
                                 "   \"required\": [" +
                                 "       \"value\"" +
-                                "   ]" +
+                                "   ], additionalProperties: false" +
                                 "}")),
                 json -> new Object[]{json.get("value")},
                 SchemaLoader.load(new JSONObject(
@@ -193,7 +186,7 @@ public class Double3 extends JSONable {
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"d1\", \"d2\", \"d3\" " +
-                                "   ]" +
+                                "   ], additionalProperties: false" +
                                 "}")),
                 json -> new Object[]{json.get("d1"), json.get("d2"), json.get("d3")}
         );

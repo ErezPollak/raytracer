@@ -1,5 +1,6 @@
 package primitives;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -153,6 +154,30 @@ class VectorTest {
 
         // =============== Boundary Values Tests ==================
         //no boundary tests because the length cannot be zero.
+    }
+
+
+
+    @Test
+    void testjson() throws Exception {
+
+        Vector vector = new Vector(new JSONObject("{\"x\": 4, \"y\": 5.5, \"z\": 6}"));
+        assertEquals(4, vector.getX(), "x");
+        assertEquals(5.5, vector.getY(), "y");
+        assertEquals(6, vector.getZ(), "z");
+
+
+        vector = new Vector(new JSONObject("{\"d\": {\"value\": 4.7}}"));
+        assertEquals(4.7, vector.getX(), "d1");
+        assertEquals(4.7, vector.getY(), "d2");
+        assertEquals(4.7, vector.getZ(), "d3");
+
+
+        vector = new Vector(new JSONObject("{\"d\": {\"d1\": 4, \"d2\": 5.5, \"d3\": 6}}"));
+        assertEquals(4, vector.getX(), "d1");
+        assertEquals(5.5, vector.getY(), "d2");
+        assertEquals(6, vector.getZ(), "d3");
+
     }
 
 }

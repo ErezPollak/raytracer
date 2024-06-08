@@ -8,7 +8,15 @@
 
 package primitives;
 
+import org.json.JSONObject;
+
 public class Vector extends Point{
+
+
+    public Vector(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
 
     /**
      * Vector Constructor

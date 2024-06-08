@@ -2,7 +2,9 @@ import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
+import primitives.Color;
 import primitives.Double3;
+import primitives.Point;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -28,13 +30,8 @@ public final class Main {
 //        }
 
 
-
-        String json1 = "{\"value\": 4.5}";
-        String json2 = "{\"d1\": 4, \"d2\": 5.5, \"d3\": 6}";
-
-        Double3 d = new Double3(new JSONObject(json2));
-
-        System.out.println(d);
+        Color c = new Color(new JSONObject("{\"r\": 4, \"g\": 5.5, \"b\": 6}"));
+        System.out.println(c);
 
 //
 //        String scheme1 =

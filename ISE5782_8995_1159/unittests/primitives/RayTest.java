@@ -1,5 +1,6 @@
 package primitives;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -7,6 +8,28 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RayTest {
+
+    @Test
+    void jsonTest(){
+        Ray ray = new Ray(new JSONObject("{\"p\":{\"d\": {\"value\": 4.7}}, \"v\":{\"d\": {\"value\": 5}}}"));
+        assertEquals(4.7, ray.getPoint().getX());
+        assertEquals(4.7, ray.getPoint().getY());
+        assertEquals(4.7, ray.getPoint().getZ());
+
+        assertEquals(0.5773502691896257, ray.getVector().getX());
+        assertEquals(0.5773502691896257, ray.getVector().getY());
+        assertEquals(0.5773502691896257, ray.getVector().getZ());
+
+        ray = new Ray(new JSONObject("{\"head\":{\"d\": {\"value\": 4.7}}, \"direction\":{\"d\": {\"value\": 5}}, \"normal\":{\"d\": {\"value\": 1}}}"));
+
+        assertEquals(0.5773502691896257, ray.getVector().getX());
+        assertEquals(0.5773502691896257, ray.getVector().getY());
+        assertEquals(0.5773502691896257, ray.getVector().getZ());
+
+    }
+
+
+
 //
 //    /**
 //     * testing the function that returns the clothest point from a list.
@@ -38,4 +61,8 @@ class RayTest {
 //        assertEquals(p2 , r.findClosestPoint(list) , "Boundary Values Tests TC03 Failed.");
 //
 //    }
+
+
+
+
 }
