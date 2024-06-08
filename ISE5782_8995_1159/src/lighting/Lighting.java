@@ -1,9 +1,7 @@
 package lighting;
 
-import geometries.Intersectable;
+import json.JSONable;
 import primitives.Color;
-import primitives.Point;
-import scene.Scene;
 
 /**
  * the abstract information about a light source.

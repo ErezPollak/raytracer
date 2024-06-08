@@ -1,5 +1,8 @@
 package primitives;
 
+import json.JSONable;
+import org.json.JSONObject;
+
 /**
  * Wrapper class for java.jwt.Color The constructors operate with any
  * non-negative RGB values. The colors are maintained without upper limit of
@@ -161,6 +164,43 @@ public class Color {
                 "rgb=" + rgb +
                 '}';
     }
+//
+//
+//    public Color(JSONObject json){
+//        super(json);
+//        int r = (int) (long) json.get("r");
+//        int g = (int) (long) json.get("g");
+//        int b = (int) (long) json.get("b");
+//        rgb = new Double3(r, g, b);
+//    }
+//
+//    public static String getSchemaString(){
+//        return "{\n" +
+//                "  \"type\": \"object\",\n" +
+//                "  \"properties\": {\n" +
+//                "    \"r\": {\n" +
+//                "      \"type\": \"string\"\n" +
+//                "    },\n"+
+//                "    \"ge\": {\n" +
+//                "      \"type\": \"string\"\n" +
+//                "    },\n"+
+//                "    \"b\": {\n" +
+//                "      \"type\": \"string\"\n" +
+//                "    },\n"+
+//                "  },\n" +
+//                "  \"required\": [\"name\", \"age\", \"email\", \"address\"]\n" +
+//                "}";
+//    }
+
+//    public static Color fromJson(JSONObject jsonObject) {
+//        int r = (int) (long) jsonObject.get("r");
+//        int g = (int) (long) jsonObject.get("g");
+//        int b = (int) (long) jsonObject.get("b");
+//        Color color = new Color(r,g,b);
+//        return color;
+//    }
+
+
 }
 
 

@@ -1,6 +1,7 @@
 package primitives;
 
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,18 +81,27 @@ class PointTest {
         assertEquals(p1.distance(p2) , distance , "the distanceSquared() function returns wrong value.");
     }
 
-//    /**
-//     * Test method for {@link Point#getXyz()}.
-//     */
-//    @Test
-//    void getXyz() {
-//        // ============ Equivalence Partitions Tests ==============
-//
-//        // TC01: Test that the function returns the xyz value of the point.
-//        Point p1 = new Point(1,2,3);
-//        Double3 d = new Double3(1,2,3);
-//        assertEquals(p1.getXyz() , d , "the getXYZ() function returns wrong value.");
-//
-//    }
+
+    @Test
+    void testjson() throws Exception {
+
+        Point point = new Point(new JSONObject("{\"x\": 4, \"y\": 5.5, \"z\": 6}"));
+        assertEquals(4, point.getX(), "x");
+        assertEquals(5.5, point.getY(), "y");
+        assertEquals(6, point.getZ(), "z");
+
+
+        point = new Point(new JSONObject("{\"d\": {\"value\": 4.7}}"));
+        assertEquals(4.7, point.getX(), "d1");
+        assertEquals(4.7, point.getY(), "d2");
+        assertEquals(4.7, point.getZ(), "d3");
+
+
+        point = new Point(new JSONObject("{\"d\": {\"d1\": 4, \"d2\": 5.5, \"d3\": 6}}"));
+        assertEquals(4, point.getX(), "d1");
+        assertEquals(5.5, point.getY(), "d2");
+        assertEquals(6, point.getZ(), "d3");
+
+    }
 
 }

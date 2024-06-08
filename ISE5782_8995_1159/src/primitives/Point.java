@@ -9,15 +9,29 @@
 package primitives;
 
 
+import json.JSONable;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
-public class Point {
+public class Point extends JSONable {
 
-    public static final Point ZERO = new Point(0,0,0);
+    public static final Point ZERO = new Point(0, 0, 0);
     protected final Double3 xyz;
 
+    public Point(JSONObject jsonObject) throws Exception {
+        super(jsonObject);
+        Point instance = this.getJsonCreatedInstance(this.getClass());
+        this.xyz = instance.xyz;
+    }
+
     /**
-     *  Point Constructor
+     * Point Constructor
+     *
      * @param x
      * @param y
      * @param z
@@ -28,6 +42,7 @@ public class Point {
 
     /**
      * ctor that initialise the Point with the Double3 object.
+     *
      * @param d
      */
     public Point(Double3 d) {
@@ -36,6 +51,7 @@ public class Point {
 
     /**
      * Get point and  make vector subtraction
+     *
      * @param p
      * @return
      */
@@ -45,6 +61,7 @@ public class Point {
 
     /**
      * Add vector to point
+     *
      * @param v
      * @return
      */
@@ -54,6 +71,7 @@ public class Point {
 
     /**
      * Calculates the distance between two points squared
+     *
      * @param p
      * @return
      */
@@ -65,6 +83,7 @@ public class Point {
 
     /**
      * Calculates the distance between two points
+     *
      * @param p
      * @return
      */
@@ -74,6 +93,7 @@ public class Point {
 
     /**
      * Get point coordinates
+     *
      * @return
      */
     public Double3 getXyz() {
@@ -82,6 +102,7 @@ public class Point {
 
     /**
      * equals function based on the equals function of Double3 object.
+     *
      * @param o
      * @return
      */
@@ -95,6 +116,7 @@ public class Point {
 
     /**
      * toString function returns the status of the object.
+     *
      * @return
      */
     @Override
@@ -106,6 +128,7 @@ public class Point {
 
     /**
      * returns the x value of the point.
+     *
      * @return
      */
     public double getX() {
@@ -114,6 +137,7 @@ public class Point {
 
     /**
      * returns the Y value of the point.
+     *
      * @return the second value of the point.
      */
     public double getY() {
@@ -122,6 +146,7 @@ public class Point {
 
     /**
      * returns the Z value of the point.
+     *
      * @return the third value of th point
      */
     public double getZ() {
@@ -131,5 +156,45 @@ public class Point {
     @Override
     public int hashCode() {
         return Objects.hash(xyz);
+    }
+
+    @Override
+    public Map<Schema, Function<JSONObject, Object[]>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"x\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"y\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"z\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }" +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"x\", \"y\", \"z\" " +
+                                "   ]" +
+                                "}")),
+                json -> new Object[]{json.get("x"), json.get("y"), json.get("z")},
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Double3\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"d\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"d\" " +
+                                "   ]" +
+                                "}")),
+                json -> new Object[]{new Double3((JSONObject) json.get("d"))}
+        );
     }
 }

@@ -92,3 +92,31 @@ nb-configuration.xml
 
 
 /images
+
+
+# Compiled class file
+target/
+
+# Dependency directories
+bin/
+idea/
+.iml
+
+# Compiled Java classes
+*.class
+
+# Logs
+*.log
+
+# IntelliJ IDEA files
+.idea/
+
+# Eclipse files
+.classpath
+.project
+.settings/
+.metadata/
+
+# NetBeans files
+nbproject/
+build/

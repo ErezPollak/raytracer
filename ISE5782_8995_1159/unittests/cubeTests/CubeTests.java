@@ -5,9 +5,6 @@ import cubesAPI.Cube;
 import cubesAPI.RenderCube;
 import org.junit.jupiter.api.Test;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
-
 public class CubeTests {
 
     @Test
