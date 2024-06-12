@@ -119,7 +119,7 @@ public class Ray extends JSONable {
         return Map.of(
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Ray\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"p\": {" +
@@ -136,7 +136,7 @@ public class Ray extends JSONable {
                 json -> new Object[]{new Point(json.getJSONObject("p")), new Vector(json.getJSONObject("v"))},
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Ray\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"head\": {" +
@@ -156,8 +156,6 @@ public class Ray extends JSONable {
                 json -> new Object[]{new Point(json.getJSONObject("head")),
                         new Vector(json.getJSONObject("direction")),
                         new Vector(json.getJSONObject("normal"))}
-
-
         );
     }
 }

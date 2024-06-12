@@ -1,9 +1,12 @@
 package geometries;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,6 +67,21 @@ class GeometriesTest {
         ray = new Ray(new Point(0,-10,5), new Vector(1,10.5,-4));
         assertEquals(3,geo.findIntersections(ray).size(),
                 "TC11 failed: expected 3 intersection points.");
+
+    }
+
+    @Test
+    void jsonTest(){
+        Geometries geometries = new Geometries(new JSONObject(
+                "{\"sphere\": [{\"center\": {\"d\" : {\"value\": 6}}, \"radius\": 5} ,{\"center\": {\"x\":1, \"y\":2, \"z\":3.4}, \"radius\": 4}]," +
+                        "\"torus\": [{\"radius\": 10, \"center\": {\"x\":1, \"y\":2, \"z\":3 }, \"width\":5}, {\"radius\": 100, \"center\": {\"x\":10, \"y\":2, \"z\":3 }, \"width\":10}]}"));
+        List<Intersectable> list = geometries.getListOfGeometries();
+        assertEquals(4, list.size());
+        assertEquals(5, ((Sphere) list.get(0)).radius);
+        assertEquals(4, ((Sphere) list.get(1)).radius);
+        assertEquals(1, ((Sphere) list.get(1)).center.getX());
+        assertEquals(10, ((Torus) list.get(2)).radius);
+        assertEquals(10, ((Torus) list.get(3)).center.getX());
 
     }
 

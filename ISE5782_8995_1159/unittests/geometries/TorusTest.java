@@ -1,5 +1,6 @@
 package geometries;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
@@ -14,7 +15,7 @@ public class TorusTest {
 
     @Test
     void testGetNormal() {
-        Torus donut = new Torus(Point.ZERO, new Vector(0, 0, 1), 1, 0.5);
+        Torus donut = new Torus(Point.ZERO, 1, 0.5);
         assertTrue(donut.getNormal(new Point(0, 1, 1)).equals(new Vector(0, 0, 1)), "Error: not correct nermal");
         assertEquals(new Vector(0, 1, 0), donut.getNormal(new Point(0, 1.5, 0)), "Error: not correct nermal");
         assertEquals(new Vector(0, 0, -1), donut.getNormal(new Point(0, 1, -1)), "Error: not correct nermal");
@@ -26,7 +27,7 @@ public class TorusTest {
 
     @Test
     void testFindGeoIntersectionsHelper() {
-        Torus donut = new Torus(Point.ZERO, new Vector(0, 0, 1), 1, 0.5);
+        Torus donut = new Torus(Point.ZERO, 1, 0.5);
         assertEquals(null, donut.findGeoIntersectionsHelper(new Ray(new Point(0, 0, -1), new Vector(0, 0, 1))),"Error: not correct array");
         assertEquals(null, donut.findGeoIntersectionsHelper(new Ray(new Point(0, 0, -1), new Vector(0, 1, 10))), "Error: not correct array");
         assertEquals(null, donut.findGeoIntersectionsHelper(new Ray(new Point(10, 0, -1), new Vector(0, 0, 1))), "Error: not correct array");
@@ -52,5 +53,16 @@ public class TorusTest {
     }
 
 
+
+    @Test
+    void testjson() {
+
+        Torus torus = new Torus(new JSONObject(
+                "{\"radius\": 10, \"center\": {\"x\":1, \"y\":2, \"z\":3 }, \"width\":5}"
+        ));
+        assertEquals(10, torus.radius);
+        assertEquals(3, torus.center.getZ());
+        assertEquals(5, torus.width);
+    }
 
 }

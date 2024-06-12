@@ -1,5 +1,6 @@
 package geometries;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Ray;
@@ -69,6 +70,36 @@ class TriangleTest {
         vector = new Vector(0, 1, 1);
         assertNull(triangle.findIntersections(new Ray(point, vector)),
                 "TC06 failed: expected no intersection points.");
+
+    }
+
+    @Test
+    void testJson() {
+        Triangle triangle = new Triangle(new JSONObject(
+                "{" +
+                        "   \"vertices\": " +
+                        "   [" +
+                        "      {" +
+                        "           \"x\":6.7," +
+                        "           \"y\":5," +
+                        "           \"z\":4" +
+                        "      }, " +
+                        "      {" +
+                        "           \"d\":{" +
+                        "               \"value\":5" +
+                        "            }" +
+                        "      }, " +
+                        "      {" +
+                        "           \"d\":{" +
+                        "               \"value\":4" +
+                        "           }" +
+                        "      }" +
+                        "   ]" +
+                        "}"));
+        assertEquals(3, triangle.vertices.size());
+        assertEquals(6.7, triangle.vertices.get(0).getX());
+        assertEquals(5, triangle.vertices.get(1).getX());
+        assertEquals(4, triangle.vertices.get(2).getX());
 
     }
 

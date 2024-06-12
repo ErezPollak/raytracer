@@ -1,13 +1,16 @@
 package geometries;
 
+import json.JSONable;
+import org.json.JSONObject;
 import primitives.Point;
 import primitives.Ray;
+
 import java.util.*;
 
 /**
  * Interface for the intersections
  */
-public abstract class Intersectable {
+public abstract class Intersectable extends JSONable {
 
     /**
      * a PDS that used to set the color of the object.
@@ -26,16 +29,18 @@ public abstract class Intersectable {
 
         /**
          * ctor for initializing the properties.
+         *
          * @param geometry the geometry.
-         * @param point the point on the geometry.
+         * @param point    the point on the geometry.
          */
-        public GeoPoint(Geometry geometry , Point point){
+        public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;
             this.point = point;
         }
 
         /**
          * making sure that the points have the same values, and the geometries have the same address in memory.
+         *
          * @param o the geoPoint to compare to.
          * @return true if the objects are the same.
          */
@@ -56,9 +61,17 @@ public abstract class Intersectable {
         }
     }
 
+    public Intersectable() {
+    }
+
+    public Intersectable(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
 
     /**
-     *  finds the points of the intersection.
+     * finds the points of the intersection.
+     *
      * @param ray the ray to check intersection with.
      * @return the list of intersections with.
      */
@@ -70,15 +83,17 @@ public abstract class Intersectable {
 
     /**
      * find the list of intersections with the Geometry, in order to find the color.
+     *
      * @param ray the ray to check intersections with.
      * @return the list of intersections.
      */
-    public List<GeoPoint> findGeoIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
 
     /**
      * the private mathod that will be overriden by all the geomrtey classes.
+     *
      * @param ray the ray to check intersections with.
      * @return the list of intersections.
      */

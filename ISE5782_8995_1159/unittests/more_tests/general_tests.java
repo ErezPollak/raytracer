@@ -24,13 +24,13 @@ public class general_tests {
         Scene scene = new Scene("TestScene");
 
         scene.geometries.add(
-                new Tube(1d, new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)))
+                new Tube(new Ray(new Point(0, 0, 0), new Vector(0, 0, 1)), 1d)
                         .setEmission(new Color(BLUE)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30)),
-                new Tube(1d, new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)))
+                new Tube(new Ray(new Point(0, 0, 0), new Vector(0, 1, 0)), 1d)
                         .setEmission(new Color(GREEN)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30)),
-                new Tube(1d, new Ray(new Point(0, 0, 0), new Vector(1, 0, 0)))
+                new Tube(new Ray(new Point(0, 0, 0), new Vector(1, 0, 0)), 1d)
                         .setEmission(new Color(RED)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30))
         );
@@ -84,13 +84,12 @@ public class general_tests {
     }
 
 
-
     @Test
     void AntiAliasingTest() {
 
         Scene scene = new Scene("TestScene");
 
-        Intersectable torus = new Torus(Point.ZERO, new Vector(0,0,1), 5, 3) //
+        Intersectable torus = new Torus(Point.ZERO, 5, 3) //
                 .setEmission(new Color(BLUE)) //
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30));
 

@@ -3,20 +3,20 @@
  */
 package geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-
-import geometries.*;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing Polygons
  *
  * @author Dan
- *
  */
 class PolygonTests {
 
@@ -118,4 +118,67 @@ class PolygonTests {
         assertNull(t1.findIntersections(r6), "Intersects on edge continuation");
 
     }
+
+    @Test
+    void testJson() {
+        Polygon polygon = new Polygon(new JSONObject(
+                "{" +
+                "   \"vertices\": " +
+                "   [" +
+                "      {" +
+                "           \"x\":0," +
+                "           \"y\":0," +
+                "           \"z\":1" +
+                "      }, " +
+                "      {" +
+                "           \"d\":{" +
+                "               \"value\":0" +
+                "            }" +
+                "      }, " +
+                "      {" +
+                "           \"x\":1," +
+                "           \"y\":1," +
+                "           \"z\":0" +
+                "      }, " +
+                "      {" +
+                "           \"d\":{" +
+                "               \"value\":1" +
+                "           }" +
+                "      }" +
+                "   ]" +
+                "}"));
+        assertEquals(4, polygon.vertices.size());
+        assertEquals(0, polygon.vertices.get(0).getX());
+        assertEquals(0, polygon.vertices.get(1).getX());
+        assertEquals(1, polygon.vertices.get(2).getX());
+
+
+
+        polygon = new Polygon(new JSONObject(
+                "{" +
+                        "   \"vertices\": " +
+                        "   [" +
+                        "      {" +
+                        "           \"x\":6.7," +
+                        "           \"y\":5," +
+                        "           \"z\":4" +
+                        "      }, " +
+                        "      {" +
+                        "           \"d\":{" +
+                        "               \"value\":5" +
+                        "            }" +
+                        "      }, " +
+                        "      {" +
+                        "           \"d\":{" +
+                        "               \"value\":4" +
+                        "           }" +
+                        "      }" +
+                        "   ]" +
+                        "}"));
+        assertEquals(3, polygon.vertices.size());
+        assertEquals(6.7, polygon.vertices.get(0).getX());
+        assertEquals(5, polygon.vertices.get(1).getX());
+        assertEquals(4, polygon.vertices.get(2).getX());
+    }
+
 }

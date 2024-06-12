@@ -1,26 +1,44 @@
 package geometries;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube {
     double height;
 
+
+    public Cylinder(JSONObject jsonObject) {
+        super(jsonObject);
+        Cylinder cylinder = this.getJsonCreatedInstance(this.getClass());
+        height = cylinder.getHeight();
+    }
+
     /**
      * Cylinder Constructor
      *
-     * @param high
+     * @param height
      */
-    public Cylinder(Ray ray, double radius, double high) {
-        super(radius, ray);
-        this.height = high;
+    public Cylinder(Ray ray, double radius, double height) {
+        super(ray, radius);
+        this.height = height;
     }
+
+    public Cylinder(Tube tube, double height) {
+        super(tube.ray, tube.radius);
+        this.height = height;
+    }
+
 
     /**
      * Get high of cylinder
@@ -52,7 +70,7 @@ public class Cylinder extends Tube {
         if (toBottom.dotProduct(ray.getVector()) == 0 || toTop.dotProduct(ray.getVector()) == 0) {
 
             //check that the distance is not the radius
-            if (!isZero(toTop.length() - this.raduis) && !isZero(toBottom.length() - this.raduis)) {
+            if (!isZero(toTop.length() - this.radius) && !isZero(toBottom.length() - this.radius)) {
 
                 //then this is the normal of the cylinder in that point.
                 return ray.getVector().normalize();
@@ -116,7 +134,7 @@ public class Cylinder extends Tube {
                 if (pt.equals(basePoint))
                     result.add(new GeoPoint(this, basePoint));
                     // intersection point is different to base point but is on the bottom base
-                else if (pt.subtract(basePoint).dotProduct(pt.subtract(basePoint)) < super.raduis * super.raduis)
+                else if (pt.subtract(basePoint).dotProduct(pt.subtract(basePoint)) < super.radius * super.radius)
                     result.add(new GeoPoint(this, pt));
             }
         }
@@ -135,7 +153,7 @@ public class Cylinder extends Tube {
                 if (pt.equals(topPoint))
                     result.add(new GeoPoint(this, topPoint));
                     // intersection point is different to base point but is on the bottom base
-                else if (pt.subtract(topPoint).dotProduct(pt.subtract(topPoint)) < super.raduis * super.raduis)
+                else if (pt.subtract(topPoint).dotProduct(pt.subtract(topPoint)) < super.radius * super.radius)
                     result.add(new GeoPoint(this, pt));
             }
         }
@@ -171,7 +189,52 @@ public class Cylinder extends Tube {
         // no intersections
         return null;
     }
+
+
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"ray\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"radius\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"height\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"radius\", \"ray\", \"height\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Ray(json.getJSONObject("ray")), json.getDouble("radius"), json.getDouble("height")},
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"tube\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"height\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"tube\", \"height\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Tube(json.getJSONObject("tube")), json.getDouble("height")}
+
+        );
+
+    }
+
 }
-
-
 

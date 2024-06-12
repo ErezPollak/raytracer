@@ -16,15 +16,15 @@ class RayTest {
         assertEquals(4.7, ray.getPoint().getY());
         assertEquals(4.7, ray.getPoint().getZ());
 
-        assertEquals(0.5773502691896257, ray.getVector().getX());
-        assertEquals(0.5773502691896257, ray.getVector().getY());
-        assertEquals(0.5773502691896257, ray.getVector().getZ());
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getX()));
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getY()));
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getZ()));
 
         ray = new Ray(new JSONObject("{\"head\":{\"d\": {\"value\": 4.7}}, \"direction\":{\"d\": {\"value\": 5}}, \"normal\":{\"d\": {\"value\": 1}}}"));
 
-        assertEquals(0.5773502691896257, ray.getVector().getX());
-        assertEquals(0.5773502691896257, ray.getVector().getY());
-        assertEquals(0.5773502691896257, ray.getVector().getZ());
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getX()));
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getY()));
+        assertEquals(Util.alignDouble(0.5773502691896257), Util.alignDouble(ray.getVector().getZ()));
 
     }
 

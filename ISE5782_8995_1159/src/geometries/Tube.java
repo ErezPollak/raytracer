@@ -1,40 +1,52 @@
 package geometries;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Tube extends Geometry {
-    protected double raduis;
+    protected double radius;
     protected Ray ray;
 
     public Vector getNormal() {
         return null;
     }
 
+    public Tube(JSONObject jsonObject) {
+        super(jsonObject);
+        Tube tube = this.getJsonCreatedInstance(this.getClass());
+        this.radius = tube.radius;
+        this.ray = tube.ray;
+    }
+
     /**
      * Tube Constructor
      *
-     * @param raduis
+     * @param radius
      * @param ray
      */
-    public Tube(double raduis, Ray ray) {
-        this.raduis = raduis;
+    public Tube(Ray ray, double radius) {
+        this.radius = radius;
         this.ray = ray;
     }
 
     /**
-     * Get raduis of tube.
+     * Get radius of tube.
      *
      * @return
      */
-    public double getRaduis() {
-        return raduis;
+    public double getRadius() {
+        return radius;
     }
 
     /**
@@ -49,7 +61,7 @@ public class Tube extends Geometry {
     @Override
     public String toString() {
         return "Tube{" +
-                "raduis=" + raduis +
+                "radius=" + radius +
                 ", ray=" + ray +
                 '}';
     }
@@ -120,7 +132,7 @@ public class Tube extends Geometry {
         // -> B = 0, C = -radius²
         if (p0.equals(pa)) {
             b = 0;
-            c = -(raduis * raduis);
+            c = -(radius * radius);
         } else {
 
             // calculate ∆p
@@ -141,19 +153,19 @@ public class Tube extends Geometry {
                 else
                     b = 2 * (vMinusVt.dotProduct(deltaMinusVt));
 
-                c = deltaMinusVt.lengthSquared() - (raduis * raduis);
+                c = deltaMinusVt.lengthSquared() - (radius * radius);
             } catch (IllegalArgumentException ex) {
                 double scaleFactor = delta.dotProduct(vt);
 
                 // scale factor (∆p, vt) == 0
                 if (isZero(scaleFactor)) {
                     b = 2 * v.dotProduct(delta);
-                    c = delta.lengthSquared() - (raduis * raduis);
+                    c = delta.lengthSquared() - (radius * radius);
                 }
                 // ∆p - (∆p , vt)vt == 0
                 else {
                     b = 0;
-                    c = -(raduis * raduis);
+                    c = -(radius * radius);
                 }
             }
         }
@@ -181,5 +193,30 @@ public class Tube extends Geometry {
         }
 
         return null;
+    }
+
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"radius\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"ray\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"radius\", \"ray\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Ray(json.getJSONObject("ray")), json.getDouble("radius")}
+
+        );
     }
 }

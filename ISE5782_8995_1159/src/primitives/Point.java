@@ -163,7 +163,7 @@ public class Point extends JSONable {
         return Map.of(
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Point\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"x\": {" +
@@ -183,7 +183,7 @@ public class Point extends JSONable {
                 json -> new Object[]{json.get("x"), json.get("y"), json.get("z")},
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Point\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"d\": {" +

@@ -1,5 +1,6 @@
 package geometries;
 
+import org.json.JSONObject;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -7,6 +8,10 @@ import primitives.Vector;
 import java.util.List;
 
 public class Triangle extends Polygon{
+
+    public Triangle(JSONObject jsonObject){
+        super(jsonObject);
+    }
 
     /**
      * takes three points and makes a triangle out of them.

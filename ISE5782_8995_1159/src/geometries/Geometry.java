@@ -1,5 +1,6 @@
 package geometries;
 
+import org.json.JSONObject;
 import primitives.*;
 
 
@@ -7,6 +8,12 @@ import primitives.*;
  * the class that represent a geometry.
  */
 public abstract class Geometry extends Intersectable {
+
+   public Geometry(){}
+
+   public Geometry(JSONObject jsonObject){
+      super(jsonObject);
+   }
 
    /**
     * the light that every geometry should emit.

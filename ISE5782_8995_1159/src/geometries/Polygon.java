@@ -2,7 +2,15 @@ package geometries;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import primitives.*;
 import static primitives.Util.*;
 
@@ -22,6 +30,14 @@ public class Polygon extends Geometry {
 	 */
 	protected Plane plane;
 	private int size;
+
+	public Polygon(JSONObject jsonObject) {
+		super(jsonObject);
+		Polygon polygon = this.getJsonCreatedInstance(this.getClass());
+		this.vertices = polygon.vertices;
+		this.plane = polygon.plane;
+		this.size = polygon.size;
+	}
 
 	/**
 	 * Polygon constructor based on vertices list. The list must be ordered by edge
@@ -123,5 +139,33 @@ public class Polygon extends Geometry {
 		}
 		intersections.get(0).geometry = this;
 		return intersections;
+	}
+
+	@Override
+	public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+		return Map.of(
+				SchemaLoader.load(new JSONObject(
+						"{" +
+								"   \"$schema\": \"Ray\"," +
+								"   \"type\": \"object\"," +
+								"   \"properties\": {" +
+								"       \"vertices\": {" +
+								"           \"type\": \"array\"," +
+								"           \"items\": {" +
+								"		        \"type\": \"object\"" +
+								"			}," +
+								"      }," +
+								"   }," +
+								"   \"required\": [" +
+								"      \"vertices\"" +
+								"   ], additionalProperties: false" +
+								"}")),
+				json -> IntStream.range(0, json.getJSONArray("vertices").length())
+						.mapToObj(json.getJSONArray("vertices")::getJSONObject)
+						.toList()
+						.stream()
+						.map(v -> new Point((JSONObject) v))
+						.toArray(Point[]::new)
+		);
 	}
 }

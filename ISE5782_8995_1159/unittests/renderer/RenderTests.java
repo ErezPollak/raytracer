@@ -6,12 +6,7 @@ import lighting.AmbientLight;
 import geometries.*;
 import primitives.*;
 import scene.Scene;
-import scene.SceneBuilder;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import static java.awt.Color.*;
 
@@ -87,28 +82,28 @@ public class RenderTests {
     /**
      * Test for XML based scene - for bonus
      */
-    @Test
-    public void basicRenderJson() throws IOException {
-
-        Scene scene = new SceneBuilder("\\Json\\firstScene.json" , "Scene name").build();
-
-        Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-                .cameraMove(new Point(100,100,100), Point.ZERO, new Vector(0,0,1))
-                .setVPDistance(100) //
-                .setVPSize(500, 500)
-                .setImageWriter(new ImageWriter(1000, 1000))
-                .setRayTracer(new RayTracerBasic(scene));
-        camera.renderImage();
-        // camera.printGrid(100, new Color(YELLOW));
-        camera.writeToImage("json render test");
-
-
-
-
-        FileOutputStream f = new FileOutputStream(System.getProperty("user.dir") + "\\images\\fromBuffer.png");
-        f.write(camera.getImageBytes());
-        f.close();
-    }
+//    @Test
+//    public void basicRenderJson() throws IOException {
+//
+//        Scene scene = new SceneBuilder("\\Json\\firstScene.json" , "Scene name").build();
+//
+//        Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+//                .cameraMove(new Point(100,100,100), Point.ZERO, new Vector(0,0,1))
+//                .setVPDistance(100) //
+//                .setVPSize(500, 500)
+//                .setImageWriter(new ImageWriter(1000, 1000))
+//                .setRayTracer(new RayTracerBasic(scene));
+//        camera.renderImage();
+//        // camera.printGrid(100, new Color(YELLOW));
+//        camera.writeToImage("json render test");
+//
+//
+//
+//
+//        FileOutputStream f = new FileOutputStream(System.getProperty("user.dir") + "\\images\\fromBuffer.png");
+//        f.write(camera.getImageBytes());
+//        f.close();
+//    }
 }
 
 

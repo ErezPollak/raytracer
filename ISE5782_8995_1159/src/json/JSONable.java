@@ -30,7 +30,7 @@ public abstract class JSONable {
         for (Map.Entry<Schema, Function<JSONObject, ? extends Object>> entry : creationMap.entrySet()) {
             try {
                 entry.getKey().validate(json);
-                System.out.println("FoundSchema");
+                //TODO log found schema
                 Object returned = entry.getValue().apply(json);
                 if (returned instanceof Object[])
                     this.params = (Object[]) returned;
@@ -64,9 +64,26 @@ public abstract class JSONable {
             return null;
         }
 
+        /*
+            trys to look for a constranctor that expects one Object type with ...
+         */
+        try {
+            return clazz.getConstructor(this.params.getClass()).newInstance(new Object[]{this.params});
+        } catch (InvocationTargetException e) {
+            System.out.println(e.getTargetException().getMessage());
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException _) {
+        }
+
+        /*
+        the classic case when i need to create an array with all the types of the params and use that to search for the
+        conatructor.
+         */
         Class<?>[] paramTypes = null;
         try {
-            paramTypes = Arrays.stream(this.params).map(cls -> getPrimitiveClass(cls.getClass())).toArray(Class<?>[]::new);
+            paramTypes =
+                    Arrays.stream(this.params)
+                            .map(cls -> getPrimitiveClass(cls.getClass()))
+                            .toArray(Class<?>[]::new);
             return clazz.getConstructor(paramTypes).newInstance(this.params);
         } catch (NullPointerException e) {
             System.out.println("jsonable was not created properly");
@@ -75,7 +92,7 @@ public abstract class JSONable {
             System.out.println("DID NOT FOUND THE CORRECT CONSTRUCTOR for params " + Arrays.toString(paramTypes) + ". \nConstranctors: ");
             for (Constructor<?> constructor : clazz.getDeclaredConstructors()) {
                 for (Parameter parameter : constructor.getParameters()) {
-                    System.out.print("   " + parameter.getType().toString());
+                    System.out.print("   " + parameter.getType().getName());
                 }
                 System.out.println();
             }

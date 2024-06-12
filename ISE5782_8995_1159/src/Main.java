@@ -7,13 +7,46 @@ import primitives.Double3;
 import primitives.Point;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.sql.SQLOutput;
 
+class MyClass {
+    public MyClass(Point... ints) {
+        // Constructor logic
+        for (Point i : ints) {
+            System.out.println(i);
+        }
+    }
+}
 
 public final class Main {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args)  {
+
+
+
+        try {
+            // Get the constructor
+            Constructor<MyClass> constructor = MyClass.class.getConstructor(Point[].class);
+
+            // Create an array of integers
+            Point[] ints = {new Point(2,3,4), new Point(4,5,6), new Point(4,1,2), new Point(5,2,3)};
+
+            // Call the constructor with the array
+            MyClass instance = constructor.newInstance(new Object[] { ints });
+
+            // Print the instance
+            System.out.println(instance);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace(); // Print detailed message for debugging
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+
+
 //
 //        for (Constructor<?> constructor : Double3.class.getDeclaredConstructors()) {
 //            //System.out.println("Constructor: " + constructor.getName());
@@ -28,10 +61,30 @@ public final class Main {
 //                // System.out.println("  Parameter type: " + parameter.getType().getName());
 //            }
 //        }
+//
+//        JSONObject a = new JSONObject(
+//                "{" +
+//                        "   \"vertices\": " +
+//                        "   [" +
+//                        "      {" +
+//                        "           \"x\":4," +
+//                        "           \"y\":5," +
+//                        "           \"z\": 6.4" +
+//                        "      }, " +
+//                        "      {" +
+//                        "           \"d\":{" +
+//                        "               \"value\":3}" +
+//                        "      }, " +
+//                        "      {" +
+//                        "           \"d\":{" +
+//                        "               \"value\":3}" +
+//                        "      }" +
+//                        "   ]" +
+//                        "}");
+//        System.out.println(a);
 
 
-        Color c = new Color(new JSONObject("{\"r\": 4, \"g\": 5.5, \"b\": 6}"));
-        System.out.println(c);
+
 
 //
 //        String scheme1 =

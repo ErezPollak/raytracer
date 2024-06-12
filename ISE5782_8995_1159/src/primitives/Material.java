@@ -101,7 +101,7 @@ public class Material extends JSONable {
         return Map.of(
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Material\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"kD\": {" +

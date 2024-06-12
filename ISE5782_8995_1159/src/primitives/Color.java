@@ -204,7 +204,7 @@ public class Color extends JSONable {
                 json -> new Object[]{json.get("r"), json.get("g"), json.get("b")},
                 SchemaLoader.load(new JSONObject(
                         "{" +
-                                "   \"$schema\": \"Double3\"," +
+                                "   \"$schema\": \"Color\"," +
                                 "   \"type\": \"object\"," +
                                 "   \"properties\": {" +
                                 "      \"rgb\": {" +

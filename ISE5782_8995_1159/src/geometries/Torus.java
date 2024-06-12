@@ -1,55 +1,50 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import primitives.*;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import primitives.Complex;
-import primitives.Util;
 
 
 public class Torus extends Geometry {
 
-    private Point center;
-    private Vector direction;
-    private double radius;
-    private double width;
-    private Plane plane;
-    Sphere outerTube;
-    Sphere innerTube;
+    Vector DIRECTION = new Vector(0, 0, 1);
 
-    public Torus(Point center, Vector direction, double radius, double width) {
+    Point center;
+    double radius;
+    double width;
+    Plane plane;
+
+    public Torus(JSONObject jsonObject) {
+        super(jsonObject);
+        Torus torus = this.getJsonCreatedInstance(this.getClass());
+        this.center = torus.center;
+        this.radius = torus.radius;
+        this.width = torus.width;
+        this.plane = torus.plane;
+    }
+
+    public Torus(Point center, double radius, double width) {
         this.center = center;
-        this.direction = direction;
         this.radius = radius;
         this.width = width;
 
         assert this.width < this.radius;
 
-        this.plane = new Plane(center, direction);
+        this.plane = new Plane(center, DIRECTION);
     }
 
     @Override
     public Vector getNormal(Point p) {
-        Plane pointCenterPlain = new Plane(center, p, center.add(direction));
+        Plane pointCenterPlain = new Plane(center, p, center.add(DIRECTION));
         Vector toCircle = this.plane.getNormal().crossProduct(pointCenterPlain.getNormal()).normalize();
         Point onCircle = this.center.add(toCircle.scale(radius));
         return p.subtract(onCircle).normalize();
-    }
-
-
-    private Ray canonizingRay(Ray ray) {
-//        Point p = ray.getPoint();
-//        Vector v = ray.getVector();
-//        return new Ray(
-//                new Point(ray.getPoint().getXyz().add(this.center.getXyz())),
-//                new Vector(v.getX() - 0.1, v.getY(), v.getZ() - 0.5)
-//        );
-        return ray;
     }
 
     /*
@@ -60,20 +55,18 @@ public class Torus extends Geometry {
         double A = this.radius;
         double B = this.width;
 
-        Ray canonizedRay = canonizingRay(ray);
+        double Ex = ray.getVector().getX();
+        double Ey = ray.getVector().getY();
+        double Ez = ray.getVector().getZ();
 
-        double Ex = canonizedRay.getVector().getX();
-        double Ey = canonizedRay.getVector().getY();
-        double Ez = canonizedRay.getVector().getZ();
-
-        double Dx = canonizedRay.getPoint().getX();
-        double Dy = canonizedRay.getPoint().getY();
-        double Dz = canonizedRay.getPoint().getZ();
+        double Dx = ray.getPoint().getX();
+        double Dy = ray.getPoint().getY();
+        double Dz = ray.getPoint().getZ();
 
         double G = 4 * A * A * (Ex * Ex + Ey * Ey);
         double H = 8 * A * A * (Dx * Ex + Dy * Ey);
         double I = 4 * A * A * (Dx * Dx + Dy * Dy);
-        double J = canonizedRay.getVector().lengthSquared();
+        double J = ray.getVector().lengthSquared();
         double K = 2 * (Dx * Ex + Dy * Ey + Dz * Ez);
         double L = Dx * Dx + Dy * Dy + Dz * Dz + A * A - B * B;
 
@@ -89,7 +82,7 @@ public class Torus extends Geometry {
         var points = uValues.stream()
                 .filter(number -> number.getReal() > 0 && number.getImaginary() == 0)
                 .distinct()
-                .map(number -> new GeoPoint(this, canonizedRay.getPoint().add(canonizedRay.getVector().scale(number.getReal()))))
+                .map(number -> new GeoPoint(this, ray.getPoint().add(ray.getVector().scale(number.getReal()))))
                 .collect(Collectors.toList());
 
         if (points.size() == 0) {
@@ -99,5 +92,38 @@ public class Torus extends Geometry {
         return points;
     }
 
+    @Override
+    public String toString() {
+        return "Torus{" +
+                "radius=" + this.radius +
+                ", center=" + this.center +
+                ", width=" + this.width +
+                '}';
+    }
 
+
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "      \"center\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
+                                "      \"radius\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "      \"width\": {" +
+                                "          \"type\": \"number\"" +
+                                "      }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"radius\", \"center\", \"width\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Point(json.getJSONObject("center")), json.getDouble("radius"), json.getDouble("width")});
+    }
 }
