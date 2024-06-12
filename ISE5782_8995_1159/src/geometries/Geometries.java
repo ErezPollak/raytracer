@@ -6,7 +6,6 @@ import org.json.JSONObject;
 import primitives.Ray;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +94,6 @@ public class Geometries extends Intersectable {
     }
 
 
-
     @Override
     public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
         List<Class<?>> allSubClasses = getSubclassesOf(Geometry.class);
@@ -107,12 +105,12 @@ public class Geometries extends Intersectable {
                                 "    \"minProperties\": 1," +
                                 "   \"properties\": {" + allSubClasses.stream().map(cls ->
                                 "      \"" + cls.getSimpleName().toLowerCase() + "\": {" +
-                                "          \"type\": \"array\"," +
-                                "          \"minItems\": 1," +
-                                "          \"items\": { " +
-                                "               \"type\": \"object\"" +
-                                "           }," +
-                                "      },").collect(Collectors.joining()) +
+                                        "          \"type\": \"array\"," +
+                                        "          \"minItems\": 1," +
+                                        "          \"items\": { " +
+                                        "               \"type\": \"object\"" +
+                                        "           }," +
+                                        "      },").collect(Collectors.joining()) +
                                 "   }," +
                                 "  additionalProperties: false" +
                                 "}")),

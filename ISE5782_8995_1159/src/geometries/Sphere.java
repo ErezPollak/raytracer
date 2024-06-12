@@ -128,6 +128,9 @@ public class Sphere extends Geometry {
                         "      \"radius\": {" +
                         "          \"type\": \"number\"" +
                         "      }," +
+                        "      \"geometry\": {" +
+                        "          \"type\": \"object\"" +
+                        "      }," +
                         "   }," +
                         "   \"required\": [" +
                         "      \"center\", \"radius\"" +

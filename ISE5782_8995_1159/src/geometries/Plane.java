@@ -152,6 +152,9 @@ public class Plane extends Geometry {
                                 "      \"normal\": {" +
                                 "          \"type\": \"object\"" +
                                 "      }," +
+                                "      \"geometry\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"p0\", \"normal\"" +
@@ -171,7 +174,10 @@ public class Plane extends Geometry {
                                 "      }," +
                                 "      \"p3\": {" +
                                 "          \"type\": \"object\"" +
-                                "      }" +
+                                "      }," +
+                                "      \"geometry\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"p1\", \"p2\",\"p3\" " +

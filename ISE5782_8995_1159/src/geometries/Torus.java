@@ -119,6 +119,9 @@ public class Torus extends Geometry {
                                 "      \"width\": {" +
                                 "          \"type\": \"number\"" +
                                 "      }," +
+                                "      \"geometry\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"radius\", \"center\", \"width\"" +

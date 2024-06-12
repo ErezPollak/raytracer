@@ -225,6 +225,9 @@ public class Cylinder extends Tube {
                                 "      \"height\": {" +
                                 "          \"type\": \"number\"" +
                                 "      }," +
+                                "      \"geometry\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"tube\", \"height\"" +

@@ -1,5 +1,6 @@
 package geometries;
 
+import org.everit.json.schema.ValidationException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
@@ -8,8 +9,7 @@ import primitives.Vector;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for geometries.Sphere class
@@ -178,6 +178,8 @@ class SphereTest {
         assertEquals(3, sphere.center.getZ());
         assertEquals(4, sphere.radius);
 
+        assertThrows(ValidationException.class, () -> new Sphere(new JSONObject("{\"center\": {\"x\":1, \"y\":2, \"z\":3 }, \"radius\": 4, \"a\": 34}")));
+        assertThrows(ValidationException.class, () -> new Sphere(new JSONObject("{\"center\": {\"x\":1, \"y\":2, \"z\":3 }, \"radius\": 4, \"geometry\": 34}")));
     }
 
 

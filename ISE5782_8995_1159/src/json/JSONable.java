@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static json.Utils.validate;
+
 public abstract class JSONable {
 
     private JSONable object;
@@ -29,7 +31,7 @@ public abstract class JSONable {
 
         for (Map.Entry<Schema, Function<JSONObject, ? extends Object>> entry : creationMap.entrySet()) {
             try {
-                entry.getKey().validate(json);
+                validate(entry.getKey(), json);
                 //TODO log found schema
                 Object returned = entry.getValue().apply(json);
                 if (returned instanceof Object[])

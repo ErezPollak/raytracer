@@ -1,5 +1,6 @@
 package json;
 
+import org.everit.json.schema.Schema;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -16,5 +17,8 @@ public class Utils {
                 .collect(Collectors.toList());
     }
 
+    public static void validate(Schema jsonSchma, JSONObject jsonObject) {
+        jsonSchma.validate(jsonObject);
+    }
 
 }

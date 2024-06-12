@@ -1,11 +1,8 @@
 package lighting;
 
-import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point;
-import primitives.Ray;
 import primitives.Vector;
-import scene.Scene;
 
 /**
  *

@@ -59,10 +59,10 @@ public class SpotLight extends PointLight implements LightSource {
         //calculates the degree between the direction of the light source to the direction of the light source to the point.
         double degree = this.direction.dotProduct(super.getL(p));
 
-        if(degree < 0 || (ARCHITECTURE == NarrowBeamArchitecture.MY_ARCHITECTURE && degree < narrowBeam))
+        if (degree < 0 || (ARCHITECTURE == NarrowBeamArchitecture.MY_ARCHITECTURE && degree < narrowBeam))
             return Color.BLACK;
 
-        if(ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE){
+        if (ARCHITECTURE == NarrowBeamArchitecture.DAN_ARCHITECTURE) {
             for (int i = 0; i < narrowBeam - 1; i++) {
                 degree *= degree;
             }
@@ -75,15 +75,13 @@ public class SpotLight extends PointLight implements LightSource {
     @Override
     public SpotLight setRadius(double radius) {
         this.radius = radius;
-       this.initializePoints();
+        this.initializePoints();
         return this;
     }
 
-        private void initializePoints() {
+    private void initializePoints() {
         super.initializePoints(this.position.add(direction));
     }
-
-
 
 
 }

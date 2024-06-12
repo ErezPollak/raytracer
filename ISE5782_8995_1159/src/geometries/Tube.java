@@ -209,7 +209,9 @@ public class Tube extends Geometry {
                                 "      \"ray\": {" +
                                 "          \"type\": \"object\"" +
                                 "      }," +
-
+                                "      \"geometry\": {" +
+                                "          \"type\": \"object\"" +
+                                "      }," +
                                 "   }," +
                                 "   \"required\": [" +
                                 "      \"radius\", \"ray\"" +

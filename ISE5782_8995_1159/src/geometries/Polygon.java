@@ -155,6 +155,9 @@ public class Polygon extends Geometry {
 								"		        \"type\": \"object\"" +
 								"			}," +
 								"      }," +
+								"      \"geometry\": {" +
+								"          \"type\": \"object\"" +
+								"      }," +
 								"   }," +
 								"   \"required\": [" +
 								"      \"vertices\"" +
