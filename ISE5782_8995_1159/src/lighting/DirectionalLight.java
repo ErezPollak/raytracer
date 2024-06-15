@@ -1,8 +1,14 @@
 package lighting;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
+
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  *
@@ -14,6 +20,13 @@ public class DirectionalLight extends Lighting implements LightSource {
      */
     private Vector direction;
 
+    public DirectionalLight(JSONObject jsonObject) {
+        super(jsonObject);
+        DirectionalLight directionalLight = this.getJsonCreatedInstance(this.getClass());
+        this.direction = directionalLight.direction;
+        this.intensity = directionalLight.intensity;
+    }
+
     /**
      * ctor for initializing the intensity.
      *
@@ -22,6 +35,10 @@ public class DirectionalLight extends Lighting implements LightSource {
     public DirectionalLight(Color intensity, Vector direction) {
         super(intensity);
         this.direction = direction.normalize();
+    }
+
+    public Vector getDirection() {
+        return direction;
     }
 
     /**
@@ -51,5 +68,27 @@ public class DirectionalLight extends Lighting implements LightSource {
         return Double.POSITIVE_INFINITY;
     }
 
-
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "       \"intensity\": {" +
+                                "           \"type\": \"object\"," +
+                                "       }," +
+                                "       \"direction\": {" +
+                                "           \"type\": \"object\"," +
+                                "       }" +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"intensity\",\"direction\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> new Object[]{new Color(json.optJSONObject("intensity")),
+                        new Vector(json.getJSONObject("direction"))}
+        );
+    }
 }

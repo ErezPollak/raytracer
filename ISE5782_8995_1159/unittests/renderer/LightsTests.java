@@ -1,5 +1,7 @@
 package renderer;
 
+import com.sun.nio.sctp.SctpSocketOption;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import lighting.*;
@@ -10,6 +12,7 @@ import scene.Scene;
 import java.util.List;
 
 import static java.awt.Color.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test rendering a basic image
@@ -330,6 +333,40 @@ public class LightsTests {
                 .setRayTracer(new RayTracerBasic(generalScene)) //
                 .renderImage() //
                 .writeToImage(); //
+
+    }
+
+    @Test
+    void testJson(){
+        DirectionalLight directionalLight = new DirectionalLight(new JSONObject("{\"direction\": {\"d\": {\"d1\": 0, \"d2\": 0, \"d3\": 6}}, \"intensity\": {\"rgb\": {\"value\": 100}}}"));
+        assertEquals(1, directionalLight.getDirection().getZ());
+        assertEquals(0, directionalLight.getDirection().getX());
+        assertEquals(0, directionalLight.getDirection().getY());
+        assertEquals(100, directionalLight.getIntensity(null).getColor().getBlue());
+
+        AmbientLight ambientLight = new AmbientLight(new JSONObject("{\"officiant\": {\"d1\": 1, \"d2\": 0.1, \"d3\": 0.2}, \"intensity\": {\"rgb\": {\"value\": 100}}}"));
+        assertEquals(100, ambientLight.getIntensity().getColor().getRed());
+        assertEquals(10, ambientLight.getIntensity().getColor().getGreen());
+        assertEquals(20, ambientLight.getIntensity().getColor().getBlue());
+
+        ambientLight = new AmbientLight(new JSONObject("{\"officiant\": {\"value\": 0.1}, \"intensity\": {\"rgb\": {\"value\": 100}}}"));
+        assertEquals(10, ambientLight.getIntensity().getColor().getRed());
+        assertEquals(10, ambientLight.getIntensity().getColor().getGreen());
+        assertEquals(10, ambientLight.getIntensity().getColor().getBlue());
+
+        PointLight pointLight = new PointLight(new JSONObject("{\"intensity\": {\"rgb\": {\"value\": 100}}, \"position\": {\"d\": {\"value\": 5}}, \"kC\": 4, \"radius\": 6}"));
+        assertEquals(100, pointLight.getIntensity().getColor().getRed());
+        assertEquals(6, pointLight.getRadius());
+        assertEquals(4, pointLight.getkC());
+        assertEquals(0, pointLight.getkL());
+
+        SpotLight spotLight = new SpotLight(new JSONObject("{\"intensity\": {\"rgb\": {\"value\": 100}}, \"direction\": {\"x\": 1, \"y\": 0, \"z\": 0}, \"position\": {\"d\": {\"value\": 5}}, \"kC\": 4, \"radius\": 6}"));
+        assertEquals(100, spotLight.getIntensity().getColor().getRed());
+        assertEquals(6, spotLight.getRadius());
+        assertEquals(4, spotLight.getkC());
+        assertEquals(0, spotLight.getkL());
+        assertEquals(1, spotLight.getDirection().getX());
+        assertEquals(0, spotLight.getDirection().getY());
 
     }
 

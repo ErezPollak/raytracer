@@ -16,7 +16,10 @@ import static json.Utils.validate;
 
 public abstract class JSONable {
 
+    //TODO add support for dynamic initialization and delete the object initialization.
     private JSONable object;
+
+
     private Object[] params;
 
     public JSONable() {

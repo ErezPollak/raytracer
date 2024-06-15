@@ -1,15 +1,20 @@
 package lighting;
 
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  *
  */
-public class PointLight extends Lighting implements LightSource{
+public class PointLight extends Lighting implements LightSource {
 
     /**
      * the location of the lightSource.
@@ -27,13 +32,22 @@ public class PointLight extends Lighting implements LightSource{
     private double kQ = 0;
 
 
-    ///////SOFT SHADOW FIELDS////////
+    ///////SOFT SHADOW PROPERTIES////////
     protected double radius = 0;
     private Point[] points;
     private final int NUMBER_OF_POINTS = 100;
     private final Random rand = new Random();
 
-
+    public PointLight(JSONObject jsonObject) {
+        super(jsonObject);
+        PointLight pointLight = (PointLight) this.getObject();
+        this.intensity = pointLight.intensity;
+        this.position = pointLight.position;
+        this.kC = pointLight.kC;
+        this.kL = pointLight.kL;
+        this.kQ = pointLight.kQ;
+        this.radius = pointLight.radius;
+    }
 
 
     /**
@@ -61,8 +75,29 @@ public class PointLight extends Lighting implements LightSource{
         return this;
     }
 
+    public Point getPosition() {
+        return position;
+    }
+
+    public double getkC() {
+        return kC;
+    }
+
+    public double getkL() {
+        return kL;
+    }
+
+    public double getkQ() {
+        return kQ;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
     /**
      * the impact of the point light on a point on an object.
+     *
      * @param p the point on the geometry.
      * @return the light of the point from the light source.
      */
@@ -73,6 +108,7 @@ public class PointLight extends Lighting implements LightSource{
 
     /**
      * returns the direction to the lightened point from the light source.
+     *
      * @param p the point on the geometry.
      * @return the direction.
      */
@@ -102,6 +138,7 @@ public class PointLight extends Lighting implements LightSource{
 
     /**
      * the function that calculates the array of points.
+     *
      * @param p the point to creat the points on the plain that is orthogonal to
      *          the vector between it and the light location.
      */
@@ -124,10 +161,10 @@ public class PointLight extends Lighting implements LightSource{
     }
 
 
-
     /**
      * Pythagoras function.
-     * @param x the x value of the triengle.
+     *
+     * @param x      the x value of the triengle.
      * @param radius the radios of the circle
      * @return the y value of the poit
      */
@@ -144,4 +181,56 @@ public class PointLight extends Lighting implements LightSource{
     }
 
 
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "       \"intensity\": {" +
+                                "           \"type\": \"object\"," +
+                                "       }," +
+                                "       \"position\": {" +
+                                "           \"type\": \"object\"," +
+                                "       }," +
+                                "       \"kC\": {" +
+                                "           \"type\": \"number\"," +
+                                "       }," +
+                                "       \"kL\": {" +
+                                "           \"type\": \"number\"," +
+                                "       }," +
+                                "       \"kQ\": {" +
+                                "           \"type\": \"number\"," +
+                                "       }," +
+                                "       \"radius\": {" +
+                                "           \"type\": \"number\"," +
+                                "       }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"intensity\",\"position\"" +
+                                "   ], additionalProperties: false" +
+                                "}")),
+                json -> {
+                    PointLight pointLight = new PointLight(new Color(json.getJSONObject("intensity")), new Point(json.getJSONObject("position")));
+                    if (json.has("kC")) {
+                        pointLight.setKc(json.getDouble("kC"));
+                    }
+                    if (json.has("kL")) {
+                        pointLight.setKl(json.getDouble("kL"));
+                    }
+                    if (json.has("kQ")) {
+                        pointLight.setKq(json.getDouble("kQ"));
+                    }
+                    if (json.has("radius")) {
+                        pointLight.setRadius(json.getDouble("radius"));
+                    }
+                    return pointLight;
+
+                }
+
+
+        );
+    }
 }
