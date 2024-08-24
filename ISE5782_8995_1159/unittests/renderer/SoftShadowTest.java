@@ -35,7 +35,7 @@ public class SoftShadowTest {
                 new SpotLight(new Color(400, 240, 0), new Point(-90, -90, 200), new Vector(1, 1, -3)) //
                         .setKl(1E-5).setKq(1.5E-7).setRadius(10));
         camera.setImageWriter(new ImageWriter("softShadowTriangleAndSparerTest", 500, 500)) //
-                .toAlias(false)
+                .toAlias()
                 //.setFPDistance(500).setApertureSize(10)
                 .renderImage() //
                 .writeToImage();
@@ -73,7 +73,7 @@ public class SoftShadowTest {
         ImageWriter imageWriter = new ImageWriter("softShadowPointAndSpotWithShadow", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .toAlias(false)
+                .toAlias()
                 .renderImage() //
                 .writeToImage(); //
     }

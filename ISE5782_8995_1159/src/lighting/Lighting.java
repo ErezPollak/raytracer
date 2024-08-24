@@ -1,11 +1,8 @@
 package lighting;
 
 import json.JSONable;
-import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import primitives.Color;
-
-import static json.Utils.validate;
 
 /**
  * the abstract information about a light source.
@@ -39,21 +36,5 @@ abstract class Lighting extends JSONable {
     public Color getIntensity() {
         return this.intensity;
     }
-//
-//    public void initFromJson(JSONObject jsonObject) {
-//        validate(SchemaLoader.load(new JSONObject(
-//                "{" +
-//                        "   \"$schema\": \"Sphere\"," +
-//                        "   \"type\": \"object\"," +
-//                        "   \"properties\": {" +
-//                        "       \"intensity\": {" +
-//                        "           \"type\": \"object\"," +
-//                        "       }" +
-//                        "   }," +
-//                        "   \"required\": [" +
-//                        "      \"intensity\"" +
-//                        "   ]" +
-//                        "}")), jsonObject);
-//        this.intensity = new Color(jsonObject.optJSONObject("intensity"));
-//    }
+
 }

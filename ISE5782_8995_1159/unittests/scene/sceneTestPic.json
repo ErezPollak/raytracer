@@ -1,0 +1,212 @@
+{
+  "name": "jsonScene",
+  "ambientLight": {
+    "intensity": {
+      "r": 0,
+      "g": 191,
+      "b": 100
+    },
+    "officiant": {
+      "d1": 1,
+      "d2": 1,
+      "d3": 2
+    }
+  },
+  "lights": {
+    "directionallight": [
+      {
+        "intensity": {
+          "r": 800,
+          "g": 500,
+          "b": 0
+        },
+        "direction": {
+            "x": 0,
+            "y": 0,
+            "z": -10
+
+        }
+      },
+      {
+        "intensity": {
+          "r": 0,
+          "g": 0,
+          "b": 500
+        },
+        "direction": {
+          "d": {
+            "value": -1
+          }
+        }
+      }
+    ]
+  },
+  "geometries": {
+    "triangle": [
+      {
+        "vertices": [
+          {
+            "x": -100,
+            "y": 0,
+            "z": 100
+          },
+          {
+            "x": 0,
+            "y": 100,
+            "z": -100
+          },
+          {
+            "x": -100,
+            "y": 100,
+            "z": -100
+          }
+        ],
+        "geometry": {
+          "material": {
+            "kD": {
+              "d1": 100,
+              "d2": 0,
+              "d3": 0
+            },
+            "kS": {
+              "d1": 0,
+              "d2": 0,
+              "d3": 100
+            },
+            "nShininess": 300,
+            "kT": {
+              "d1": 0,
+              "d2": 50,
+              "d3": 0
+            },
+            "kR": {
+              "d1": 50,
+              "d2": 0,
+              "d3": 0
+            }
+          },
+          "emission": {
+            "r": 50,
+            "g": 100,
+            "b": 20
+          }
+        }
+      }
+    ],
+    "sphere": [
+      {
+        "radius": 100,
+
+        "center": {
+          "x": 50,
+          "y": 100,
+          "z": -100
+        },
+        "geometry": {
+          "material": {
+            "kD": {
+              "value": 0.5
+            },
+            "kS": {
+              "value": 0.5
+            },
+            "nShininess": 300},
+
+          "emission": {
+            "r": 0,
+            "g": 0,
+            "b": 255
+          }
+        }
+      },
+      {
+        "radius": 10,
+        "center": {
+          "x": 400,
+          "y": 0,
+          "z": 0
+        },
+        "geometry": {
+          "emission": {
+            "r": 255,
+            "g": 0,
+            "b": 0
+          }
+        }
+      },
+      {
+        "radius": 10,
+        "center": {
+          "x": 0,
+          "y": 400,
+          "z": 0
+        },
+        "geometry": {
+          "emission": {
+            "r": 0,
+            "g": 255,
+            "b": 0
+          }
+        }
+      },{
+        "radius": 10,
+        "center": {
+          "x": 0,
+          "y": 0,
+          "z": 400
+        },
+        "geometry": {
+          "emission": {
+            "r": 0,
+            "g": 0,
+            "b": 255
+          }
+        }
+      }
+    ],
+    "tube": [
+      {
+        "radius": 1,
+        "ray": {
+          "p": {"d": {"value":  0}},
+          "v": {"x": 1, "y":  0, "z":  0}
+        },
+        "geometry":{
+            "emission": {
+              "r": 255,
+              "g": 0,
+              "b": 0
+            }
+        }
+      },
+      {
+        "radius": 1,
+        "ray": {
+          "p": {"d": {"value":  0}},
+          "v": {"x": 0, "y":  1, "z":  0}
+        },
+        "geometry":{
+          "emission": {
+            "r": 0,
+            "g": 255,
+            "b": 0
+          }
+        }
+      },
+      {
+        "radius": 1,
+        "ray": {
+          "p": {"d": {"value":  0}},
+          "v": {"x": 0, "y":  0, "z":  1}
+        },
+        "geometry":{
+          "emission": {
+            "r": 0,
+            "g": 0,
+            "b": 255
+          }
+        }
+      }
+    ]
+  }
+}

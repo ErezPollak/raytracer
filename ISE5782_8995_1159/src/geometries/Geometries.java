@@ -103,7 +103,7 @@ public class Geometries extends Intersectable {
                                 "   \"$schema\": \"Sphere\"," +
                                 "   \"type\": \"object\"," +
                                 "    \"minProperties\": 1," +
-                                "   \"properties\": {" + allSubClasses.stream().map(cls ->
+                                "    \"properties\": {" + allSubClasses.stream().map(cls ->
                                 "      \"" + cls.getSimpleName().toLowerCase() + "\": {" +
                                         "          \"type\": \"array\"," +
                                         "          \"minItems\": 1," +

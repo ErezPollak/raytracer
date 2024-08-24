@@ -51,6 +51,7 @@ public abstract class JSONable {
         }
 
         if (this.object == null && (this.params == null || this.params.length == 0)) {
+            System.out.println("json was not crated" + json.toString());
             throw new ValidationException("JSON object is not valid against the schemas" + overAllError);
         }
 

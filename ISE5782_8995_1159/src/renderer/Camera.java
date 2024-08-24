@@ -45,7 +45,6 @@ public class Camera {
 
     ////////Anti Aliasing params///////
     private boolean alias = false;
-    private boolean adaptAliasing = false;
     private final int PIXEL_NUMBER_OF_POINTS = 100;
     private Vector[][] relativeVectors;
 
@@ -178,12 +177,10 @@ public class Camera {
     }
 
     /**
-     * @param adaptAliasing
      * @return
      */
-    public Camera toAlias(boolean adaptAliasing) {
+    public Camera toAlias() {
         this.alias = true;
-        this.adaptAliasing = adaptAliasing;
         return this;
     }
 
@@ -320,14 +317,6 @@ public class Camera {
             }
             Pixel.waitToFinish();
 
-
-//            for (int i = 0; i < Nx; i++) {
-//                for (int j = 0; j < Ny; j++) {
-//                    Color pixelColor = castRay(Nx, Ny, j, i);
-//                    imageWriter.writePixel(j, i, pixelColor);
-//                }
-//                System.out.println(i + " / " + Nx);
-//            }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
                     + e.getClassName());
@@ -389,21 +378,17 @@ public class Camera {
      * @return
      */
     private Color traceBeam(Ray ray) {
-        if (this.adaptAliasing) {
-            return Color.BLACK;
-            //return calcAdaptiveSuperSamplingColor(ray, 0, 0, this.relativeVectors.length - 1, relativeVectors[0].length - 1);
-        } else {
-            Color average = Color.BLACK;
-            Ray movingRay;
-            for (Vector[] array : this.relativeVectors) {
-                for (Vector v : array) {
-                    movingRay = new Ray(ray.getPoint(), ray.getVector().add(v));
-                    average = average.add(rayTracer.traceRay(movingRay));
-                }
+        Color average = Color.BLACK;
+        Ray movingRay;
+        for (Vector[] array : this.relativeVectors) {
+            for (Vector v : array) {
+                movingRay = new Ray(ray.getPoint(), ray.getVector().add(v));
+                average = average.add(rayTracer.traceRay(movingRay));
             }
-            int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
-            return average.reduce(actualNumberOfPoints);
         }
+        int actualNumberOfPoints = this.relativeVectors.length * relativeVectors[0].length;
+        return average.reduce(actualNumberOfPoints);
+
     }
 
     /**

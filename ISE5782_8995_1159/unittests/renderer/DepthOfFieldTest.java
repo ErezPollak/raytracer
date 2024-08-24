@@ -47,6 +47,7 @@ public class DepthOfFieldTest {
                     .setEmission(new Color(25 * i, -(i - 800) * (i + 200) / 1000, 250 - 25 * i)) //
                     .setMaterial(new Material().setKd(0.3).setKs(0.2).setShininess(300).setKr(0.5));
         }
+
         Geometry polygon = new Polygon(
                 new Point(100, -50, 1000),
                 new Point(-100, -50, 1000),
@@ -55,42 +56,28 @@ public class DepthOfFieldTest {
                 .setEmission(new Color(gray))
                 .setMaterial(new Material().setKd(0.2).setKs(0.3).setShininess(300).setKr(0.5));
 
-        Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-                .setVPSize(150, 150) //
-                .setVPDistance(1000)
-
-                //moving camera.
-                //.cameraMove(new Point(0, 100, -500), new Point(0, 0, 0),new Vector(0,1,0)).cameraRoll(-5)
-                //.cameraMove(new Point(0, 100, -1000), new Point(0, -50, 1000),new Vector(0,1,0))
-                //.setVPDistance(250)
-
-                //set treading
-                .setThreadsCount(3)
-
-                //set Aliasing
-                //.toAlias(false)
-
-                //set the DoF.
-                .setFPDistance(800)
-                .setApertureSize(1)
-                ;
-
-        //set anti aliasing
-        //.setAlias(true);
-
-
-        //scene.geometries.add(sphere1, sphere2);
         scene.geometries.add(spheres);
         scene.geometries.add(polygon);
         scene.lights.add(new DirectionalLight(new Color(800, 500, 0), new Vector(1, -1, -0.5)));
         scene.lights.add(new SpotLight(new Color(0, 255, 0), new Point(100, 100, 800), new Vector(-1, -1, 0)).setNarrowBeam(NarrowBeamArchitecture.MY_ARCHITECTURE, 10));
 
-        ImageWriter imageWriter = new ImageWriter("lightSphereDirectionalDepthOfFieldTesting1", 500, 500);
-        camera.setImageWriter(imageWriter) //
+
+        Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+                .setVPSize(150, 150) //
+                .setVPDistance(1000)
+                .setThreadsCount(3);
+
+
+        for (int i = 0; i <= 6; i++) {
+            //set the DoF.
+            camera.setFPDistance(800 - 100 * i)
+                .setApertureSize(2)
+                .setImageWriter(new ImageWriter("DepthOfFieldTesting" + i, 500, 500)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
 
+        }
     }
 
 }

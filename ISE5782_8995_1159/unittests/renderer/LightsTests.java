@@ -54,7 +54,7 @@ public class LightsTests {
 
         ImageWriter imageWriter = new ImageWriter("lightSphereDirectional", 500, 500);
         camera1.setImageWriter(imageWriter) //
-                .toAlias(false)
+                .toAlias()
                 .setPrintInterval(1)
                 .setThreadsCount(10)
                 .setRayTracer(new RayTracerBasic(scene1)) //
@@ -78,7 +78,7 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSpherePoint", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .toAlias(false)
+                .toAlias()
                 .setPrintInterval(1)
                 .setThreadsCount(10)
                 .renderImage() //
@@ -123,7 +123,7 @@ public class LightsTests {
 
         ImageWriter imageWriter = new ImageWriter("lightSphereSpotSharp", 500, 500);
         camera1.setImageWriter(imageWriter) //
-                .toAlias(false)
+                .toAlias()
                 .setRayTracer(new RayTracerBasic(scene1)) //
                 .renderImage() //
                 .writeToImage(); //

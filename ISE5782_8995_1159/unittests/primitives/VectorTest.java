@@ -4,11 +4,11 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static primitives.Util.*;
+import static primitives.Util.isZero;
 
 /**
  * Unit tests for primitives.Vector class
+ *
  * @author Erez Polak and Eliran Salama.
  */
 class VectorTest {
@@ -23,13 +23,13 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual sum of the vectors.
         Vector anotherVector = new Vector(2, 3, 4);
-        Vector vectorsSam = new Vector(3 , 5 , 7);
-        assertEquals(someVector.add(anotherVector) , vectorsSam , "ERROR: add() wrong value");
+        Vector vectorsSam = new Vector(3, 5, 7);
+        assertEquals(someVector.add(anotherVector), vectorsSam, "ERROR: add() wrong value");
 
         // =============== Boundary Values Tests ==================
         // TC11: Test that the program throws an exception for sum zero.
         Vector minusVector = new Vector(-1, -2, -3);
-        assertThrows(IllegalArgumentException.class, () -> someVector.add(minusVector) ,
+        assertThrows(IllegalArgumentException.class, () -> someVector.add(minusVector),
                 "crossProduct() for vector and its minus vector vectors does not throw an exception");
     }
 
@@ -44,11 +44,11 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Test that the function returns the actual scaled vector for the value 5.
         Vector scaleBy5 = new Vector(5, 10, 15);
-        assertEquals(someVector.scale(5) , scaleBy5 , "ERROR: scale() wrong value");
+        assertEquals(someVector.scale(5), scaleBy5, "ERROR: scale() wrong value");
 
         // =============== Boundary Values Tests ==================
         // TC11: Test that the program throws an exception for scaling by 0.
-        assertThrows(IllegalArgumentException.class, () -> someVector.scale(0) ,
+        assertThrows(IllegalArgumentException.class, () -> someVector.scale(0),
                 "crossProduct() for parallel vectors does not throw an exception");
 
     }
@@ -66,19 +66,19 @@ class VectorTest {
         // TC01: Test that the result is positive when the angel is obtuse
         Vector v11 = new Vector(1, 2, 0);
         double d11 = v1.dotProduct(v11);
-        assertTrue(d11 > 0 , "dot product returns wrong value for sharp angles");
+        assertTrue(d11 > 0, "dot product returns wrong value for sharp angles");
 
         // TC02: Test that the result is positive when the angel is sharp
         Vector v12 = new Vector(-1, -2, 0);
         double d12 = v1.dotProduct(v12);
-        assertTrue(d12 < 0 , "dot product returns wrong value for obtuse angles");
+        assertTrue(d12 < 0, "dot product returns wrong value for obtuse angles");
 
         // =============== Boundary Values Tests ==================
 
         // TC02: Test that the result is zero when the vectors are orthogonal.
         Vector v21 = new Vector(0, -3, 2);
         double d21 = v1.dotProduct(v21);
-        assertTrue(d21 == 0 , "dot product returns wrong value for orthogonal vectors");
+        assertTrue(d21 == 0, "dot product returns wrong value for orthogonal vectors");
 
     }
 
@@ -95,17 +95,17 @@ class VectorTest {
 
         // TC01: Test that length of cross-product is proper (orthogonal vectors taken
         // for simplicity)
-        assertEquals(v1.length() * v2.length(), vr.length(), 0.00001 ,
+        assertEquals(v1.length() * v2.length(), vr.length(), 0.00001,
                 "crossProduct() wrong result length");
 
         // TC02: Test cross-product result orthogonality to its operands
-        assertTrue(isZero(vr.dotProduct(v1)) , "crossProduct() result is not orthogonal to 1st operand");
-        assertTrue(isZero(vr.dotProduct(v2)) , "crossProduct() result is not orthogonal to 2nd operand");
+        assertTrue(isZero(vr.dotProduct(v1)), "crossProduct() result is not orthogonal to 1st operand");
+        assertTrue(isZero(vr.dotProduct(v2)), "crossProduct() result is not orthogonal to 2nd operand");
 
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-productof co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
-        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3) ,
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),
                 "crossProduct() for parallel vectors does not throw an exception");
     }
 
@@ -119,7 +119,7 @@ class VectorTest {
         // TC01: Test that the squared length of the vector equals to the actual squared length of the vector.
         Vector someVector = new Vector(1, 2, 3);
         double length = 14.0;
-        assertEquals(someVector.lengthSquared() , length , "ERROR: lengthSquared() wrong value");
+        assertEquals(someVector.lengthSquared(), length, "ERROR: lengthSquared() wrong value");
 
         // =============== Boundary Values Tests ==================
         //no boundary tests because the length cannot be zero.
@@ -134,7 +134,7 @@ class VectorTest {
         // TC01: Test that the length of the vector equals to the actual length of the vector.
         Vector someVector = new Vector(0, 3, 4);
         double length = 5.0;
-        assertEquals( someVector.length() , length ,"ERROR: length() wrong value" );
+        assertEquals(someVector.length(), length, "ERROR: length() wrong value");
 
         // =============== Boundary Values Tests ==================
         //no boundary tests because the length cannot be zero.
@@ -150,12 +150,11 @@ class VectorTest {
         Vector someVector = new Vector(1, 1, 1);
         double sqrt3d1 = 1.0 / Math.sqrt(3);
         Vector normalizedVector = new Vector(sqrt3d1, sqrt3d1, sqrt3d1);
-        assertEquals(someVector.normalize() , normalizedVector ,"ERROR: normalize() wrong value" );
+        assertEquals(someVector.normalize(), normalizedVector, "ERROR: normalize() wrong value");
 
         // =============== Boundary Values Tests ==================
         //no boundary tests because the length cannot be zero.
     }
-
 
 
     @Test

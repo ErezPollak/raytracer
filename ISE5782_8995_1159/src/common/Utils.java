@@ -1,5 +1,6 @@
 package common;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class Utils {
         return classNames;
     }
 
+
     public static List<Class<?>> getSubclassesOf(Class<?> superclass) {
         List<Class<?>> subclasses = new ArrayList<>();
         for (Package pkg : Package.getPackages()) {
@@ -40,4 +42,5 @@ public class Utils {
         }
         return subclasses;
     }
+
 }
