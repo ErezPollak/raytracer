@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
+import static json.Utils.copyProps;
+
 /**
  *
  */
@@ -40,13 +42,7 @@ public class PointLight extends Lighting implements LightSource {
 
     public PointLight(JSONObject jsonObject) {
         super(jsonObject);
-        PointLight pointLight = (PointLight) this.getObject();
-        this.intensity = pointLight.intensity;
-        this.position = pointLight.position;
-        this.kC = pointLight.kC;
-        this.kL = pointLight.kL;
-        this.kQ = pointLight.kQ;
-        this.radius = pointLight.radius;
+        this.initObject(this);
     }
 
 

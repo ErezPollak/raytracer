@@ -10,6 +10,8 @@ import primitives.Vector;
 import java.util.Map;
 import java.util.function.Function;
 
+import static json.Utils.copyProps;
+
 /**
  *
  */
@@ -29,15 +31,7 @@ public class SpotLight extends PointLight implements LightSource {
 
     public SpotLight(JSONObject jsonObject){
         super(jsonObject);
-        SpotLight spotLight = (SpotLight) this.getObject();
-        this.intensity = spotLight.intensity;
-        this.position = spotLight.position;
-        this.setNarrowBeam(NarrowBeamArchitecture.MY_ARCHITECTURE, (int) spotLight.narrowBeam);
-        this.setKq(spotLight.getkQ());
-        this.setKc(spotLight.getkC());
-        this.setKl(spotLight.getkL());
-        this.radius = spotLight.radius;
-        this.direction = spotLight.direction;
+        this.initObject(this);
     }
 
     /**

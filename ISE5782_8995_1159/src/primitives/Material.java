@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 
+import static json.Utils.copyProps;
+
 /**
  * the properties of teh material the object is made from.
  */
@@ -19,12 +21,7 @@ public class Material extends JSONable {
 
     public Material(JSONObject json) {
         super(json);
-        Material material = (Material) getObject();
-        this.kD = material.kD;
-        this.kS = material.kS;
-        this.nShininess = material.nShininess;
-        this.kT = material.kT;
-        this.kR = material.kR;
+        this.initObject(this);
     }
 
 
@@ -50,6 +47,13 @@ public class Material extends JSONable {
      */
     public Double3 kR = Double3.ZERO;
 
+    public Material(Double3 kd, Double3 ks, int nShininess , Double3 kt, Double3 kr){
+        this.kD = kd;
+        this.kS = ks;
+        this.nShininess = nShininess;
+        this.kT = kt;
+        this.kR = kr;
+    }
 
     public Material setKd(double kD) {
         this.kD = new Double3(kD);
@@ -130,6 +134,7 @@ public class Material extends JSONable {
                     if (json.has("kR")) if (json.get("kR") instanceof Double) m.setKr(json.getDouble("kR")); else m.setKr(new Double3(json.getJSONObject("kR")));
                     if (json.has("nShininess")) m.setShininess(json.getInt("nShininess"));
                     return m;
+
                 }
         );
     }

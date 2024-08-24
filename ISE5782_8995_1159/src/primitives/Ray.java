@@ -15,6 +15,8 @@ import org.json.JSONObject;
 import java.util.Map;
 import java.util.function.Function;
 
+import static json.Utils.copyProps;
+
 public class Ray extends JSONable {
 
     /**

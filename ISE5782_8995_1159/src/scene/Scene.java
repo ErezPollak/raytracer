@@ -14,11 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static common.Utils.getSubclassesOf;
-// import static json.Utils.copyProps;
+import static json.Utils.copyProps;
 import static json.Utils.getJsonObjects;
 
 
@@ -48,13 +47,7 @@ public class Scene extends JSONable {
 
     public Scene(JSONObject jsonObject) {
         super(jsonObject);
-        Scene scene = (Scene) this.getObject();
-        // copyProps(this, scene);
-        name = scene.name;
-        background = scene.background;
-        ambientLight = scene.ambientLight;
-        geometries = scene.geometries;
-        lights = scene.lights;
+        this.initObject(this);
     }
 
     /**

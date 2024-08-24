@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static json.Utils.copyProps;
 import static json.Utils.validate;
 
 public abstract class JSONable {
@@ -25,6 +26,7 @@ public abstract class JSONable {
     public JSONable() {
         params = new Object[0];
     }
+
 
     public JSONable(JSONObject json) {
 
@@ -51,16 +53,14 @@ public abstract class JSONable {
         }
 
         if (this.object == null && (this.params == null || this.params.length == 0)) {
-            System.out.println("json was not crated" + json.toString());
             throw new ValidationException("JSON object is not valid against the schemas" + overAllError);
         }
 
     }
 
-    public JSONable getObject() {
-        return this.object;
+    public void initObject(JSONable jsoNable) {
+        copyProps(jsoNable, this.object);
     }
-
 
     public abstract Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap();
 
