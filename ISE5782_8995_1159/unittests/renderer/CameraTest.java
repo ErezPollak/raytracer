@@ -3,6 +3,7 @@ package renderer;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.json.JSONObject;
 
 import renderer.Camera;
 import primitives.*;
@@ -205,4 +206,12 @@ class CameraTest {
                 "if the points are the same needs to throw an exception.");
 
     }
+
+    @Test
+    void testCameraJson(){
+        Camera camera = new Camera(new JSONObject("{\"coordinates\":{\"location\": {}, \"to\": {}, \"up\":{}}}"));
+        camera = new Camera(new JSONObject("{\"coordinates\":{\"location\": {}, \"from\": {}, \"up\":{}}}"));
+    }
+
+
 }

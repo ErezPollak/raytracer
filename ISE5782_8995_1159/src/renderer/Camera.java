@@ -1,19 +1,26 @@
 package renderer;
 
 import geometries.Plane;
+import json.JSONable;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 import primitives.Color;
 
+import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.lang.Math.sqrt;
 import static primitives.Util.*;
 
 enum CAMERA_ROTATION {ROLL, TRANSFORM};
 
-public class Camera {
+public class Camera extends JSONable {
 
     //threading parameters
     private double printInterval = 1;
@@ -78,6 +85,12 @@ public class Camera {
         ////initialize DoF parameters.
         this.apertureSize = 0;
 
+    }
+
+
+    public Camera(JSONObject jsonObject) {
+        super(jsonObject);
+        this.initObject(this);
     }
 
     /**
@@ -179,7 +192,7 @@ public class Camera {
     /**
      * @return
      */
-    public Camera toAlias() {
+    public Camera alias() {
         this.alias = true;
         return this;
     }
@@ -596,6 +609,86 @@ public class Camera {
                 this.to.equals(camera.to) &&
                 this.right.equals(camera.right);
 
+    }
+
+    @Override
+    public Map<Schema, Function<JSONObject, ? extends Object>> getCreationMap() {
+        return Map.of(
+                SchemaLoader.load(new JSONObject(
+                        "{" +
+                                "   \"$schema\": \"Sphere\"," +
+                                "   \"type\": \"object\"," +
+                                "   \"properties\": {" +
+                                "       \"coordinates\": {" +
+                                "           \"type\": \"object\"," +
+                                    "       \"properties\": {" +
+                                        "       \"location\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"to\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"up\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                    "      }," +
+                                "       }," +
+                                "       \"printInterval\": {" +
+                                "           \"type\": \"integer\"," +
+                                "       }," +
+                                "       \"threadCount\": {" +
+                                "           \"type\": \"integer\"," +
+                                "       }," +
+                                "       \"viewPlane\": {" +
+                                "           \"type\": \"object\"," +
+                                    "       \"properties\": {" +
+                                        "       \"height\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"width\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"distance\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                    "      }," +
+                                "       }," +
+                                "       \"focalPlain\": {" +
+                                "           \"type\": \"object\"," +
+                                    "       \"properties\": {" +
+                                        "       \"height\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"width\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                        "       \"distance\": {" +
+                                        "           \"type\": \"object\"," +
+                                        "       }," +
+                                    "      }," +
+
+                                "       }," +
+                                "       \"alias\": {" +
+                                "           \"type\": \"boolean\"," +
+                                "       }," +
+                                "   }," +
+                                "   \"required\": [" +
+                                "      \"name\"" +
+                                "   ], additionalProperties: false" +
+                                "}"
+                )),
+                json -> {
+                    Camera camera = new Camera();
+
+
+
+
+
+                    return camera;
+                }
+
+
+        );
     }
 
 }

@@ -72,7 +72,7 @@ public class general_tests {
                 .setVPSize(200, 200).setVPDistance(100)
 
                 .setRayTracer(new RayTracerBasic(scene))
-                .toAlias()
+                .alias()
                 //.setFPDistance(500).setApertureSize(5);
 
 

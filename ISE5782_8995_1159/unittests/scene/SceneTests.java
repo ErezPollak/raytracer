@@ -38,7 +38,7 @@ public class SceneTests {
                 .setImageWriter(new ImageWriter("jsonSceneTest", 1000, 1000)) //
                 .setThreadsCount(4)
                 .setPrintInterval(1)
-                .toAlias()
+                .alias()
                 .setRayTracer(new RayTracerBasic(new Scene(new org.json.JSONObject(Files.readString(Paths.get(System.getProperty("user.dir") + "\\ISE5782_8995_1159\\unittests\\scene\\sceneTestPic.json"))))))
                 .renderImage()
                 .writeToImage();

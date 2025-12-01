@@ -10,7 +10,6 @@ import primitives.Point;
 import primitives.Vector;
 import scene.Scene;
 
-import static java.awt.Color.BLACK;
 import static java.awt.Color.BLUE;
 
 public class AntiAliasingTest {
@@ -32,7 +31,7 @@ public class AntiAliasingTest {
         Camera camera = new Camera(new Point(0, 0, 100), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(200, 200).setVPDistance(100) //
                 .setRayTracer(new RayTracerBasic(scene))
-                .toAlias()
+                .alias()
                 //.setFPDistance(500).setApertureSize(5);
                 ;
 

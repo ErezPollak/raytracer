@@ -39,6 +39,43 @@
           }
         }
       }
+    ],
+    "spotlight": [
+      {
+        "intensity": {
+          "rgb": {
+            "value": 100
+          }
+        },
+        "direction": {
+          "x": 1,
+          "y": 0,
+          "z": 0
+        },
+        "position": {
+          "d": {
+            "value": 5
+          }
+        },
+        "kC": 4,
+        "radius": 6
+      }
+    ],
+    "pointlight": [
+      {
+        "intensity": {
+          "rgb": {
+            "value": 100
+          }
+        },
+        "position": {
+          "d": {
+            "value": 5
+          }
+        },
+        "kC": 4,
+        "radius": 6
+      }
     ]
   },
   "geometries": {
