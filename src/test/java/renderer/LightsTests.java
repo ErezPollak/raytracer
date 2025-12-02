@@ -210,6 +210,58 @@ public class LightsTests {
                 .writeToImage(); //
     }
 
+    @Test
+    public void gameTest() {
+
+        Camera generalCamera = new Camera(new Point(1000, 1000, 1000), new Vector(-1, -1, -1), new Vector(-1, -1, 2)) //
+                .setVPSize(150, 150) //
+                .setVPDistance(250)
+                //.cameraMove(new Point(100, 100, 100), Point.ZERO, new Vector(0,0,1))
+                //.cameraRoll(-5)
+                ///.cameraTransform(0)
+        ;
+
+
+        Scene generalScene = new Scene("Test scene")
+                .setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
+
+        generalScene.geometries.add(
+                new Tube(1, new Ray(Point.ZERO, new Vector(1,0,0)))
+                        .setEmission(new Color(RED))
+                      //  .setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300).setKr(0.4))
+                ,
+                new Tube(1, new Ray(Point.ZERO, new Vector(0,1,0)))
+                        .setEmission(new Color(GREEN))
+                    //    .setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300).setKr(0.4))
+                ,
+                new Tube(1, new Ray(Point.ZERO, new Vector(0,0,1)))
+                        .setEmission(new Color(BLUE))
+                        //.setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300).setKr(0.4))
+                ,
+                new Sphere(Point.ZERO, 100)
+                        .setEmission(new Color(WHITE).reduce(3))
+                        .setMaterial(new Material().setKd(0.1).setKs(0.1).setShininess(300).setKt(0).setKr(1))
+                ,
+                new Sphere(new Point(-200, 200, 200), 100)
+                        .setEmission(new Color(RED).reduce(3))
+                        .setMaterial(new Material().setKd(0.3).setKs(0.3).setShininess(300))
+
+        );
+
+        generalScene.lights.add(
+                new DirectionalLight(new Color(WHITE), new Vector(1, -1 , -1))
+        );
+
+        ImageWriter imageWriter = new ImageWriter("gameTest", 1000, 1000);
+        generalCamera.setImageWriter(imageWriter) //
+                .setAlias(true)
+                .setThreadsCount(4)
+                .setPrintInterval(0.1)
+                .setRayTracer(new RayTracerBasic(generalScene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
+
     /**
      * a test that combines few light sources on the sphere.
      */
