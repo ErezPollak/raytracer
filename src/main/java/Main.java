@@ -1,6 +1,13 @@
 
-import primitives.Point;
-import primitives.Vector;
+import geometries.Sphere;
+import geometries.Tube;
+import lighting.AmbientLight;
+import lighting.DirectionalLight;
+import primitives.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
+import scene.Scene;
 
 import static java.lang.System.out;
 import static primitives.Util.isZero;
