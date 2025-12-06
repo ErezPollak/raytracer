@@ -1,23 +1,34 @@
 package primitives;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
+import java.io.IOException;
+//
+@JsonDeserialize(using = PointDeserializer.class)
 public class Point {
 
-    public static final Point ZERO = new Point(0,0,0);
+    public static final Point ZERO = new Point(0, 0, 0);
     protected final Double3 xyz;
 
     /**
-     *  Point Constructor
+     * Point Constructor
+     *
      * @param x
      * @param y
      * @param z
      */
+
     public Point(double x, double y, double z) {
         xyz = new Double3(x, y, z);
     }
 
     /**
      * ctor that initialise the Point with the Double3 object.
+     *
      * @param d
      */
     public Point(Double3 d) {
@@ -26,6 +37,7 @@ public class Point {
 
     /**
      * Get point and  make vector subtraction
+     *
      * @param p
      * @return
      */
@@ -35,6 +47,7 @@ public class Point {
 
     /**
      * Add vector to point
+     *
      * @param v
      * @return
      */
@@ -44,6 +57,7 @@ public class Point {
 
     /**
      * Calculates the distance between two points squared
+     *
      * @param p
      * @return
      */
@@ -55,6 +69,7 @@ public class Point {
 
     /**
      * Calculates the distance between two points
+     *
      * @param p
      * @return
      */
@@ -64,6 +79,7 @@ public class Point {
 
     /**
      * Get point coordinates
+     *
      * @return
      */
     public Double3 getXyz() {
@@ -72,6 +88,7 @@ public class Point {
 
     /**
      * equals function based on the equals function of Double3 object.
+     *
      * @param o
      * @return
      */
@@ -85,6 +102,7 @@ public class Point {
 
     /**
      * toString function returns the status of the object.
+     *
      * @return
      */
     @Override
@@ -96,6 +114,7 @@ public class Point {
 
     /**
      * returns the x value of the point.
+     *
      * @return
      */
     public double getX() {
@@ -104,6 +123,7 @@ public class Point {
 
     /**
      * returns the Y value of the point.
+     *
      * @return the second value of the point.
      */
     public double getY() {
@@ -112,9 +132,38 @@ public class Point {
 
     /**
      * returns the Z value of the point.
+     *
      * @return the third value of th point
      */
     public double getZ() {
         return this.xyz.d3;
     }
 }
+
+
+class PointDeserializer extends StdDeserializer<Point> {
+    public PointDeserializer() {
+        super(Point.class);
+    }
+
+    @Override
+    public Point deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        JsonNode node = p.getCodec().readTree(p);
+        if (node.has("xyz")) {
+            return new Point(
+                    new Double3(
+                            node.get("xyz").get("d1").doubleValue(),
+                            node.get("xyz").get("d2").doubleValue(),
+                            node.get("xyz").get("d3").doubleValue()
+                    )
+            );
+        } else {
+            return new Point(
+                    node.get("x").asDouble(),
+                    node.get("y").asDouble(),
+                    node.get("z").asDouble()
+            );
+        }
+    }
+}
+

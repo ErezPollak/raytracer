@@ -1,6 +1,21 @@
 package primitives;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+
+import java.io.IOException;
+
+
+@JsonAutoDetect(fieldVisibility = Visibility.ANY, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
+@JsonDeserialize(using = VectorDeserializer.class)
 public class Vector extends Point {
 
     /**
@@ -22,6 +37,7 @@ public class Vector extends Point {
      *
      * @param d
      */
+
     public Vector(Double3 d) {
         super(d);
         if (d.equals(Double3.ZERO)) {
@@ -93,6 +109,7 @@ public class Vector extends Point {
      *
      * @return the orthogonal vector.
      */
+
     public Vector getOrthogonal() {
         return this.getX() == 0 ? new Vector(1, 0, 0) : new Vector(-this.xyz.d2, this.xyz.d1, 0);
     }
@@ -127,5 +144,30 @@ public class Vector extends Point {
     }
 
 
+}
+
+
+class VectorDeserializer extends StdDeserializer<Vector> {
+    public VectorDeserializer() { super(Vector.class); }
+
+    @Override
+    public Vector deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        JsonNode node = p.getCodec().readTree(p);
+        if (node.has("xyz")) {
+            return new Vector(
+                    new Double3(
+                            node.get("xyz").get("d1").doubleValue(),
+                            node.get("xyz").get("d2").doubleValue(),
+                            node.get("xyz").get("d3").doubleValue()
+                    )
+            );
+        } else {
+            return new Vector(
+                    node.get("x").asDouble(),
+                    node.get("y").asDouble(),
+                    node.get("z").asDouble()
+            );
+        }
+    }
 }
 

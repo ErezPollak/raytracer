@@ -1,5 +1,7 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import primitives.Point;
 import primitives.Ray;
 
@@ -9,6 +11,15 @@ import java.util.Objects;
 /**
  * Interface for the intersections
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Geometries.class, name = "geometries"),
+        @JsonSubTypes.Type(value = Geometry.class, name = "geometry")
+})
 public abstract class Intersectable {
 
     /**

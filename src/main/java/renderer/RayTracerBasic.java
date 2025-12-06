@@ -1,5 +1,8 @@
 package renderer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import geometries.Intersectable.GeoPoint;
 import lighting.DirectionalLight;
 import lighting.LightSource;
@@ -13,11 +16,7 @@ import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
-/**
- * the class
- *
- * @author Erez Polak
- */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class RayTracerBasic extends RayTracerBase {
 
 
@@ -37,7 +36,8 @@ public class RayTracerBasic extends RayTracerBase {
      *
      * @param scene the scene to pass on to the superclass.
      */
-    public RayTracerBasic(Scene scene) {
+    @JsonCreator
+    public RayTracerBasic(@JsonProperty("scene") Scene scene) {
         super(scene);
     }
 

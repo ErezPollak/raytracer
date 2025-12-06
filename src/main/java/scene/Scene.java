@@ -1,4 +1,6 @@
 package scene;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import geometries.Geometries;
 import lighting.AmbientLight;
 import lighting.LightSource;
@@ -21,7 +23,8 @@ public class Scene {
      * Scene constructor that gets the scene name and restart the scene fields to be default.
      * @param sceneName
      */
-    public Scene(String sceneName){
+    @JsonCreator
+    public Scene(@JsonProperty("name")String sceneName){
         name = sceneName;
         background = Color.BLACK;
         ambientLight = new AmbientLight();

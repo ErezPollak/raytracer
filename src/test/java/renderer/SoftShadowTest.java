@@ -58,11 +58,9 @@ public class SoftShadowTest {
                 .setEmission(new Color(RED));
 
 
-        Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+        Camera camera = new Camera(new Point(50, 50, 100), new Point(50, 50, 0), new Vector(0, 0, 1)) //
                 .setVPSize(200, 200) //
-                .setVPDistance(100)
-                //.cameraMove(new Point(-100,-100,100) , new Point(50, 50, -100),new Vector(0,0,1));//side
-                .cameraMove(new Point(50, 50, 100), new Point(50, 50, 0), new Vector(0, 0, 1)); /// up
+                .setVPDistance(100);
 
         scene.geometries.add(polygon, sphere);
         scene.lights.add(new SpotLight(new Color(800, 500, 250), new Point(-100, 100, 50), new Point(0, 0, -100).subtract(new Point(-100, 100, 50)))
@@ -73,7 +71,7 @@ public class SoftShadowTest {
         ImageWriter imageWriter = new ImageWriter("softShadowPointAndSpotWithShadow", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .setAlias(true)
+                //.setAlias(true)
                 .renderImage() //
                 .writeToImage(); //
     }

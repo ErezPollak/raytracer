@@ -19,6 +19,7 @@ The engine includes a comprehensive set of geometric primitives and composite ob
 
 ---
 
+
 ### 💡 Advanced Lighting System
 
 Supports multiple light types configured per scene:
@@ -97,6 +98,7 @@ It forms a robust foundation for further graphics research, including:
 - Caustics and photon mapping
 - Procedural textures
 
+
 ---
 
 ## 📂 Project Status
@@ -104,6 +106,7 @@ It forms a robust foundation for further graphics research, including:
 The project is functional and continuously evolving. Contributions, optimizations, new geometries, and rendering features are welcome.
 
 ---
+
 
 
 Happy rendering! 🌟

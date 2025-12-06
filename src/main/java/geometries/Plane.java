@@ -1,14 +1,20 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import primitives.*;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.isZero;
 
+@JsonDeserialize(using = PlaneDeserializer.class)
 public class Plane extends Geometry{
 
     private Point q0;
@@ -113,4 +119,38 @@ public class Plane extends Geometry{
 
 
 }
+
+
+class PlaneDeserializer extends StdDeserializer<Plane> {
+    public PlaneDeserializer() {
+        super(Plane.class);
+    }
+
+    @Override
+    public Plane deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        ObjectMapper mapper = (ObjectMapper) p.getCodec();
+        JsonNode node = p.getCodec().readTree(p);
+        Plane plane;
+        if (node.has("normal")) {
+            plane = new Plane(
+                    mapper.treeToValue(node.get("q0"),Point.class),
+                    mapper.treeToValue(node.get("normal"), Vector.class)
+            );
+        } else {
+            plane = new Plane(
+                    mapper.treeToValue(node.get("p1"),Point.class),
+                    mapper.treeToValue(node.get("p2"),Point.class),
+                    mapper.treeToValue(node.get("p3"),Point.class)
+            );
+        }
+        if (node.has("emission")){
+            plane.setEmission(mapper.treeToValue(node.get("emission"), Color.class));
+        }
+        if (node.has("material")){
+            plane.setMaterial(mapper.treeToValue(node.get("material"), Material.class));
+        }
+        return plane;
+    }
+}
+
 

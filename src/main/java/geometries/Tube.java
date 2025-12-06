@@ -1,5 +1,9 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -10,12 +14,12 @@ import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Tube extends Geometry {
+    @JsonProperty
     protected double raduis;
+
+    @JsonProperty
     protected Ray ray;
 
-    public Vector getNormal() {
-        return null;
-    }
 
     /**
      * Tube Constructor
@@ -23,7 +27,8 @@ public class Tube extends Geometry {
      * @param raduis
      * @param ray
      */
-    public Tube(double raduis, Ray ray) {
+    @JsonCreator
+    public Tube(@JsonProperty("radius")double raduis, @JsonProperty("ray")Ray ray) {
         this.raduis = raduis;
         this.ray = ray;
     }
@@ -54,7 +59,13 @@ public class Tube extends Geometry {
                 '}';
     }
 
+    @JsonIgnore
+    public Vector getNormal() {
+        return null;
+    }
+
     @Override
+    @JsonIgnore
     public Vector getNormal(Point p) {
         //calculate the scale in witch the ray suppose to be multiplied in order to get the
         // length to the ray point that is on the same line with the normal.

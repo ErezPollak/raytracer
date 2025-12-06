@@ -1,5 +1,8 @@
 package primitives;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Ray {
 
     /**
@@ -16,7 +19,8 @@ public class Ray {
      * @param v
      * @param p
      */
-    public Ray(Point p, Vector v) {
+    @JsonCreator
+    public Ray(@JsonProperty("point") Point p, @JsonProperty("vector")Vector v) {
         point = p;
         vector = v.normalize();
     }
