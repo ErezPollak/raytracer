@@ -1,49 +1,75 @@
 package renderer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import geometries.Plane;
 import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.MissingResourceException;
+import java.util.Objects;
 
 import static java.lang.Math.sqrt;
 import static primitives.Util.*;
 
+
 enum CAMERA_ROTATION {ROLL, TRANSFORM};
 
+@JsonDeserialize(using = CameraDeserializer.class)
 public class Camera {
 
     //threading parameters
     private double printInterval = 1;
+
     private int threadsCount = 1;
 
     //camera location and vectors.
+    @JsonProperty
     private Point location;
+    @JsonProperty
     private Vector up;
+    @JsonProperty
     private Vector to;
     private Vector right;
 
     //rendering properties.
+    @JsonProperty
     private ImageWriter imageWriter;
+    @JsonProperty
     private RayTracerBase rayTracer;
 
     ////view plain properties.
+    @JsonProperty
     private double height;
+    @JsonProperty
     private double width;
+    @JsonProperty
     private double VP_distance;
 
 
     /////Aperture properties.///////
     private final int APERTURE_NUMBER_OF_POINTS = 100; // number with integer square for the matrix of points.
+    @JsonProperty
     private double apertureSize;
     private Point[] aperturePoints;
     //the focal plane parameters.
+    @JsonProperty
     private double FP_distance;// as instructed it is a constant value of the class.
     private Plane FOCAL_PLANE;
 
     ////////Anti Aliasing params///////
+    @JsonProperty
     private boolean alias = false;
     private final int PIXEL_NUMBER_OF_POINTS = 100;
     private Vector[][] relativeVectors;
@@ -55,6 +81,7 @@ public class Camera {
      * @param up       the up vector, points up from the camera.
      * @param to       points where the camera points to.
      */
+
     public Camera(Point location, Vector to, Vector up) {
         this.location = location;
 
@@ -75,6 +102,52 @@ public class Camera {
         this.apertureSize = 0;
 
     }
+
+
+    /**
+     * relocating the camera to be in the new location.
+     * the new up vector is on the same plane with the y.
+     *
+     * @param from the new location of the camera.
+     * @param to   the point that the camera sees,
+     * @return the camera after the changes.
+     */
+    public Camera(Point from, Point to, Vector up) {
+
+        ////initialize DoF parameters.
+        this.apertureSize = 0;
+
+        if (from.equals(to))
+            throw new IllegalArgumentException();
+
+        //initialize the location of the camera to be the "from" point.
+        this.location = from;
+
+        //the const of the y vector.
+        Vector upVector = up.normalize();
+
+        //calculate the new to vector to be between the two given points.
+        this.to = to.subtract(from).normalize();
+
+        //if the to vector is on the y vector, we need to set the up vector with no parameters.
+        if (this.to.equals(upVector) || this.to.equals(upVector.scale(-1))) {
+
+            //set the up vector to be the x vector.
+            this.up = upVector.getOrthogonal().normalize();
+
+            //calculation of the right vector according to the cross product of the given vectors.
+            this.right = this.to.crossProduct(this.up).normalize();
+
+        } else {
+
+            //calculate the right vector at first because we can know that the y vector and the to vector are its product..
+            this.right = this.to.crossProduct(upVector).normalize(); // finding the common vector is the dot product between their normals.
+
+            //the up vector is the cross product between the to vector and the common vector.
+            this.up = this.right.crossProduct(this.to).normalize();
+        }
+    }
+
 
     /**
      * sets the print interval parameter.
@@ -119,7 +192,7 @@ public class Camera {
      */
     public Camera setVPDistance(double distance) {
         this.VP_distance = distance;
-        this.setFPDistance(distance);
+        //this.setFPDistance(distance);
         return this;
     }
 
@@ -309,13 +382,6 @@ public class Camera {
             Pixel.waitToFinish();
 
 
-//            for (int i = 0; i < Nx; i++) {
-//                for (int j = 0; j < Ny; j++) {
-//                    Color pixelColor = castRay(Nx, Ny, j, i);
-//                    imageWriter.writePixel(j, i, pixelColor);
-//                }
-//                System.out.println(i + " / " + Nx);
-//            }
         } catch (MissingResourceException e) {
             throw new UnsupportedOperationException("Missing resources in order to create the image"
                     + e.getClassName());
@@ -446,6 +512,14 @@ public class Camera {
         imageWriter.writeToImage();
     }
 
+    @JsonIgnore
+    public BufferedImage getImage(){
+        if (imageWriter == null) {
+            throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+        }
+        return imageWriter.getImage();
+    }
+
     /**
      * set the to vector by the given degrees.
      *
@@ -520,51 +594,6 @@ public class Camera {
 
     }
 
-
-    /**
-     * relocating the camera to be in the new location.
-     * the new up vector is on the same plane with the y.
-     *
-     * @param from the new location of the camera.
-     * @param to   the point that the camera sees,
-     * @return the camera after the changes.
-     */
-    public Camera cameraMove(Point from, Point to, Vector up) {
-
-        if (from.equals(to))
-            throw new IllegalArgumentException();
-
-        //initialize the location of the camera to be the "from" point.
-        this.location = from;
-
-        //the const of the y vector.
-        Vector upVector = up.normalize();
-
-        //calculate the new to vector to be between the two given points.
-        this.to = to.subtract(from).normalize();
-
-        //if the to vector is on the y vector, we need to set the up vector with no parameters.
-        if (this.to.equals(upVector) || this.to.equals(upVector.scale(-1))) {
-
-            //set the up vector to be the x vector.
-            this.up = upVector.getOrthogonal().normalize();
-
-            //calculation of the right vector according to the cross product of the given vectors.
-            this.right = this.to.crossProduct(this.up).normalize();
-            ;
-
-            return this;
-        }
-
-        //calculate the right vector at first because we can know that the y vector and the to vector are its product..
-        this.right = this.to.crossProduct(upVector).normalize(); // finding the common vector is the dot product between their normals.
-
-        //the up vector is the cross product between the to vector and the common vector.
-        this.up = this.right.crossProduct(this.to).normalize();
-
-        return this;
-    }
-
     /**
      * returns rather or not all the vectors and location of the camera are the same with other given camera.
      *
@@ -580,3 +609,49 @@ public class Camera {
     }
 
 }
+
+
+class CameraDeserializer extends StdDeserializer<Camera> {
+    public CameraDeserializer() {
+        super(Camera.class);
+    }
+
+    @Override
+    public Camera deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        ObjectMapper mapper = (ObjectMapper) p.getCodec();
+        JsonNode node = p.getCodec().readTree(p);
+        Camera camera;
+        if (node.has("from")) {
+            camera = new Camera(
+                    mapper.treeToValue(node.get("from"), Point.class),
+                    mapper.treeToValue(node.get("to"), Point.class),
+                    mapper.treeToValue(node.get("up"), Vector.class)
+            );
+        } else {
+            camera = new Camera(
+                    mapper.treeToValue(node.get("location"), Point.class),
+                    mapper.treeToValue(node.get("to"), Vector.class),
+                    mapper.treeToValue(node.get("up"), Vector.class)
+            );
+        }
+        if (node.has("roll")) {
+            camera.cameraRoll(node.get("roll").asDouble());
+        }
+        if (node.has("transform")) {
+            camera.cameraTransform(node.get("transform").asDouble());
+        }
+        if (node.has("apertureSize")) {
+            camera.setApertureSize(node.get("apertureSize").asDouble());
+            camera.setFPDistance(node.get("FP_distance").asDouble());
+        }
+        if (node.has("alias")) {
+            camera.setAlias(node.get("alias").asBoolean());
+        }
+        return camera
+                .setVPSize(node.get("width").asDouble(), node.get("height").asDouble())
+                .setVPDistance(node.get("VP_distance").asDouble())
+                .setImageWriter(mapper.treeToValue(node.get("imageWriter"), ImageWriter.class))
+                .setRayTracer(mapper.treeToValue(node.get("rayTracer"), RayTracerBase.class));
+    }
+}
+

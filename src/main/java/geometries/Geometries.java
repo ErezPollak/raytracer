@@ -1,15 +1,12 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import primitives.Ray;
 
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * A class that represents all kinds of geometries
- * that implement the interface of finding points of intersections with a ray
- * using the composite design pattern
- */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Geometries extends Intersectable {
     private List<Intersectable> listOfGeometries;
 

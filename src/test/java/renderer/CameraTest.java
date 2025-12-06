@@ -1,10 +1,18 @@
 package renderer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import geometries.*;
+import lighting.*;
 import org.junit.jupiter.api.Test;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
+import scene.Scene;
+import com.flipkart.zjsonpatch.JsonDiff;
 
+
+import static java.awt.Color.*;
+import static java.awt.Color.WHITE;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -173,11 +181,6 @@ class CameraTest {
                 "TC01 failed, camera rolled by 360 degrees.");
     }
 
-
-    /**
-     * Test method for
-     * {@link renderer.Camera#cameraMove(Point, Point, Vector)}.
-     */
     @Test
     void testCameraMove() {
         Point location = new Point(0, 0, 0);
@@ -187,22 +190,94 @@ class CameraTest {
 
         // ============ Equivalence Partitions Tests ==============
         //TC01 the classic case.
-        Camera movedCamera = camera.cameraMove(new Point(0, 0, 0), new Point(1, -1, 0), new Vector(0, 1, 0));
+        Camera movedCamera = new Camera(new Point(0, 0, 0), new Point(1, -1, 0), new Vector(0, 1, 0));
         Camera expectedCamera = new Camera(new Point(0, 0, 0), new Vector(1, -1, 0), new Vector(1, 1, 0));
 
         assertTrue(movedCamera.sameCameraVectorsAndLocation(expectedCamera), "camera is not in the expected place.");
 
         // =============== Boundary Values Tests ==================
         //TC02 the new line is on the y.
-        movedCamera = camera.cameraMove(new Point(0, 1, 0), new Point(0, -1, 0), new Vector(0, 1, 0));
+        movedCamera = new Camera(new Point(0, 1, 0), new Point(0, -1, 0), new Vector(0, 1, 0));
         expectedCamera = new Camera(new Point(0, 1, 0), new Vector(0, -1, 0), new Vector(1, 0, 0));
 
         assertTrue(movedCamera.sameCameraVectorsAndLocation(expectedCamera), "camera is not in the expected place.");
 
 
         //TC03: assert throwing an exception when the points are teh same;
-        assertThrows(IllegalArgumentException.class, () -> camera.cameraMove(new Point(1, 1, 1), new Point(1, 1, 1), new Vector(0, 1, 0)),
+        assertThrows(IllegalArgumentException.class, () -> new Camera(new Point(1, 1, 1), new Point(1, 1, 1), new Vector(0, 1, 0)),
                 "if the points are the same needs to throw an exception.");
+
+    }
+
+    @Test
+    void TestCameraSerialization(){
+
+        Double3 xAxis = new Double3(300, 0, 0);
+        Double3 yAxis = new Double3(0, 300, 0);
+        Double3 zAxis = new Double3(0, 0, 300);
+
+
+        Scene scene = new Scene("all features scene")
+                .setAmbientLight(new AmbientLight(new Color(BLACK), new Double3(0.15)));
+
+        scene.geometries.add(
+                new Tube(1, new Ray(Point.ZERO, new Vector(xAxis))).setEmission(new Color(RED)),
+                new Tube(1, new Ray(Point.ZERO, new Vector(yAxis))).setEmission(new Color(GREEN)),
+                new Tube(1, new Ray(Point.ZERO, new Vector(zAxis))).setEmission(new Color(BLUE)),
+                new Sphere(new Point(xAxis), 10).setEmission(new Color(RED)),
+                new Sphere(new Point(yAxis), 10).setEmission(new Color(GREEN)),
+                new Sphere(new Point(zAxis), 10).setEmission(new Color(BLUE)),
+                new Plane(new Point(0,0,-700) , new Vector(-1,-1,2)).setEmission(new Color(YELLOW)),
+                new Polygon(new Point(100, -100, -300), new Point(100, 100, -300), new Point(-100, 100, -300), new Point(-100, -100, -300)).setEmission(new Color(ORANGE)),
+                new Triangle(new Point(0, 200, 100), new Point(100, 0, 100), new Point(0, 100, 100)).setEmission(new Color(GREEN))
+                //   new Cylinder(new Ray(Point.ZERO, new Vector(0, 0, -1)), 100d, 200d).setEmission(new Color(YELLOW))
+        );
+
+        scene.lights.add(new DirectionalLight(new Color(WHITE).reduce(2), new Vector(-1, 1, 1)));
+        scene.lights.add(new PointLight(new Color(800, 500, 0), new Point(-50, -50, 25)).setKl(0.001).setKq(0.0002));//.setRadius(4));
+        scene.lights.add(new SpotLight(new Color(WHITE), new Point(0, 0, 100), new Vector(0, 0, -1)).setNarrowBeam(NarrowBeamArchitecture.DAN_ARCHITECTURE, 10).setKl(0.00001).setKq(0.00002));//.setRadius(5));
+
+
+        ImageWriter imageWriter = new ImageWriter("SerializationImage", 1000, 1000);
+        Camera camera = new Camera(new Point(1000, 1000, 700), Point.ZERO, new Vector(0, 0, 1)) //
+                .setVPSize(150, 150) //
+                .setVPDistance(250)
+                .cameraRoll(-5)
+                .cameraTransform(0)
+
+                .setApertureSize(10)
+                .setFPDistance(1000)
+
+                .setImageWriter(imageWriter) //
+                .setAlias(true)
+                .setThreadsCount(4)
+                .setPrintInterval(0.1)
+                .setRayTracer(new RayTracerBasic(scene));
+
+
+        //camera.renderImage().writeToImage();
+        ObjectMapper mapperBefore = new ObjectMapper();
+        ObjectMapper mapperAfter = new ObjectMapper();
+        try {
+            String jsonBefore, jsonAfter = null;
+            jsonBefore = mapperBefore.writerWithDefaultPrettyPrinter().writeValueAsString(camera);
+
+            //System.out.println(json);
+
+            Camera cameraFromJson = mapperBefore.readValue(jsonBefore, Camera.class);
+
+            jsonAfter = mapperAfter.writerWithDefaultPrettyPrinter().writeValueAsString(cameraFromJson);
+
+            JsonNode diff = JsonDiff.asJson(mapperBefore.readTree(jsonBefore), mapperAfter.readTree(jsonAfter));
+            System.out.println(jsonBefore);
+            System.out.println(jsonAfter);
+            assertTrue(diff.isArray());
+            assertTrue(diff.isEmpty());
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 }

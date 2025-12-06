@@ -1,5 +1,7 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -10,6 +12,7 @@ import java.util.List;
 import static primitives.Util.isZero;
 
 public class Cylinder extends Tube {
+    @JsonProperty("height")
     double height;
 
     /**
@@ -17,7 +20,8 @@ public class Cylinder extends Tube {
      *
      * @param high
      */
-    public Cylinder(Ray ray, double raduis, double high) {
+    @JsonCreator
+    public Cylinder(@JsonProperty("ray") Ray ray, @JsonProperty("radius") double raduis, @JsonProperty("height") double high) {
         super(raduis, ray);
         this.height = high;
     }

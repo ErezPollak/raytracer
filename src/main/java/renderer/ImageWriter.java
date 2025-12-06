@@ -1,5 +1,9 @@
 package renderer;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Color;
 
 import javax.imageio.ImageIO;
@@ -18,12 +22,16 @@ import java.util.logging.Logger;
  * @author Dan
  */
 public class ImageWriter {
+    @JsonProperty
     private int nX;
+
+    @JsonProperty
     private int nY;
 
     private static final String FOLDER_PATH = System.getProperty("user.dir") + "/images";
 
     private BufferedImage image;
+    @JsonProperty
     private String imageName;
 
     private Logger logger = Logger.getLogger("ImageWriter");
@@ -37,7 +45,8 @@ public class ImageWriter {
      * @param nX        amount of pixels by Width
      * @param nY        amount of pixels by height
      */
-    public ImageWriter(String imageName, int nX, int nY) {
+    @JsonCreator
+    public ImageWriter(@JsonProperty("imageName") String imageName, @JsonProperty("nx") int nX, @JsonProperty("ny") int nY) {
         this.imageName = imageName;
         this.nX = nX;
         this.nY = nY;
@@ -91,6 +100,11 @@ public class ImageWriter {
      */
     public void writePixel(int xIndex, int yIndex, Color color) {
         image.setRGB(xIndex, yIndex, color.getColor().getRGB());
+    }
+
+    @JsonIgnore
+    public BufferedImage getImage() {
+        return image;
     }
 
 }

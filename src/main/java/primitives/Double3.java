@@ -1,11 +1,11 @@
 package primitives;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * This class will serve all primitive classes based on three numbers
- *
- * @author Dan Zilberstein
- */
+
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Double3 {
     final double d1;
     final double d2;
@@ -23,7 +23,8 @@ public class Double3 {
      * @param d2 second number value
      * @param d3 third number value
      */
-    public Double3(double d1, double d2, double d3) {
+    @JsonCreator
+    public Double3(@JsonProperty("d1") double d1, @JsonProperty("d2")double d2, @JsonProperty("d3") double d3) {
         this.d1 = d1;
         this.d2 = d2;
         this.d3 = d3;

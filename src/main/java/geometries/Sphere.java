@@ -1,5 +1,8 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -12,11 +15,6 @@ public class Sphere extends Geometry {
     double radius;
     Point center;
 
-    @Override
-    public Vector getNormal(Point p) {
-        // the subtraction of the point from the center, returns the normal to the point.
-        return p.subtract(center).normalize();
-    }
 
     /**
      * Sphere Constructor
@@ -24,16 +22,12 @@ public class Sphere extends Geometry {
      * @param radius
      * @param point
      */
-    public Sphere(Point point, double radius) {
+    @JsonCreator
+    public Sphere(@JsonProperty("point") Point point, @JsonProperty("radius") double radius) {
         this.radius = radius;
         this.center = point;
     }
 
-    /**
-     * Get radius of sphere
-     *
-     * @return
-     */
     public double getRadius() {
         return radius;
     }
@@ -55,6 +49,13 @@ public class Sphere extends Geometry {
                 '}';
     }
 
+
+    @Override
+    @JsonIgnore
+    public Vector getNormal(Point p) {
+        // the subtraction of the point from the center, returns the normal to the point.
+        return p.subtract(center).normalize();
+    }
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {

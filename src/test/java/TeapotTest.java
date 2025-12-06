@@ -21,7 +21,7 @@ import scene.Scene;
 public class TeapotTest {
     private final ImageWriter imageWriter = new ImageWriter("teapot", 800, 800);
 
-    private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0)) //
+    private final Camera camera = new Camera(new Point(0,500,1000), new Point(0,0,0) , new Vector(0,1,0)) //
             .setVPDistance(1000).setVPSize(200, 200) //
             .setImageWriter(imageWriter) //
             .setThreadsCount(10).setPrintInterval(0.1);
@@ -1573,7 +1573,6 @@ public class TeapotTest {
 
 
         camera.setRayTracer(new RayTracerBasic(scene))
-                .cameraMove(new Point(0,500,1000), new Point(0,0,0) , new Vector(0,1,0))
                 .renderImage()
                 .writeToImage();
 

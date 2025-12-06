@@ -1,5 +1,7 @@
 package lighting;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -7,6 +9,16 @@ import primitives.Vector;
 /**
  * holds all the functionality of a lightSource.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DirectionalLight.class, name = "directional"),
+        @JsonSubTypes.Type(value = SpotLight.class, name = "spot"),
+        @JsonSubTypes.Type(value = PointLight.class, name = "point")
+})
 public interface LightSource {
 
     /**

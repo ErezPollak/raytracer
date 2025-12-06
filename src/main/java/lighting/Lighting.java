@@ -1,5 +1,6 @@
 package lighting;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Color;
 
 /**
@@ -9,6 +10,7 @@ abstract class Lighting {
     /**
      * the property every light source has: the color.
      */
+    @JsonProperty
     private Color intensity;
 
     /**
