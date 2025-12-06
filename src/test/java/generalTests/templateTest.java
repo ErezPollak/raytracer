@@ -44,11 +44,7 @@ public class templateTest {
         new Camera(new Point(1000, 1000, 1000), new Vector(-1, -1, -1), new Vector(-1, -1, 2)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(250)
-                //.cameraMove(new Point(1000, -1000, 1000), Point.ZERO, new Vector(0,0,1))
-                //.cameraRoll(-5)
-                ///.cameraTransform(0)
                 .setImageWriter(imageWriter) //
-                //.setAlias(true)
                 .setThreadsCount(4)
                 .setPrintInterval(0.1)
                 .setRayTracer(new RayTracerBasic(scene)) //

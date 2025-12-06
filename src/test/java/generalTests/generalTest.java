@@ -32,7 +32,6 @@ public class generalTest {
         Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(250)
-                //.cameraMove(new Point(100, -500, 50), new Point(40, -40, 100))
                 .cameraRoll(-5)
                 .cameraTransform(0);
 

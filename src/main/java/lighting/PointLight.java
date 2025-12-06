@@ -1,5 +1,8 @@
 package lighting;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -9,11 +12,13 @@ import java.util.Random;
 /**
  *
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class PointLight extends Lighting implements LightSource {
 
     /**
      * the location of the lightSource.
      */
+    @JsonProperty
     protected Point position;
 
     /**
@@ -22,12 +27,16 @@ public class PointLight extends Lighting implements LightSource {
      * kL: the linear coefficient for the linear weakening  of the light
      * kQ: the squared coefficient for the squared weakening of the light.
      */
+    @JsonProperty
     private double kC = 1;
+    @JsonProperty
     private double kL = 0;
+    @JsonProperty
     private double kQ = 0;
 
 
     ///////SOFT SHADOW FIELDS////////
+    @JsonProperty
     protected double radius = 0;
     private Point[] points;
     private final int NUMBER_OF_POINTS = 100;
@@ -39,7 +48,8 @@ public class PointLight extends Lighting implements LightSource {
      *
      * @param intensity the initialized intensity.
      */
-    public PointLight(Color intensity, Point position) {
+    @JsonCreator
+    public PointLight(@JsonProperty("intensity") Color intensity, @JsonProperty("position") Point position) {
         super(intensity);
         this.position = position;
     }

@@ -1,5 +1,7 @@
 package lighting;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -14,6 +16,7 @@ public class SpotLight extends PointLight implements LightSource {
     /**
      * the direction in witch the light is strongest.
      */
+    @JsonProperty("direction")
     private Vector direction;
 
 
@@ -30,7 +33,8 @@ public class SpotLight extends PointLight implements LightSource {
      * @param position  the position of the light.
      * @param direction the direction of the light.
      */
-    public SpotLight(Color intensity, Point position, Vector direction) {
+    @JsonCreator
+    public SpotLight(@JsonProperty("intensity") Color intensity, @JsonProperty("position") Point position, @JsonProperty("direction") Vector direction) {
         super(intensity, position);
         this.direction = direction.normalize();
     }

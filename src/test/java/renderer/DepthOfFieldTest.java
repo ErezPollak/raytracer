@@ -60,12 +60,6 @@ public class DepthOfFieldTest {
                 .setVPSize(150, 150) //
                 .setVPDistance(1000)
 
-                //moving camera.
-                //.cameraMove(new Point(0, 100, -500), new Point(0, 0, 0),new Vector(0,1,0)).cameraRoll(-5)
-                //.cameraMove(new Point(0, 100, -1000), new Point(0, -50, 1000),new Vector(0,1,0))
-                //.setVPDistance(250)
-
-
                 //set the DoF.
                 .setFPDistance(500)
                 .setApertureSize(1);

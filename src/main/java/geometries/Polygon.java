@@ -1,8 +1,13 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+import renderer.RayTracerBasic;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +24,7 @@ public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
+    @JsonProperty
     protected List<Point> vertices;
     /**
      * Associated plane in which the polygon lays
@@ -47,7 +53,8 @@ public class Polygon extends Geometry {
      *                                  <li>The polygon is concave (not convex)</li>
      *                                  </ul>
      */
-    public Polygon(Point... vertices) {
+    @JsonCreator
+    public Polygon(@JsonProperty("vertices")Point... vertices) {
         if (vertices.length < 3)
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
         this.vertices = List.of(vertices);

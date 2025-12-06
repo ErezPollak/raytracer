@@ -18,10 +18,9 @@ public class gameTest {
     @Test
     public void gameTest() {
 
-        Camera generalCamera = new Camera(new Point(1000, 1000, 1000), new Vector(-1, -1, -1), new Vector(-1, -1, 2)) //
+        Camera generalCamera = new Camera(new Point(1000, -1000, 1000), Point.ZERO, new Vector(0,0,1)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(250)
-                .cameraMove(new Point(1000, -1000, 1000), Point.ZERO, new Vector(0,0,1))
                 //.cameraRoll(-5)
                 ///.cameraTransform(0)
                 ;

@@ -1,17 +1,33 @@
 package geometries;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import primitives.*;
 
 
 /**
  * the class that represent a geometry.
  */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Plane.class, name = "plain"),
+        @JsonSubTypes.Type(value = Polygon.class, name = "polygon"),
+        @JsonSubTypes.Type(value = Sphere.class, name = "sphere"),
+        @JsonSubTypes.Type(value = Tube.class, name = "tube"),
+        @JsonSubTypes.Type(value = Triangle.class, name = "triangle"),
+        @JsonSubTypes.Type(value = Cylinder.class, name = "cylinder")
+})
 public abstract class Geometry extends Intersectable {
 
    /**
     * the light that every geometry should emit.
     * initialized to black.
     */
+
    protected Color emission = Color.BLACK;
 
    /**

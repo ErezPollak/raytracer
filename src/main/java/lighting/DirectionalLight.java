@@ -1,5 +1,7 @@
 package lighting;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -7,11 +9,13 @@ import primitives.Vector;
 /**
  *
  */
+
 public class DirectionalLight extends Lighting implements LightSource {
 
     /**
      * the direction of the light.
      */
+    @JsonProperty("direction")
     private Vector direction;
 
     /**
@@ -19,7 +23,8 @@ public class DirectionalLight extends Lighting implements LightSource {
      *
      * @param intensity the initialized intensity.
      */
-    public DirectionalLight(Color intensity, Vector direction) {
+    @JsonCreator
+    public DirectionalLight(@JsonProperty("intensity") Color intensity,@JsonProperty("direction") Vector direction) {
         super(intensity);
         this.direction = direction.normalize();
     }

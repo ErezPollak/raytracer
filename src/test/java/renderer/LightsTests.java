@@ -197,10 +197,9 @@ public class LightsTests {
                 );
 
 
-        Camera generalCamera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+        Camera generalCamera = new Camera(new Point(0, 0, 1000), new Point(0, 0, 0), new Vector(0, 1, 0)) //
                 .setVPSize(150, 150) //
                 .setVPDistance(150)
-                .cameraMove(new Point(0, 0, 1000), new Point(0, 0, 0), new Vector(0, 1, 0))
                 .cameraTransform(90).cameraRoll(0);
 
         ImageWriter imageWriter = new ImageWriter("lightPlaneSpotNarrowBeamTestTest", 1000, 1000);
